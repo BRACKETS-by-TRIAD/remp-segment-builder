@@ -7,6 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "vue": "^2.5.16",
     "vuetify": "^1.0.18",
     "vuex": "^3.0.1"

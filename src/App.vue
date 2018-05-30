@@ -1,28 +1,46 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app id="app">
+    <v-container fluid fill-height>
+      <v-layout align-center justify-center>
+        <v-flex xs12 sm10 md8>
+          <v-card class="elevation-12">
+            <v-card-text>
+              <TablePicker/>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+
+    <Notification />
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import axios from 'axios';
+
+import TablePicker from './components/TablePicker';
+import Notification from './components/Notification';
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    TablePicker,
+    Notification
+  },
+  created() {
+    axios
+      .get('http://remp-segment.mminar.com/definition.jsonn')
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        this.$store.commit('notification', {
+          show: true,
+          color: 'red',
+          text: 'Error fetching blueprint'
+        });
+      });
   }
-}
+};
 </script>
-
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
