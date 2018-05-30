@@ -4,8 +4,14 @@
       <v-layout align-center justify-center>
         <v-flex xs12 sm10 md8>
           <v-card class="elevation-12">
-            <v-card-text>
+            <v-toolbar dark color="primary">
+              <v-toolbar-title>Select table to make a segment:</v-toolbar-title>
+              <v-spacer></v-spacer>
               <TablePicker/>
+            </v-toolbar>
+
+            <v-card-text>
+              <FieldsPicker />
             </v-card-text>
           </v-card>
         </v-flex>
@@ -17,30 +23,19 @@
 </template>
 
 <script>
-import axios from 'axios';
-
-import TablePicker from './components/TablePicker';
 import Notification from './components/Notification';
+import TablePicker from './components/TablePicker';
+import FieldsPicker from './components/FieldsPicker';
 
 export default {
   name: 'app',
   components: {
+    Notification,
     TablePicker,
-    Notification
+    FieldsPicker
   },
   created() {
-    axios
-      .get('http://remp-segment.mminar.com/definition.jsonn')
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(error => {
-        this.$store.commit('notification', {
-          show: true,
-          color: 'red',
-          text: 'Error fetching blueprint'
-        });
-      });
+    this.$store.dispatch('fetchTablesBlueprint');
   }
 };
 </script>
