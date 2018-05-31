@@ -5,7 +5,7 @@
         {{ value }}%
       </span>
     </v-progress-circular>
-    <span class="graph-number grey--text text--darken-3">12 345</span>
+    <span class="graph-number grey--text text--darken-3">{{ 12345 | currency('', 0, { thousandsSeparator: ' ' }) }}</span>
   </div>
 
 </template>
@@ -29,7 +29,6 @@ export default {
   display: block;
   text-align: center;
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.87);
 }
 </style>
 
