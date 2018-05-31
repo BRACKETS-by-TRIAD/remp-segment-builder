@@ -13,6 +13,8 @@
             <v-card-text>
               <FieldsPicker />
 
+              <CriteriaRow v-for="criteria in criterias" :key="criteria" class="mb-5" />
+
               <div class="text-xs-center">
                 <AddCriteria />
               </div>
@@ -31,6 +33,7 @@
 import Notification from './components/Notification';
 import TablePicker from './components/TablePicker';
 import FieldsPicker from './components/FieldsPicker';
+import CriteriaRow from './components/CriteriaRow';
 import AddCriteria from './components/AddCriteria';
 
 export default {
@@ -39,10 +42,16 @@ export default {
     Notification,
     TablePicker,
     FieldsPicker,
+    CriteriaRow,
     AddCriteria
   },
   created() {
     this.$store.dispatch('fetchTablesBlueprint');
+  },
+  data() {
+    return {
+      criterias: [1, 2, 3]
+    };
   }
 };
 </script>
