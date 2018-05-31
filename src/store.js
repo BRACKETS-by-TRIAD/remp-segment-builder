@@ -27,11 +27,16 @@ export default new Vuex.Store({
     tableNames: state => {
       return state.tablesBlueprint.map(item => item.table);
     },
-    fieldsForSelectedTable: state => {
-      return state.tablesBlueprint
-        .filter(item => item.table === state.selectedTable)
-        .map(item => item.fields)
-        .reduce((final, current) => [...final, ...current], []);
+    selectedTable: state => {
+      return state.tablesBlueprint.filter(
+        item => item.table === state.selectedTable
+      )[0];
+    },
+    fieldsForSelectedTable: (state, getters) => {
+      return getters.selectedTable ? getters.selectedTable.fields : [];
+    },
+    criteriaForSelectedTable: (state, getters) => {
+      return getters.selectedTable ? getters.selectedTable.criteria : [];
     }
   },
   mutations: {

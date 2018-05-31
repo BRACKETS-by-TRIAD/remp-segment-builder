@@ -11,9 +11,9 @@
             </v-toolbar>
 
             <v-card-text>
-              <FieldsPicker />
+              <FieldsPicker class="fields-picker" />
 
-              <CriteriaRow v-for="criteria in criterias" :key="criteria" class="mb-5" />
+              <CriteriaRow v-for="criteria in criterias" :key="criteria" class="mb-3" />
 
               <div class="text-xs-center">
                 <AddCriteria />
@@ -55,3 +55,10 @@ export default {
   }
 };
 </script>
+
+<style>
+.fields-picker {
+      max-width: calc(100% - 164px);
+    margin-left: 20px;
+}
+</style>
