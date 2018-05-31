@@ -20,11 +20,18 @@ export default new Vuex.Store({
       closeText: 'Close'
     },
     tablesBlueprint: [],
-    selectedTable: null
+    selectedTable: null,
+    selectedFields: []
   },
   getters: {
     tableNames: state => {
       return state.tablesBlueprint.map(item => item.table);
+    },
+    fieldsForSelectedTable: state => {
+      return state.tablesBlueprint
+        .filter(item => item.table === state.selectedTable)
+        .map(item => item.fields)
+        .reduce((final, current) => [...final, ...current], []);
     }
   },
   mutations: {
@@ -36,6 +43,10 @@ export default new Vuex.Store({
     },
     setSelectedTable(state, selectedTable) {
       state.selectedTable = selectedTable;
+      state.selectedFields = [];
+    },
+    setSelectedFields(state, selectedFields) {
+      state.selectedFields = selectedFields;
     }
   },
   actions: {
