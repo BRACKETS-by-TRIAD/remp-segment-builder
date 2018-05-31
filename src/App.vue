@@ -12,6 +12,11 @@
 
             <v-card-text>
               <FieldsPicker />
+
+              <div class="text-xs-center">
+                <AddCriteria />
+              </div>
+
             </v-card-text>
           </v-card>
         </v-flex>
@@ -26,13 +31,15 @@
 import Notification from './components/Notification';
 import TablePicker from './components/TablePicker';
 import FieldsPicker from './components/FieldsPicker';
+import AddCriteria from './components/AddCriteria';
 
 export default {
   name: 'app',
   components: {
     Notification,
     TablePicker,
-    FieldsPicker
+    FieldsPicker,
+    AddCriteria
   },
   created() {
     this.$store.dispatch('fetchTablesBlueprint');
