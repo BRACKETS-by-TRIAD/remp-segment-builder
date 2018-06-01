@@ -13,7 +13,7 @@
             <v-card-text>
               <FieldsPicker class="fields-picker" />
 
-              <CriteriaRow v-for="(criteria, index) in selectedCriterias" :key="index" :criteriaIndex="index" class="mb-3" />
+              <CriteriaRow v-for="criteria in selectedCriterias" :key="criteria.id" :criteriaId="criteria.id" class="mb-3" />
 
               <div class="text-xs-center">
                 <CriteriaAdd />

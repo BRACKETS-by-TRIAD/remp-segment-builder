@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 import createLogger from 'vuex/dist/logger';
+import uuid from 'uuid/v1';
 import * as fromConfig from './config';
 
 Vue.use(Vuex);
@@ -22,7 +23,7 @@ export default new Vuex.Store({
     tablesBlueprint: [],
     selectedTable: null,
     selectedFields: [],
-    selectedCriterias: [1, 2]
+    selectedCriterias: []
   },
   getters: {
     tableNames: state => {
@@ -55,13 +56,12 @@ export default new Vuex.Store({
       state.selectedFields = selectedFields;
     },
     addCriteria(state) {
-      state.selectedCriterias.push({});
+      state.selectedCriterias.push({ id: uuid() });
     },
-    removeCriteria(state, criteriaIndex) {
-      state.selectedCriterias = [
-        ...state.selectedCriterias.slice(0, criteriaIndex),
-        ...state.selectedCriterias.slice(criteriaIndex + 1)
-      ];
+    removeCriteria(state, criteriaId) {
+      state.selectedCriterias = state.selectedCriterias.filter(
+        criteria => criteria.id != criteriaId
+      );
     }
   },
   actions: {

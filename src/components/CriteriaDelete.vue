@@ -10,12 +10,12 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'CriteriaDelete',
   props: {
-    criteriaIndex: Number
+    criteriaId: String
   },
 
   methods: {
     removeCriteria() {
-      this.$store.commit('removeCriteria', this.criteriaIndex);
+      this.$store.commit('removeCriteria', this.criteriaId);
     }
   }
 };

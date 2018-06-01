@@ -5,7 +5,7 @@
         <v-card class="elevation-4">
           <v-card-actions>
             <v-spacer></v-spacer>
-            <CriteriaDelete :criteriaIndex="criteriaIndex" />
+            <CriteriaDelete :criteriaId="criteriaId" />
           </v-card-actions>
           <v-card-text>
             <CriteriaSelect />
@@ -25,7 +25,7 @@ import CriteriaChart from './CriteriaChart';
 export default {
   name: 'CriteriaRow',
   props: {
-    criteriaIndex: Number
+    criteriaId: String
   },
   components: {
     CriteriaDelete,
