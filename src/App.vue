@@ -13,10 +13,10 @@
             <v-card-text>
               <FieldsPicker class="fields-picker" />
 
-              <CriteriaRow v-for="criteria in criterias" :key="criteria" class="mb-3" />
+              <CriteriaRow v-for="(criteria, index) in selectedCriterias" :key="index" :criteriaIndex="index" class="mb-3" />
 
               <div class="text-xs-center">
-                <AddCriteria />
+                <CriteriaAdd />
               </div>
 
             </v-card-text>
@@ -30,11 +30,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 import Notification from './components/Notification';
 import TablePicker from './components/TablePicker';
 import FieldsPicker from './components/FieldsPicker';
 import CriteriaRow from './components/CriteriaRow';
-import AddCriteria from './components/AddCriteria';
+import CriteriaAdd from './components/CriteriaAdd';
 
 export default {
   name: 'app',
@@ -43,22 +45,20 @@ export default {
     TablePicker,
     FieldsPicker,
     CriteriaRow,
-    AddCriteria
+    CriteriaAdd
   },
   created() {
     this.$store.dispatch('fetchTablesBlueprint');
   },
-  data() {
-    return {
-      criterias: [1, 2, 3]
-    };
+  computed: {
+    ...mapState(['selectedCriterias'])
   }
 };
 </script>
 
 <style>
 .fields-picker {
-      max-width: calc(100% - 164px);
-    margin-left: 20px;
+  max-width: calc(100% - 164px);
+  margin-left: 20px;
 }
 </style>

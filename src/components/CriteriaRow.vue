@@ -3,6 +3,10 @@
     <v-layout align-center>
       <v-flex>
         <v-card class="elevation-4">
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <CriteriaDelete :criteriaIndex="criteriaIndex" />
+          </v-card-actions>
           <v-card-text>
             <CriteriaSelect />
           </v-card-text>
@@ -14,12 +18,17 @@
 </template>
 
 <script>
+import CriteriaDelete from './CriteriaDelete';
 import CriteriaSelect from './CriteriaSelect';
 import CriteriaChart from './CriteriaChart';
 
 export default {
   name: 'CriteriaRow',
+  props: {
+    criteriaIndex: Number
+  },
   components: {
+    CriteriaDelete,
     CriteriaSelect,
     CriteriaChart
   }

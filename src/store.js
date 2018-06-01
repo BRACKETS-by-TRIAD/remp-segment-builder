@@ -21,7 +21,8 @@ export default new Vuex.Store({
     },
     tablesBlueprint: [],
     selectedTable: null,
-    selectedFields: []
+    selectedFields: [],
+    selectedCriterias: [1, 2]
   },
   getters: {
     tableNames: state => {
@@ -52,6 +53,15 @@ export default new Vuex.Store({
     },
     setSelectedFields(state, selectedFields) {
       state.selectedFields = selectedFields;
+    },
+    addCriteria(state) {
+      state.selectedCriterias.push({});
+    },
+    removeCriteria(state, criteriaIndex) {
+      state.selectedCriterias = [
+        ...state.selectedCriterias.slice(0, criteriaIndex),
+        ...state.selectedCriterias.slice(criteriaIndex + 1)
+      ];
     }
   },
   actions: {
