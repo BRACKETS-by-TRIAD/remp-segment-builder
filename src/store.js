@@ -37,8 +37,11 @@ export default new Vuex.Store({
     fieldsForSelectedTable: (state, getters) => {
       return getters.selectedTable ? getters.selectedTable.fields : [];
     },
-    criteriaForSelectedTable: (state, getters) => {
+    criteriasForSelectedTable: (state, getters) => {
       return getters.selectedTable ? getters.selectedTable.criteria : [];
+    },
+    criteriaTypeById: (state, getters) => id => {
+      return state.selectedCriterias.find(criteria => criteria.id === id).type;
     }
   },
   mutations: {
@@ -62,7 +65,31 @@ export default new Vuex.Store({
       state.selectedCriterias = state.selectedCriterias.filter(
         criteria => criteria.id != criteriaId
       );
+    },
+    setCriteriaType(state, { id, type }) {
+      state.selectedCriterias = state.selectedCriterias.map(criteria => {
+        if (criteria.id == id) {
+          return { ...criteria, type };
+        }
+        return criteria;
+      });
     }
+    // addParameterToCriteria(state, {criteriaId,parameter}) {
+    //   state.selectedCriterias = state.selectedCriterias.map(criteria => {
+    //     if (criteria.id == id) {
+    //       return {
+    //         ...criteria,
+    //         params: {
+    //           ... criteria.params ? criteria.params : {},
+    //           {
+    //             id: uuid
+    //           }
+    //         }
+    //       };
+    //     }
+    //     return criteria;
+    //   })
+    // }
   },
   actions: {
     fetchTablesBlueprint(context) {

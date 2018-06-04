@@ -8,7 +8,17 @@
             <CriteriaDelete :criteriaId="criteriaId" />
           </v-card-actions>
           <v-card-text>
-            <CriteriaSelect />
+            <v-layout>
+              <v-flex md3>
+                <CriteriaSelect :criteriaId="criteriaId" />
+              </v-flex>
+              <v-flex md7 offset-md1>
+                <div class="d-block">Parameter</div>
+                <div class="d-block">Parameter</div>
+                <div class="d-block">Parameter</div>
+                <ParameterAdd :criteriaId="criteriaId" />
+              </v-flex>
+            </v-layout>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -20,6 +30,7 @@
 <script>
 import CriteriaDelete from './CriteriaDelete';
 import CriteriaSelect from './CriteriaSelect';
+import ParameterAdd from './ParameterAdd';
 import CriteriaChart from './CriteriaChart';
 
 export default {
@@ -30,6 +41,7 @@ export default {
   components: {
     CriteriaDelete,
     CriteriaSelect,
+    ParameterAdd,
     CriteriaChart
   }
 };
