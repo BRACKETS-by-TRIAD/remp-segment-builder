@@ -48,6 +48,11 @@ export default new Vuex.Store({
     },
     criteriaTypeById: (state, getters) => id => {
       return state.selectedCriterias.find(criteria => criteria.id === id).type;
+    },
+    availableOptionsForParameter: (state, getters) => id => {
+      const criteriaId = state.selectedParameters.find(parameter => parameter.id ===id).criteriaId;
+      const criteriaType = getters.criteriaTypeById(criteriaId);
+      return getters.criteriasForSelectedTable.find(criteria => criteria.key === criteriaType).params
     }
   },
   mutations: {
@@ -60,6 +65,8 @@ export default new Vuex.Store({
     setSelectedTable(state, selectedTable) {
       state.selectedTable = selectedTable;
       state.selectedFields = [];
+      state.selectedCriterias = [];
+      state.selectedParameters = [];
     },
     setSelectedFields(state, selectedFields) {
       state.selectedFields = selectedFields;
