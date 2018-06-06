@@ -5,16 +5,16 @@
         <v-card class="elevation-4">
           <v-card-actions>
             <v-spacer></v-spacer>
-            <CriteriaDelete :criteriaId="criteriaId" />
+            <CriteriaDelete :criteriaId="criteria.id" />
           </v-card-actions>
           <v-card-text>
             <v-layout align-center>
               <v-flex md3>
-                <CriteriaSelect :criteriaId="criteriaId" />
+                <CriteriaSelect :criteriaId="criteria.id" />
               </v-flex>
               <v-flex md7 offset-md1>
                 <ParameterRow v-for="parameter in parameters" :key="parameter.id" :parameter="parameter" />
-                <ParameterAdd :criteriaId="criteriaId" />
+                <ParameterAdd v-if="criteria.type" :criteriaId="criteria.id" />
               </v-flex>
             </v-layout>
           </v-card-text>
@@ -35,7 +35,7 @@ import CriteriaChart from './CriteriaChart';
 export default {
   name: 'CriteriaRow',
   props: {
-    criteriaId: String
+    criteria: Object
   },
   components: {
     CriteriaDelete,
@@ -46,7 +46,9 @@ export default {
   },
   computed: {
     parameters() {
-      return this.$store.getters.parametersForSelectedCriteria(this.criteriaId);
+      return this.$store.getters.parametersForSelectedCriteria(
+        this.criteria.id
+      );
     }
   }
 };
