@@ -23,7 +23,8 @@ export default new Vuex.Store({
     tablesBlueprint: [],
     selectedTable: null,
     selectedFields: [],
-    selectedCriterias: []
+    selectedCriterias: [],
+    selectedParameters: []
   },
   getters: {
     tableNames: state => {
@@ -39,6 +40,11 @@ export default new Vuex.Store({
     },
     criteriasForSelectedTable: (state, getters) => {
       return getters.selectedTable ? getters.selectedTable.criteria : [];
+    },
+    parametersForSelectedCriteria: (state, getters) => id => {
+      return state.selectedParameters.filter(
+        parameter => parameter.criteriaId === id
+      );
     },
     criteriaTypeById: (state, getters) => id => {
       return state.selectedCriterias.find(criteria => criteria.id === id).type;
@@ -75,24 +81,14 @@ export default new Vuex.Store({
       });
     },
     addParameterToCriteria(state, criteriaId) {
-      state.selectedCriterias = state.selectedCriterias.map(criteria => {
-        const helperId = uuid();
-        console.log(criteriaId);
-        console.log(criteria.id);
-        if (criteria.id == criteriaId) {
-          return {
-            ...criteria,
-            params: {
-              ...(criteria.params ? criteria.params : {}),
-              [helperId]: { id: helperId }
-            }
-          };
-        }
-        return criteria;
-      });
+      state.selectedParameters.push({ id: uuid(), criteriaId });
+    },
+    removeParameter(state, parameterId) {
+      state.selectedParameters = state.selectedParameters.filter(
+        parameter => parameter.id != parameterId
+      );
     }
   },
-
   actions: {
     fetchTablesBlueprint(context) {
       axios

@@ -8,14 +8,12 @@
             <CriteriaDelete :criteriaId="criteriaId" />
           </v-card-actions>
           <v-card-text>
-            <v-layout>
+            <v-layout align-center>
               <v-flex md3>
                 <CriteriaSelect :criteriaId="criteriaId" />
               </v-flex>
               <v-flex md7 offset-md1>
-                <div class="d-block">Parameter</div>
-                <div class="d-block">Parameter</div>
-                <div class="d-block">Parameter</div>
+                <ParameterRow v-for="parameter in parameters" :key="parameter.id" :parameter="parameter" />
                 <ParameterAdd :criteriaId="criteriaId" />
               </v-flex>
             </v-layout>
@@ -30,6 +28,7 @@
 <script>
 import CriteriaDelete from './CriteriaDelete';
 import CriteriaSelect from './CriteriaSelect';
+import ParameterRow from './ParameterRow';
 import ParameterAdd from './ParameterAdd';
 import CriteriaChart from './CriteriaChart';
 
@@ -41,8 +40,14 @@ export default {
   components: {
     CriteriaDelete,
     CriteriaSelect,
+    ParameterRow,
     ParameterAdd,
     CriteriaChart
+  },
+  computed: {
+    parameters() {
+      return this.$store.getters.parametersForSelectedCriteria(this.criteriaId);
+    }
   }
 };
 </script>
