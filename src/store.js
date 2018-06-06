@@ -73,24 +73,26 @@ export default new Vuex.Store({
         }
         return criteria;
       });
+    },
+    addParameterToCriteria(state, criteriaId) {
+      state.selectedCriterias = state.selectedCriterias.map(criteria => {
+        const helperId = uuid();
+        console.log(criteriaId);
+        console.log(criteria.id);
+        if (criteria.id == criteriaId) {
+          return {
+            ...criteria,
+            params: {
+              ...(criteria.params ? criteria.params : {}),
+              [helperId]: { id: helperId }
+            }
+          };
+        }
+        return criteria;
+      });
     }
-    // addParameterToCriteria(state, {criteriaId,parameter}) {
-    //   state.selectedCriterias = state.selectedCriterias.map(criteria => {
-    //     if (criteria.id == id) {
-    //       return {
-    //         ...criteria,
-    //         params: {
-    //           ... criteria.params ? criteria.params : {},
-    //           {
-    //             id: uuid
-    //           }
-    //         }
-    //       };
-    //     }
-    //     return criteria;
-    //   })
-    // }
   },
+
   actions: {
     fetchTablesBlueprint(context) {
       axios

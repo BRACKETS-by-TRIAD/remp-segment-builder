@@ -14,7 +14,7 @@ export default {
   },
   methods: {
     addParameter() {
-      this.$store.commit('addParameter', this.criteriaId);
+      this.$store.commit('addParameterToCriteria', this.criteriaId);
     }
   }
 };
