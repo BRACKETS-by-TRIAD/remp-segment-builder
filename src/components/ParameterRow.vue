@@ -5,6 +5,7 @@
 
     <BooleanParameter />
     <StringParameter />
+    <NumberParameter />
 
     <ParameterDelete :parameterId="parameter.id" />
   </div>
@@ -15,6 +16,7 @@
 import ParameterSelect from './ParameterSelect';
 import BooleanParameter from './ParameterTypes/BooleanParameter';
 import StringParameter from './ParameterTypes/StringParameter';
+import NumberParameter from './ParameterTypes/NumberParameter';
 import ParameterDelete from './ParameterDelete';
 
 export default {
@@ -24,7 +26,8 @@ export default {
     ParameterDelete,
     ParameterSelect,
     BooleanParameter,
-    StringParameter
+    StringParameter,
+    NumberParameter
   }
 };
 </script>
