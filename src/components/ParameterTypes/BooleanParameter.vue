@@ -1,5 +1,5 @@
 <template>
-  <v-switch label="Switch" v-model="switch1"></v-switch>
+  <v-switch label="Switch" v-model="switch1" color="green"></v-switch>
 </template>
 
 <script>
