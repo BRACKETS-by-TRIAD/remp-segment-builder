@@ -7,6 +7,7 @@
     <StringParameter />
     <NumberParameter />
     <DatetimeParameter />
+    <IntervalParameter />
 
     <ParameterDelete :parameterId="parameter.id" />
   </div>
@@ -19,6 +20,7 @@ import BooleanParameter from './ParameterTypes/BooleanParameter';
 import StringParameter from './ParameterTypes/StringParameter';
 import NumberParameter from './ParameterTypes/NumberParameter';
 import DatetimeParameter from './ParameterTypes/DatetimeParameter';
+import IntervalParameter from './ParameterTypes/IntervalParameter';
 import ParameterDelete from './ParameterDelete';
 
 export default {
@@ -30,6 +32,7 @@ export default {
     StringParameter,
     NumberParameter,
     DatetimeParameter,
+    IntervalParameter,
     ParameterDelete
   }
 };
