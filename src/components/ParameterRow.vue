@@ -6,6 +6,7 @@
     <BooleanParameter />
     <StringParameter />
     <NumberParameter />
+    <DatetimeParameter />
 
     <ParameterDelete :parameterId="parameter.id" />
   </div>
@@ -17,17 +18,19 @@ import ParameterSelect from './ParameterSelect';
 import BooleanParameter from './ParameterTypes/BooleanParameter';
 import StringParameter from './ParameterTypes/StringParameter';
 import NumberParameter from './ParameterTypes/NumberParameter';
+import DatetimeParameter from './ParameterTypes/DatetimeParameter';
 import ParameterDelete from './ParameterDelete';
 
 export default {
   name: 'ParameterRow',
   props: ['parameter'],
   components: {
-    ParameterDelete,
     ParameterSelect,
     BooleanParameter,
     StringParameter,
-    NumberParameter
+    NumberParameter,
+    DatetimeParameter,
+    ParameterDelete
   }
 };
 </script>
