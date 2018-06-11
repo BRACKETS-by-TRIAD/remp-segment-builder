@@ -46,17 +46,36 @@ export default new Vuex.Store({
         parameter => parameter.criteriaId === id
       );
     },
-    criteriaTypeById: (state, getters) => id => {
-      return state.selectedCriterias.find(criteria => criteria.id === id).type;
-    },
-    availableOptionsForParameter: (state, getters) => id => {
-      const criteriaId = state.selectedParameters.find(
-        parameter => parameter.id === id
-      ).criteriaId;
-      const criteriaType = getters.criteriaTypeById(criteriaId);
+    allParametersForCriteriaType: (state, getters) => criteriaType => {
       return getters.criteriasForSelectedTable.find(
         criteria => criteria.key === criteriaType
       ).params;
+    },
+    criteriaTypeById: (state, getters) => id => {
+      return state.selectedCriterias.find(criteria => criteria.id === id).type;
+    },
+    unusedParametersForCriteria: (state, getters) => criteria => {
+      const allParametersForCriteriaType = getters.allParametersForCriteriaType(
+        criteria.type
+      );
+      const alreadySelectedParameters = getters.parametersForSelectedCriteria(
+        criteria.id
+      );
+
+      const unusedParameters = [];
+
+      for (const [key, value] of Object.entries(allParametersForCriteriaType)) {
+        if (
+          !alreadySelectedParameters.some(parameter => parameter.name === key)
+        ) {
+          unusedParameters.push({
+            name: key,
+            ...value
+          });
+        }
+      }
+
+      return unusedParameters;
     }
   },
   mutations: {
@@ -98,7 +117,37 @@ export default new Vuex.Store({
       state.selectedParameters = state.selectedParameters.filter(
         parameter => parameter.id != parameterId
       );
-    }
+    },
+    setRequiredParametersForCriteria(state, payload) {
+      const parametersForCriteria = state.tablesBlueprint
+        .find(table => table.table === state.selectedTable)
+        .criteria.find(criteria => criteria.key === payload.type).params;
+      for (const [key, value] of Object.entries(parametersForCriteria)) {
+        if (value.required) {
+          state.selectedParameters.push({
+            id: uuid(),
+            criteriaId: payload.id,
+            name: key,
+            ...value
+          });
+        }
+      }
+    },
+    removeParametersForCriteria(state, criteriaId) {
+      state.selectedParameters = [
+        ...state.selectedParameters.filter(
+          parameter => parameter.criteriaId !== criteriaId
+        )
+      ];
+    },
+    setParameterType(state, payload) {
+      state.selectedParameters = state.selectedParameters.map(parameter => {
+        if (parameter.id == payload.id) {
+          return { ...parameter, ...payload };
+        }
+        return parameter;
+      });
+    },
   },
   actions: {
     fetchTablesBlueprint(context) {
@@ -114,6 +163,11 @@ export default new Vuex.Store({
             text: 'Error fetching blueprint'
           });
         });
+    },
+    setCriteriaType(context, payload) {
+      context.commit('setCriteriaType', payload);
+      context.commit('removeParametersForCriteria', payload.id);
+      context.commit('setRequiredParametersForCriteria', payload);
     }
   },
   plugins: [createLogger()]

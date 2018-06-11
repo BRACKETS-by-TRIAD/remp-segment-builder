@@ -23,6 +23,7 @@ export default {
 <style scoped>
 .add-parameter {
   margin-left: -8px !important;
+  margin-top: 20px;
 }
 </style>
 

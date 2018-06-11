@@ -19,7 +19,7 @@ export default {
         return this.$store.getters.criteriaTypeById(this.criteriaId);
       },
       set(value) {
-        return this.$store.commit('setCriteriaType', {
+        return this.$store.dispatch('setCriteriaType', {
           id: this.criteriaId,
           type: value
         });

@@ -1,9 +1,6 @@
 <template>
   <div>
-    <!-- <v-select :items="availableOptionsForParameter" v-model="selectedCriteria" item-text="label" item-value="key" label="Parameter type" autocomplete class="parameter-select" append-icon="insert_chart" /> -->
-    <pre>
-      {{ availableOptionsForParameter }}
-    </pre>
+    <v-select :items="unusedParametersForCriteria" v-model="selectedParameter" item-text="name" label="Parameter type" autocomplete class="parameter-select" append-icon="insert_chart" />
   </div>
 </template>
 
@@ -11,25 +8,25 @@
 export default {
   name: 'ParameterSelect',
   props: {
-    parameterId: String
+    parameter: Object,
+    criteria: Object
   },
   computed: {
-    availableOptionsForParameter() {
-      const options = this.$store.getters.availableOptionsForParameter(this.parameterId);
-      console.log(options);
-return options;
+    unusedParametersForCriteria() {
+      return this.$store.getters.unusedParametersForCriteria(this.criteria);
     },
-    // selectedCriteria: {
-    //   get() {
-    //     return this.$store.getters.criteriaTypeById(this.criteriaId);
-    //   },
-    //   set(value) {
-    //     return this.$store.commit('setCriteriaType', {
-    //       id: this.criteriaId,
-    //       type: value
-    //     });
-    //   }
-    // }
+    selectedParameter: {
+        get() {
+        
+      },
+      set(value) {
+        console.log(value);
+        return this.$store.commit('setParameterType', {
+          id: this.parameter.id,
+          ...value
+        });
+      }
+    }
   }
 };
 </script>

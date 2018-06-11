@@ -14,8 +14,8 @@
                 <CriteriaSelect :criteriaId="criteria.id" />
               </v-flex>
               <v-flex md7 offset-md1>
-                <ParameterRow v-for="parameter in parameters" :key="parameter.id" :parameter="parameter" />
-                <ParameterAdd v-if="criteria.type" :criteriaId="criteria.id" />
+                <ParameterRow v-for="parameter in parameters" :key="parameter.id" :parameter="parameter" :criteria="criteria" />
+                <ParameterAdd v-if="shouldShowParameterAddButton" :criteriaId="criteria.id" />
               </v-flex>
             </v-layout>
           </v-card-text>
@@ -51,6 +51,12 @@ export default {
     parameters() {
       return this.$store.getters.parametersForSelectedCriteria(
         this.criteria.id
+      );
+    },
+    shouldShowParameterAddButton() {
+      return (
+        this.criteria.type &&
+        this.$store.getters.unusedParametersForCriteria(this.criteria).length
       );
     }
   }
