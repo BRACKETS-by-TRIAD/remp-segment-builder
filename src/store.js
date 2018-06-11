@@ -31,9 +31,9 @@ export default new Vuex.Store({
       return state.tablesBlueprint.map(item => item.table);
     },
     selectedTable: state => {
-      return state.tablesBlueprint.filter(
+      return state.tablesBlueprint.find(
         item => item.table === state.selectedTable
-      )[0];
+      );
     },
     fieldsForSelectedTable: (state, getters) => {
       return getters.selectedTable ? getters.selectedTable.fields : [];
@@ -50,9 +50,13 @@ export default new Vuex.Store({
       return state.selectedCriterias.find(criteria => criteria.id === id).type;
     },
     availableOptionsForParameter: (state, getters) => id => {
-      const criteriaId = state.selectedParameters.find(parameter => parameter.id ===id).criteriaId;
+      const criteriaId = state.selectedParameters.find(
+        parameter => parameter.id === id
+      ).criteriaId;
       const criteriaType = getters.criteriaTypeById(criteriaId);
-      return getters.criteriasForSelectedTable.find(criteria => criteria.key === criteriaType).params
+      return getters.criteriasForSelectedTable.find(
+        criteria => criteria.key === criteriaType
+      ).params;
     }
   },
   mutations: {
