@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-progress-circular :size="100" :width="15" :rotate="-90" :value="value" color="primary">
+    <v-progress-circular :size="100" :width="15" :rotate="-90" :value="value" :indeterminate="false" color="primary">
       <span class="graph-percent">
         {{ value }}%
       </span>
