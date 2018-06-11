@@ -5,6 +5,7 @@
         <v-card class="elevation-4">
           <v-card-actions>
             <v-spacer></v-spacer>
+            <CriteriaNot :criteriaId="criteria.id" />
             <CriteriaDelete :criteriaId="criteria.id" />
           </v-card-actions>
           <v-card-text>
@@ -27,6 +28,7 @@
 
 <script>
 import CriteriaDelete from './CriteriaDelete';
+import CriteriaNot from './CriteriaNot';
 import CriteriaSelect from './CriteriaSelect';
 import ParameterRow from './ParameterRow';
 import ParameterAdd from './ParameterAdd';
@@ -39,6 +41,7 @@ export default {
   },
   components: {
     CriteriaDelete,
+    CriteriaNot,
     CriteriaSelect,
     ParameterRow,
     ParameterAdd,
