@@ -44,6 +44,40 @@ export default {
         v => /^\d*\.?\d*$/.test(v) || 'Number must be valid'
       ]
     };
+  },
+  created() {
+    const value = this.$store.getters.parameterValueById(this.parameter.id);
+    if (value) {
+      this.amount = value.amount;
+      this.operator = value.operator;
+      this.timeframe = value.timeframe;
+    }
+  },
+  methods: {
+    sendValuesToStore() {
+      const parameterId = this.parameter.id;
+      const parameterValue = {
+        amount: this.amount,
+        timeframe: this.selectedTimeframe,
+        operator: this.selectedOperator
+      };
+
+      return this.$store.commit('setParameterValue', {
+        parameterId,
+        parameterValue
+      });
+    }
+  },
+  watch: {
+    selectedOperator(value) {
+      this.sendValuesToStore();
+    },
+    amount(value) {
+      this.sendValuesToStore();
+    },
+    selectedTimeframe(value) {
+      this.sendValuesToStore();
+    }
   }
 };
 </script>
@@ -51,12 +85,12 @@ export default {
 <style scoped lang="scss">
 .operator {
   width: 155px;
-  margin-right: 25px;
 }
 .amount {
+  margin-left: 10px;
 }
 .timeframe {
   width: 150px;
-  margin-left: 25px;
+  margin-left: 18px;
 }
 </style>
