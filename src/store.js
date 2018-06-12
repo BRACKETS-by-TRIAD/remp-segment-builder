@@ -101,6 +101,11 @@ export default new Vuex.Store({
       state.selectedCriterias = state.selectedCriterias.filter(
         criteria => criteria.id != criteriaId
       );
+      state.selectedParameters = [
+        ...state.selectedParameters.filter(
+          parameter => parameter.criteriaId !== criteriaId
+        )
+      ];
     },
     setCriteriaType(state, { id, type }) {
       state.selectedCriterias = state.selectedCriterias.map(criteria => {
@@ -147,7 +152,7 @@ export default new Vuex.Store({
         }
         return parameter;
       });
-    },
+    }
   },
   actions: {
     fetchTablesBlueprint(context) {
