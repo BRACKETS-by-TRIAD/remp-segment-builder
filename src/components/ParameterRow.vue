@@ -9,7 +9,7 @@
         <IntervalParameter v-if="shouldShowIntervalInput" :parameter="parameter" />
       </v-flex>
       <v-flex class="parameter-delete-wrapper">
-        <ParameterDelete :parameterId="parameter.id" />
+        <ParameterDelete :parameterId="parameter.id" v-if="!parameter.required" />
       </v-flex>
     </v-layout>
 
