@@ -4,7 +4,7 @@
 
     <v-layout align-center v-if="parameter.type">
       <v-flex>
-        <BooleanParameter v-if="shouldShowBooleanInput" />
+        <BooleanParameter v-if="shouldShowBooleanInput" :parameter="parameter" />
         <StringParameter v-if="shouldShowStringInput" />
         <NumberParameter v-if="shouldShowNumberInput" />
         <DatetimeParameter v-if="shouldShowDatetimeInput" />
@@ -66,7 +66,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .parameter-delete-wrapper {
   max-width: 50px;
 }
@@ -74,5 +74,8 @@ export default {
   border-bottom: 1px dashed #212121;
   padding-bottom: 10px;
   margin-bottom: 10px;
+  &:last-of-type {
+    border-bottom: none;
+  }
 }
 </style>

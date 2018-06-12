@@ -1,14 +1,36 @@
 <template>
-  <v-switch label="Switch" v-model="switch1" color="green"></v-switch>
+  <v-switch label="Switch" v-model="parameterValue" color="green"></v-switch>
 </template>
 
 <script>
 export default {
   name: 'BooleanParameter',
-  data() {
-    return {
-      switch1: true
-    };
+  props: {
+    parameter: Object
+  },
+  computed: {
+    parameterValue: {
+      get() {
+        return this.$store.getters.parameterValueById(this.parameter.id);
+      },
+      set(parameterValue) {
+        const parameterId = this.parameter.id;
+        return this.$store.commit('setParameterValue', {
+          parameterId,
+          parameterValue
+        });
+      }
+    }
+  },
+  created() {
+    if (this.parameter.default) {
+      const parameterId = this.parameter.id;
+      const parameterValue = this.parameter.default;
+      this.$store.commit('setParameterValue', {
+        parameterId,
+        parameterValue
+      });
+    }
   }
 };
 </script>

@@ -76,6 +76,11 @@ export default new Vuex.Store({
       }
 
       return unusedParameters;
+    },
+    parameterValueById: (state, getters) => parameterId => {
+      return state.selectedParameters.find(
+        parameter => parameter.id === parameterId
+      ).value;
     }
   },
   mutations: {
@@ -149,6 +154,14 @@ export default new Vuex.Store({
       state.selectedParameters = state.selectedParameters.map(parameter => {
         if (parameter.id == payload.id) {
           return { ...parameter, ...payload };
+        }
+        return parameter;
+      });
+    },
+    setParameterValue(state, { parameterId, parameterValue }) {
+      state.selectedParameters = state.selectedParameters.map(parameter => {
+        if (parameter.id === parameterId) {
+          return { ...parameter, value: parameterValue };
         }
         return parameter;
       });
