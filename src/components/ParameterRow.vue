@@ -5,7 +5,7 @@
     <v-layout align-center v-if="parameter.type">
       <v-flex>
         <BooleanParameter v-if="shouldShowBooleanInput" :parameter="parameter" />
-        <StringParameter v-if="shouldShowStringInput" />
+        <StringParameter v-if="shouldShowStringInput" :parameter="parameter" />
         <NumberParameter v-if="shouldShowNumberInput" />
         <DatetimeParameter v-if="shouldShowDatetimeInput" />
         <IntervalParameter v-if="shouldShowIntervalInput" />
