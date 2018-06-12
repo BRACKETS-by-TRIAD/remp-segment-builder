@@ -120,8 +120,8 @@ export default new Vuex.Store({
         return criteria;
       });
     },
-    addParameterToCriteria(state, criteriaId) {
-      state.selectedParameters.push({ id: uuid(), criteriaId });
+    addParameterToCriteria(state, { criteriaId, parameter }) {
+      state.selectedParameters.push({ id: uuid(), criteriaId, ...parameter });
     },
     removeParameter(state, parameterId) {
       state.selectedParameters = state.selectedParameters.filter(
@@ -149,14 +149,6 @@ export default new Vuex.Store({
           parameter => parameter.criteriaId !== criteriaId
         )
       ];
-    },
-    setParameterType(state, payload) {
-      state.selectedParameters = state.selectedParameters.map(parameter => {
-        if (parameter.id == payload.id) {
-          return { ...parameter, ...payload };
-        }
-        return parameter;
-      });
     },
     setParameterValue(state, { parameterId, parameterValue }) {
       state.selectedParameters = state.selectedParameters.map(parameter => {

@@ -1,14 +1,12 @@
 <template>
   <div class="parameter-row">
-    <ParameterSelect v-if="!parameter.type" :parameter="parameter" :criteria="criteria" />
-
-    <v-layout align-center v-if="parameter.type">
+    <v-layout align-center>
       <v-flex>
         <BooleanParameter v-if="shouldShowBooleanInput" :parameter="parameter" />
         <StringParameter v-if="shouldShowStringInput" :parameter="parameter" />
         <NumberParameter v-if="shouldShowNumberInput" :parameter="parameter" />
         <DatetimeParameter v-if="shouldShowDatetimeInput" :parameter="parameter" />
-        <IntervalParameter v-if="shouldShowIntervalInput" />
+        <IntervalParameter v-if="shouldShowIntervalInput" :parameter="parameter" />
       </v-flex>
       <v-flex class="parameter-delete-wrapper">
         <ParameterDelete :parameterId="parameter.id" />
@@ -20,7 +18,6 @@
 </template>
 
 <script>
-import ParameterSelect from './ParameterSelect';
 import BooleanParameter from './ParameterTypes/BooleanParameter';
 import StringParameter from './ParameterTypes/StringParameter';
 import NumberParameter from './ParameterTypes/NumberParameter';
@@ -32,7 +29,6 @@ export default {
   name: 'ParameterRow',
   props: ['parameter', 'criteria'],
   components: {
-    ParameterSelect,
     BooleanParameter,
     StringParameter,
     NumberParameter,

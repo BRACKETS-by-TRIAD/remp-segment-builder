@@ -16,6 +16,9 @@
 <script>
 export default {
   name: 'IntervalParameter',
+  props: {
+    parameter: Object
+  },
   data() {
     return {
       selectedOperator: 'gt',
