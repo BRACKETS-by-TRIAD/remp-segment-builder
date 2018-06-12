@@ -6,7 +6,7 @@
       <v-flex>
         <BooleanParameter v-if="shouldShowBooleanInput" :parameter="parameter" />
         <StringParameter v-if="shouldShowStringInput" :parameter="parameter" />
-        <NumberParameter v-if="shouldShowNumberInput" />
+        <NumberParameter v-if="shouldShowNumberInput" :parameter="parameter" />
         <DatetimeParameter v-if="shouldShowDatetimeInput" />
         <IntervalParameter v-if="shouldShowIntervalInput" />
       </v-flex>
