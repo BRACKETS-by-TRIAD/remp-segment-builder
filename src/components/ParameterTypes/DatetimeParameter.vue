@@ -41,11 +41,14 @@ import 'flatpickr/dist/themes/material_green.css';
 export default {
   name: 'DatetimeParameter',
   components: { flatPickr },
+  props: {
+    parameter: Object
+  },
   data() {
     return {
-      selectedOperator1: 'eq',
-      selectedOperator2: null,
+      selectedOperator1: null,
       date1: null,
+      selectedOperator2: null,
       date2: null,
       operators: [
         { text: 'Equal', value: 'eq' },
@@ -63,6 +66,53 @@ export default {
         altFormat: 'd.m.Y H:i:S'
       }
     };
+  },
+  created() {
+    const value = this.$store.getters.parameterValueById(this.parameter.id);
+    if (value && value[0]) {
+      this.date1 = value[0].date;
+      this.selectedOperator1 = value[0].operator;
+    }
+    if (value && value[1]) {
+      this.date2 = value[1].date;
+      this.selectedOperator2 = value[1].operator;
+    }
+  },
+  methods: {
+    sendValuesToStore() {
+      const parameterId = this.parameter.id;
+      const parameterValue = [];
+      if (this.selectedOperator1 && this.date1) {
+        parameterValue[0] = {
+          operator: this.selectedOperator1,
+          date: this.date1
+        };
+      }
+      if (this.selectedOperator2 && this.date2) {
+        parameterValue[1] = {
+          operator: this.selectedOperator2,
+          date: this.date2
+        };
+      }
+      return this.$store.commit('setParameterValue', {
+        parameterId,
+        parameterValue
+      });
+    }
+  },
+  watch: {
+    date1(value) {
+      this.sendValuesToStore();
+    },
+    selectedOperator1(value) {
+      this.sendValuesToStore();
+    },
+    date2(value) {
+      this.sendValuesToStore();
+    },
+    selectedOperator2(value) {
+      this.sendValuesToStore();
+    }
   }
 };
 </script>

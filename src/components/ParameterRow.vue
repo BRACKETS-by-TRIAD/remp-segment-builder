@@ -7,7 +7,7 @@
         <BooleanParameter v-if="shouldShowBooleanInput" :parameter="parameter" />
         <StringParameter v-if="shouldShowStringInput" :parameter="parameter" />
         <NumberParameter v-if="shouldShowNumberInput" :parameter="parameter" />
-        <DatetimeParameter v-if="shouldShowDatetimeInput" />
+        <DatetimeParameter v-if="shouldShowDatetimeInput" :parameter="parameter" />
         <IntervalParameter v-if="shouldShowIntervalInput" />
       </v-flex>
       <v-flex class="parameter-delete-wrapper">
