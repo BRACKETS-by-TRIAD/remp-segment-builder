@@ -26,26 +26,29 @@
     </v-container>
 
     <Notification />
+    <AjaxLoader />
   </v-app>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 
-import Notification from './components/Notification';
 import TablePicker from './components/TablePicker';
 import FieldsPicker from './components/FieldsPicker';
 import CriteriaRow from './components/CriteriaRow';
 import CriteriaAdd from './components/CriteriaAdd';
+import Notification from './components/Notification';
+import AjaxLoader from './components/AjaxLoader';
 
 export default {
   name: 'app',
   components: {
-    Notification,
     TablePicker,
     FieldsPicker,
     CriteriaRow,
-    CriteriaAdd
+    CriteriaAdd,
+    Notification,
+    AjaxLoader
   },
   created() {
     this.$store.dispatch('fetchTablesBlueprint');

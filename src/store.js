@@ -20,6 +20,7 @@ export default new Vuex.Store({
       closeColor: 'white',
       closeText: 'Close'
     },
+    ajaxLoader: false,
     tablesBlueprint: [],
     selectedTable: null,
     selectedFields: [],
@@ -157,6 +158,9 @@ export default new Vuex.Store({
         }
         return parameter;
       });
+    },
+    setAjaxLoader(state, value) {
+      state.ajaxLoader = value;
     }
   },
   actions: {
