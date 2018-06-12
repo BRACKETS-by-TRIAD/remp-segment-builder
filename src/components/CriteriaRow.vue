@@ -13,7 +13,7 @@
               <v-flex md3>
                 <CriteriaSelect :criteriaId="criteria.id" />
               </v-flex>
-              <v-flex md7 offset-md1>
+              <v-flex md8 offset-md1>
                 <ParameterRow v-for="parameter in parameters" :key="parameter.id" :parameter="parameter" :criteria="criteria" />
                 <ParameterAdd v-if="shouldShowParameterAddButton" :criteria="criteria" />
               </v-flex>

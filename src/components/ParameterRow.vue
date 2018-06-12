@@ -1,6 +1,6 @@
 <template>
   <div class="parameter-row">
-    <v-layout align-center>
+    <v-layout>
       <v-flex>
         <BooleanParameter v-if="shouldShowBooleanInput" :parameter="parameter" />
         <StringParameter v-if="shouldShowStringInput" :parameter="parameter" />
@@ -65,13 +65,14 @@ export default {
 <style lang="scss">
 .parameter-delete-wrapper {
   max-width: 50px;
+  margin-left: 30px;
 }
 .parameter-row {
-  border-bottom: 1px dashed #212121;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
+  // border-bottom: 1px dashed #212121;
+  margin-bottom: 30px;
   &:last-of-type {
-    border-bottom: none;
+    // border-bottom: none;
+    margin-bottom: 0;
   }
 }
 </style>

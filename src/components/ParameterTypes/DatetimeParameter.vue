@@ -120,9 +120,6 @@ export default {
 <style lang="scss">
 .operator {
   width: 155px;
-  &:not(&--first) {
-    margin-left: 25px;
-  }
 }
 
 // override default flatpickr styles

@@ -1,19 +1,22 @@
 <template>
-  <v-layout>
-    <v-flex>
-      <v-select v-model="selectedOperator1" class="operator operator--first" :items="operators" label="Operator 1"></v-select>
-    </v-flex>
-    <v-flex>
-      <v-text-field v-model="number1" type="number" :rules="numberRules" :label="parameter.name"></v-text-field>
-    </v-flex>
-    <v-flex>
-      <v-select v-model="selectedOperator2" class="operator" :items="operators" label="Operator 2"></v-select>
-    </v-flex>
-    <v-flex>
-      <v-text-field v-model="number2" type="number" :rules="numberRules" :label="parameter.name"></v-text-field>
-    </v-flex>
-  </v-layout>
-
+  <div>
+    <v-layout>
+      <v-flex>
+        <v-select v-model="selectedOperator1" class="operator" :items="operators" label="Operator 1"></v-select>
+      </v-flex>
+      <v-flex>
+        <v-text-field v-model="number1" type="number" :rules="numberRules" :label="parameter.name" prepend-icon="money"></v-text-field>
+      </v-flex>
+    </v-layout>
+    <v-layout>
+      <v-flex>
+        <v-select v-model="selectedOperator2" class="operator" :items="operators" label="Operator 2"></v-select>
+      </v-flex>
+      <v-flex>
+        <v-text-field v-model="number2" type="number" :rules="numberRules" :label="parameter.name" prepend-icon="money"></v-text-field>
+      </v-flex>
+    </v-layout>
+  </div>
 </template>
 
 <script>
@@ -94,8 +97,5 @@ export default {
 <style scoped lang="scss">
 .operator {
   width: 155px;
-  &:not(&--first) {
-    margin-left: 25px;
-  }
 }
 </style>
