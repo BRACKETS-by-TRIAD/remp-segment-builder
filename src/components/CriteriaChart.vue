@@ -1,22 +1,31 @@
 <template>
   <div>
-    <v-progress-circular :size="100" :width="15" :rotate="-90" :value="value" :indeterminate="false" color="primary">
-      <span class="graph-percent">
-        {{ value }}%
+    <v-progress-circular :size="100" :width="15" :rotate="-90" :value="percent" :indeterminate="isRecalculating" color="primary">
+      <span class="graph-percent" v-if="!isRecalculating">
+        {{ percent | currency('', 1) }}%
       </span>
     </v-progress-circular>
-    <span class="graph-number grey--text text--darken-3">{{ 12345 | currency('', 0, { thousandsSeparator: ' ' }) }}</span>
+    <span v-if="!isRecalculating" class="graph-number grey--text text--darken-3">{{ numberOfPassingItems | currency('', 0, { thousandsSeparator: ' ' }) }}</span>
   </div>
 
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'CriteriaChart',
-  data() {
-    return {
-      value: 25
-    };
+  computed: {
+    ...mapState(['totalCount']),
+    numberOfPassingItems() {
+      return 120000;
+    },
+    isRecalculating() {
+      return false;
+    },
+    percent() {
+      return this.numberOfPassingItems / this.totalCount * 100;
+    }
   }
 };
 </script>

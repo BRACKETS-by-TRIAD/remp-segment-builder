@@ -10,7 +10,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     notification: {
-      timeout: 3000,
+      timeout: 4000,
       color: 'green',
       mode: '',
       y: 'bottom',
@@ -21,6 +21,7 @@ export default new Vuex.Store({
       closeText: 'Close'
     },
     ajaxLoader: false,
+    totalCount: 0,
     tablesBlueprint: [],
     selectedTable: null,
     selectedFields: [],
@@ -161,6 +162,9 @@ export default new Vuex.Store({
     },
     setAjaxLoader(state, value) {
       state.ajaxLoader = value;
+    },
+    setTotalCount(state, value) {
+      state.totalCount = value;
     }
   },
   actions: {
@@ -175,6 +179,49 @@ export default new Vuex.Store({
             show: true,
             color: 'red',
             text: 'Error fetching blueprint'
+          });
+        });
+    },
+    fetchCounterAllTotal(context) {
+      // TODO: api is currently not supporting empty array, so we are using this workaround
+      const data = {
+        version: '1',
+        nodes: [
+          {
+            type: 'operator',
+            operator: 'OR',
+            nodes: [
+              {
+                type: 'criteria',
+                key: 'active',
+                values: {
+                  active: false
+                }
+              },
+              {
+                type: 'criteria',
+                key: 'active',
+                values: {
+                  active: true
+                }
+              }
+            ]
+          }
+        ]
+      };
+      axios
+        .post(
+          `${fromConfig.URL_COUNTER}?table_name=${context.state.selectedTable}`,
+          data
+        )
+        .then(({ data }) => {
+          context.commit('setTotalCount', data.count);
+        })
+        .catch(error => {
+          context.commit('notification', {
+            show: true,
+            color: 'red',
+            text: 'Error fetching total count'
           });
         });
     },

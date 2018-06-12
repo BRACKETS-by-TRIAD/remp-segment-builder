@@ -19,6 +19,7 @@ export default {
       },
       set(value) {
         this.$store.commit('setSelectedTable', value);
+        this.$store.dispatch('fetchCounterAllTotal');
       }
     }
   }
