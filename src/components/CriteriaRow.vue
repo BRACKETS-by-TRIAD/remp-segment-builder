@@ -5,7 +5,7 @@
         <v-card class="elevation-4">
           <v-card-actions>
             <v-spacer></v-spacer>
-            <CriteriaNot :criteriaId="criteria.id" />
+            <!-- <CriteriaNot :criteriaId="criteria.id" /> -->
             <CriteriaDelete :criteriaId="criteria.id" />
           </v-card-actions>
           <v-card-text>
