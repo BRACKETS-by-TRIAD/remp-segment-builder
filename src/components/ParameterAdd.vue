@@ -26,7 +26,6 @@ export default {
   },
   methods: {
     addParameter(parameter) {
-      console.log('adding parameter', parameter);
       this.$store.commit('addParameterToCriteria', {
         criteriaId: this.criteria.id,
         parameter
