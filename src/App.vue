@@ -20,6 +20,21 @@
               </div>
 
             </v-card-text>
+
+            <v-card-actions class="main-action-buttons">
+              <v-layout text-xs-right>
+                <v-flex>
+                  <v-btn color="normal" large>
+                    Cancel
+                  </v-btn>
+                  <v-btn color="green" dark large>
+                    <v-icon left dark>cloud_done</v-icon>
+                    Save
+                  </v-btn>
+                </v-flex>
+              </v-layout>
+            </v-card-actions>
+
           </v-card>
         </v-flex>
       </v-layout>
@@ -63,5 +78,9 @@ export default {
 .fields-picker {
   max-width: calc(100% - 164px);
   margin-left: 20px;
+}
+.main-action-buttons {
+  padding-bottom: 20px;
+  padding-right: 10px;
 }
 </style>
