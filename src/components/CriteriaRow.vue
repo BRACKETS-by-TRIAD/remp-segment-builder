@@ -67,10 +67,12 @@ export default {
   },
   watch: {
     builtCriteriaForApi(data) {
-      this.$store.dispatch('fetchCounterForSingleCriteriaPayload', {
-        data,
-        criteriaId: this.criteria.id
-      });
+      if (data) {
+        this.$store.dispatch('fetchCounterForSingleCriteriaPayload', {
+          data,
+          criteriaId: this.criteria.id
+        });
+      }
     }
   }
 };

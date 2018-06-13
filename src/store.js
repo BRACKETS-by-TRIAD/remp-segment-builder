@@ -92,11 +92,15 @@ export default new Vuex.Store({
       const key = getters.criteriaTypeById(criteriaId);
       const values = {};
       getters.parametersForSelectedCriteria(criteriaId).forEach(parameter => {
-        if (parameter.value != undefined) {
-          values[parameter.name] = parameter.value;
-        }
+        if (parameter.value == undefined) return;
+        if (Array.isArray(parameter.value) && parameter.value.length === 0)
+          return;
+
+        values[parameter.name] = parameter.value;
       });
       const nodes = [{ type: 'criteria', key, values }];
+
+      if (Object.keys(values).length === 0) return false;
 
       return {
         version: '1',
