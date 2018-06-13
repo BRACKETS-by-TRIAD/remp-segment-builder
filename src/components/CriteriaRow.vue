@@ -66,8 +66,8 @@ export default {
     }
   },
   watch: {
-    builtCriteriaForApi(data) {
-      if (data) {
+    builtCriteriaForApi(data, oldData) {
+      if (data && !(JSON.stringify(data) == JSON.stringify(oldData))) {
         this.$store.dispatch('fetchCounterForSingleCriteriaPayload', {
           data,
           criteriaId: this.criteria.id
