@@ -21,7 +21,7 @@
           </v-card-text>
         </v-card>
       </v-flex>
-      <CriteriaChart class="ml-4" />
+      <CriteriaChart class="ml-4" :criteria="criteria" />
     </v-layout>
   </v-container>
 </template>
@@ -58,6 +58,19 @@ export default {
         this.criteria.type &&
         this.$store.getters.unusedParametersForCriteria(this.criteria).length
       );
+    },
+    builtCriteriaForApi() {
+      return this.$store.getters.builtSingleCriteriaForApiCount(
+        this.criteria.id
+      );
+    }
+  },
+  watch: {
+    builtCriteriaForApi(data) {
+      this.$store.dispatch('fetchCounterForSingleCriteriaPayload', {
+        data,
+        criteriaId: this.criteria.id
+      });
     }
   }
 };

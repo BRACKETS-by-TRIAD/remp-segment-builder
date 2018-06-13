@@ -10,7 +10,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     notification: {
-      timeout: 4000,
+      timeout: 5000,
       color: 'green',
       mode: '',
       y: 'bottom',
@@ -22,6 +22,7 @@ export default new Vuex.Store({
     },
     ajaxLoader: false,
     totalCount: 0,
+    criteriaCounts: {},
     tablesBlueprint: [],
     selectedTable: null,
     selectedFields: [],
@@ -43,9 +44,9 @@ export default new Vuex.Store({
     criteriasForSelectedTable: (state, getters) => {
       return getters.selectedTable ? getters.selectedTable.criteria : [];
     },
-    parametersForSelectedCriteria: (state, getters) => id => {
+    parametersForSelectedCriteria: (state, getters) => criteriaId => {
       return state.selectedParameters.filter(
-        parameter => parameter.criteriaId === id
+        parameter => parameter.criteriaId === criteriaId
       );
     },
     allParametersForCriteriaType: (state, getters) => criteriaType => {
@@ -83,6 +84,30 @@ export default new Vuex.Store({
       return state.selectedParameters.find(
         parameter => parameter.id === parameterId
       ).value;
+    },
+    builtWholeSegmentForApi: (state, getters) => {
+      // TODO:
+    },
+    builtSingleCriteriaForApiCount: (state, getters) => criteriaId => {
+      const key = getters.criteriaTypeById(criteriaId);
+      const values = {};
+      getters.parametersForSelectedCriteria(criteriaId).forEach(parameter => {
+        if (parameter.value != undefined) {
+          values[parameter.name] = parameter.value;
+        }
+      });
+      const nodes = [{ type: 'criteria', key, values }];
+
+      return {
+        version: '1',
+        nodes: [
+          {
+            type: 'operator',
+            operator: 'AND',
+            nodes
+          }
+        ]
+      };
     }
   },
   mutations: {
@@ -121,6 +146,9 @@ export default new Vuex.Store({
         }
         return criteria;
       });
+    },
+    setCriteriaCount(state, { criteriaId, count }) {
+      state.criteriaCounts = { ...state.criteriaCounts, [criteriaId]: count };
     },
     addParameterToCriteria(state, { criteriaId, parameter }) {
       state.selectedParameters.push({ id: uuid(), criteriaId, ...parameter });
@@ -223,6 +251,24 @@ export default new Vuex.Store({
             color: 'red',
             text: 'Error fetching total count'
           });
+        });
+    },
+    fetchCounterForSingleCriteriaPayload(context, { data, criteriaId }) {
+      axios
+        .post(
+          `${fromConfig.URL_COUNTER}?table_name=${context.state.selectedTable}`,
+          data
+        )
+        .then(({ data }) => {
+          context.commit('setCriteriaCount', { criteriaId, count: data.count });
+        })
+        .catch(error => {
+          context.commit('notification', {
+            show: true,
+            color: 'red',
+            text: 'Error counting segment'
+          });
+          context.commit('setCriteriaCount', { criteriaId, count: false });
         });
     },
     setCriteriaType(context, payload) {
