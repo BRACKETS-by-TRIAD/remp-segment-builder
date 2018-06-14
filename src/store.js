@@ -215,31 +215,9 @@ export default new Vuex.Store({
         });
     },
     fetchCounterAllTotal(context) {
-      // TODO: api is currently not supporting empty array, so we are using this workaround
       const data = {
         version: '1',
-        nodes: [
-          {
-            type: 'operator',
-            operator: 'OR',
-            nodes: [
-              {
-                type: 'criteria',
-                key: 'active',
-                values: {
-                  active: false
-                }
-              },
-              {
-                type: 'criteria',
-                key: 'active',
-                values: {
-                  active: true
-                }
-              }
-            ]
-          }
-        ]
+        nodes: []
       };
       axios
         .post(
