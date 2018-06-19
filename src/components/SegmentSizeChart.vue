@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="numberOfPassingItems">
+  <v-container v-if="numberOfPassingItems !== false">
     <v-layout>
       <v-flex>
         <div class="segment-size-wrapper">

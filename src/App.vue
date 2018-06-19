@@ -21,6 +21,8 @@
 
               <SegmentSizeChart />
 
+              <SuggestedSegments />
+
             </v-card-text>
 
             <v-card-actions class="main-action-buttons">
@@ -55,6 +57,7 @@ import FieldsPicker from './components/FieldsPicker';
 import CriteriaRow from './components/CriteriaRow';
 import CriteriaAdd from './components/CriteriaAdd';
 import SegmentSizeChart from './components/SegmentSizeChart';
+import SuggestedSegments from './components/SuggestedSegments';
 import Notification from './components/Notification';
 import AjaxLoader from './components/AjaxLoader';
 
@@ -66,6 +69,7 @@ export default {
     CriteriaRow,
     CriteriaAdd,
     SegmentSizeChart,
+    SuggestedSegments,
     Notification,
     AjaxLoader
   },

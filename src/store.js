@@ -23,12 +23,13 @@ export default new Vuex.Store({
     ajaxLoader: false,
     totalCount: 0,
     criteriaCounts: {},
-    segmentCount: 0,
+    segmentCount: false,
     tablesBlueprint: [],
     selectedTable: null,
     selectedFields: [],
     selectedCriterias: [],
-    selectedParameters: []
+    selectedParameters: [],
+    suggestedSegments: []
   },
   getters: {
     tableNames: state => {
@@ -231,6 +232,9 @@ export default new Vuex.Store({
     },
     setTotalCount(state, value) {
       state.totalCount = value;
+    },
+    setSuggestedSegments(state, { suggestions }) {
+      state.suggestedSegments = suggestions;
     }
   },
   actions: {
@@ -305,6 +309,41 @@ export default new Vuex.Store({
           });
           const count = false;
           context.commit('setSegmentCount', { count });
+        });
+    },
+    fetchSuggestedSegments(context, { data }) {
+      axios
+        .post(`${fromConfig.URL_SUGGESTIONS}`, data)
+        .then(({ data }) => {
+          const suggestions = data.suggestions;
+
+          context.commit('setSuggestedSegments', { suggestions });
+        })
+        .catch(error => {
+          // context.commit('notification', {
+          //   show: true,
+          //   color: 'red',
+          //   text: 'Error fetching suggestions'
+          // });
+          // TODO: this is just for demo purposes, until the backend is finished
+          const suggestions = [
+            {
+              id: 1,
+              name: 'First suggested segment',
+              url: 'https://www.google.com/'
+            },
+            {
+              id: 2,
+              name: 'Second suggested segment',
+              url: 'https://www.google.com/'
+            },
+            {
+              id: 3,
+              name: 'Third suggested segment',
+              url: 'https://www.google.com/'
+            }
+          ];
+          context.commit('setSuggestedSegments', { suggestions });
         });
     },
     setCriteriaType(context, payload) {
