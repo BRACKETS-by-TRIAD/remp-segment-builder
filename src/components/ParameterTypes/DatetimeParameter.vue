@@ -70,11 +70,11 @@ export default {
   created() {
     const value = this.$store.getters.parameterValueById(this.parameter.id);
     if (value && value[0]) {
-      this.date1 = value[0].date;
+      this.date1 = value[0].value;
       this.selectedOperator1 = value[0].operator;
     }
     if (value && value[1]) {
-      this.date2 = value[1].date;
+      this.date2 = value[1].value;
       this.selectedOperator2 = value[1].operator;
     }
   },
@@ -85,13 +85,13 @@ export default {
       if (this.selectedOperator1 && this.date1) {
         parameterValue[0] = {
           operator: this.selectedOperator1,
-          date: this.date1
+          value: this.date1
         };
       }
       if (this.selectedOperator2 && this.date2) {
         parameterValue[1] = {
           operator: this.selectedOperator2,
-          date: this.date2
+          value: this.date2
         };
       }
       return this.$store.commit('setParameterValue', {

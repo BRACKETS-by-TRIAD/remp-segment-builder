@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="numberOfPassingItems">
     <v-layout>
       <v-flex>
         <div class="segment-size-wrapper">
@@ -26,21 +26,26 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'SegmentSizeChart',
-  data() {
-    return {
-      numberOfPassingItems: 98500
-    };
-  },
   computed: {
     ...mapState(['totalCount']),
-    // numberOfPassingItems() {
-    //   return this.$store.state.criteriaCounts[this.criteria.id];
-    // },
+    numberOfPassingItems() {
+      return this.$store.state.segmentCount;
+    },
     isRecalculating() {
       return false;
     },
     percent() {
       return this.numberOfPassingItems / this.totalCount * 100;
+    },
+    builtWholeSegmentForApi() {
+      return this.$store.getters.builtWholeSegmentForApi;
+    }
+  },
+  watch: {
+    builtWholeSegmentForApi(data, oldData) {
+      if (data && !(JSON.stringify(data) == JSON.stringify(oldData))) {
+        this.$store.dispatch('fetchCounterForWholeSegment', { data });
+      }
     }
   }
 };

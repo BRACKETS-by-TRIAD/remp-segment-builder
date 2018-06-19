@@ -23,6 +23,7 @@ export default new Vuex.Store({
     ajaxLoader: false,
     totalCount: 0,
     criteriaCounts: {},
+    segmentCount: 0,
     tablesBlueprint: [],
     selectedTable: null,
     selectedFields: [],
@@ -86,32 +87,62 @@ export default new Vuex.Store({
       ).value;
     },
     builtWholeSegmentForApi: (state, getters) => {
-      // TODO:
+      const nodes = [];
+      try {
+        state.selectedCriterias.forEach(criteria => {
+          nodes.push(getters.builtNodeForCriteria(criteria.id));
+        });
+      } catch (error) {
+        return false;
+      }
+
+      return {
+        version: '1',
+        nodes: [{ type: 'operator', operator: 'AND', nodes }]
+      };
     },
     builtSingleCriteriaForApiCount: (state, getters) => criteriaId => {
+      const nodes = [];
+      try {
+        nodes.push(getters.builtNodeForCriteria(criteriaId));
+      } catch (error) {
+        return false;
+      }
+
+      return {
+        version: '1',
+        nodes: [{ type: 'operator', operator: 'AND', nodes }]
+      };
+    },
+    builtNodeForCriteria: (state, getters) => criteriaId => {
       const key = getters.criteriaTypeById(criteriaId);
       const values = {};
+
       getters.parametersForSelectedCriteria(criteriaId).forEach(parameter => {
         if (parameter.value == undefined) return;
         if (Array.isArray(parameter.value) && parameter.value.length === 0)
           return;
 
-        values[parameter.name] = parameter.value;
+        if (['number', 'number_array', 'datetime'].includes(parameter.type)) {
+          values[parameter.name] = {};
+          parameter.value.forEach(item => {
+            values[parameter.name][item.operator] = item.value;
+          });
+        } else if (parameter.type === 'interval') {
+          values[parameter.name] = {
+            [parameter.value.operator]: `${parameter.value.amount} ${
+              parameter.value.timeframe
+            }`
+          };
+        } else {
+          values[parameter.name] = parameter.value;
+        }
       });
-      const nodes = [{ type: 'criteria', key, values }];
 
-      if (Object.keys(values).length === 0) return false;
+      if (Object.keys(values).length === 0) throw false;
 
-      return {
-        version: '1',
-        nodes: [
-          {
-            type: 'operator',
-            operator: 'AND',
-            nodes
-          }
-        ]
-      };
+      const node = { type: 'criteria', key, values };
+      return node;
     }
   },
   mutations: {
@@ -153,6 +184,9 @@ export default new Vuex.Store({
     },
     setCriteriaCount(state, { criteriaId, count }) {
       state.criteriaCounts = { ...state.criteriaCounts, [criteriaId]: count };
+    },
+    setSegmentCount(state, { count }) {
+      state.segmentCount = count;
     },
     addParameterToCriteria(state, { criteriaId, parameter }) {
       state.selectedParameters.push({ id: uuid(), criteriaId, ...parameter });
@@ -248,9 +282,29 @@ export default new Vuex.Store({
           context.commit('notification', {
             show: true,
             color: 'red',
-            text: 'Error counting segment'
+            text: 'Error counting criteria'
           });
           context.commit('setCriteriaCount', { criteriaId, count: false });
+        });
+    },
+    fetchCounterForWholeSegment(context, { data }) {
+      axios
+        .post(
+          `${fromConfig.URL_COUNTER}?table_name=${context.state.selectedTable}`,
+          data
+        )
+        .then(({ data }) => {
+          const count = data.count;
+          context.commit('setSegmentCount', { count });
+        })
+        .catch(error => {
+          context.commit('notification', {
+            show: true,
+            color: 'red',
+            text: 'Error counting whole segment'
+          });
+          const count = false;
+          context.commit('setSegmentCount', { count });
         });
     },
     setCriteriaType(context, payload) {
@@ -258,6 +312,6 @@ export default new Vuex.Store({
       context.commit('removeParametersForCriteria', payload.id);
       context.commit('setRequiredParametersForCriteria', payload);
     }
-  },
-  plugins: [createLogger()]
+  }
+  // plugins: [createLogger()]
 });

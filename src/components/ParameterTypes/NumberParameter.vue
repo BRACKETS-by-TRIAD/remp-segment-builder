@@ -47,11 +47,11 @@ export default {
   created() {
     const value = this.$store.getters.parameterValueById(this.parameter.id);
     if (value && value[0]) {
-      this.number1 = value[0].number;
+      this.number1 = value[0].value;
       this.selectedOperator1 = value[0].operator;
     }
     if (value && value[1]) {
-      this.number2 = value[1].number;
+      this.number2 = value[1].value;
       this.selectedOperator2 = value[1].operator;
     }
   },
@@ -62,13 +62,13 @@ export default {
       if (this.selectedOperator1 && this.number1) {
         parameterValue[0] = {
           operator: this.selectedOperator1,
-          number: this.number1
+          value: this.number1
         };
       }
       if (this.selectedOperator2 && this.number2) {
         parameterValue[1] = {
           operator: this.selectedOperator2,
-          number: this.number2
+          value: this.number2
         };
       }
       return this.$store.commit('setParameterValue', {
