@@ -11,6 +11,7 @@
             <span>
               ({{ numberOfPassingItems | currency('', 0, { thousandsSeparator: ' ' }) }})
             </span>
+            <v-progress-circular class="segment-size-loading" indeterminate color="primary" v-if="segmentCountLoading" :size="20" :width="3"></v-progress-circular>
           </h2>
           <div>
             <v-progress-linear :value="percent ? percent : 0" :height="9" :indeterminate="isRecalculating" color="primary" />
@@ -27,7 +28,7 @@ import { mapState } from 'vuex';
 export default {
   name: 'SegmentSizeChart',
   computed: {
-    ...mapState(['totalCount']),
+    ...mapState(['totalCount', 'segmentCountLoading']),
     numberOfPassingItems() {
       return this.$store.state.segmentCount;
     },
@@ -57,6 +58,7 @@ export default {
   margin-top: 30px;
 }
 .title {
+  position: relative;
   font-size: 16px !important;
   visibility: hidden;
   &.visible {
@@ -65,6 +67,11 @@ export default {
 }
 .percent {
   font-weight: 700;
+}
+.segment-size-loading {
+  position: absolute;
+  bottom: -3px;
+  margin-left: 15px;
 }
 </style>
 

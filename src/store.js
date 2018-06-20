@@ -23,13 +23,16 @@ export default new Vuex.Store({
     ajaxLoader: false,
     totalCount: 0,
     criteriaCounts: {},
+    criteriaCountsLoading: [],
     segmentCount: false,
+    segmentCountLoading: false,
     tablesBlueprint: [],
     selectedTable: null,
     selectedFields: [],
     selectedCriterias: [],
     selectedParameters: [],
-    suggestedSegments: []
+    suggestedSegments: [],
+    suggestedSegmentsLoading: false
   },
   getters: {
     tableNames: state => {
@@ -186,8 +189,19 @@ export default new Vuex.Store({
     setCriteriaCount(state, { criteriaId, count }) {
       state.criteriaCounts = { ...state.criteriaCounts, [criteriaId]: count };
     },
+    setCriteriaCountsLoading(state, criteriaId) {
+      state.criteriaCountsLoading.push(criteriaId);
+    },
+    unsetCriteriaCountsLoading(state, { criteriaId }) {
+      state.criteriaCountsLoading = state.criteriaCountsLoading.filter(
+        criteria => criteria.id !== criteriaId
+      );
+    },
     setSegmentCount(state, { count }) {
       state.segmentCount = count;
+    },
+    setSegmentCountLoading(state, loading) {
+      state.segmentCountLoading = loading;
     },
     addParameterToCriteria(state, { criteriaId, parameter }) {
       state.selectedParameters.push({ id: uuid(), criteriaId, ...parameter });
@@ -235,16 +249,22 @@ export default new Vuex.Store({
     },
     setSuggestedSegments(state, { suggestions }) {
       state.suggestedSegments = suggestions;
+    },
+    setSuggestedSegmentsLoading(state, loading) {
+      state.suggestedSegmentsLoading = loading;
     }
   },
   actions: {
     fetchTablesBlueprint(context) {
+      context.commit('setAjaxLoader', true);
       axios
         .get(fromConfig.URL_TABLES_BLUEPRINT)
         .then(({ data }) => {
+          context.commit('setAjaxLoader', false);
           context.commit('setTablesBlueprint', data.blueprint);
         })
         .catch(error => {
+          context.commit('setAjaxLoader', false);
           context.commit('notification', {
             show: true,
             color: 'red',
@@ -253,6 +273,7 @@ export default new Vuex.Store({
         });
     },
     fetchCounterAllTotal(context) {
+      context.commit('setAjaxLoader', true);
       const data = {
         version: '1',
         nodes: []
@@ -263,9 +284,11 @@ export default new Vuex.Store({
           data
         )
         .then(({ data }) => {
+          context.commit('setAjaxLoader', false);
           context.commit('setTotalCount', data.count);
         })
         .catch(error => {
+          context.commit('setAjaxLoader', false);
           context.commit('notification', {
             show: true,
             color: 'red',
@@ -274,6 +297,7 @@ export default new Vuex.Store({
         });
     },
     fetchCounterForSingleCriteriaPayload(context, { data, criteriaId }) {
+      context.commit('setCriteriaCountsLoading', criteriaId);
       axios
         .post(
           `${fromConfig.URL_COUNTER}?table_name=${context.state.selectedTable}`,
@@ -281,6 +305,7 @@ export default new Vuex.Store({
         )
         .then(({ data }) => {
           context.commit('setCriteriaCount', { criteriaId, count: data.count });
+          context.commit('unsetCriteriaCountsLoading', criteriaId);
         })
         .catch(error => {
           context.commit('notification', {
@@ -289,9 +314,11 @@ export default new Vuex.Store({
             text: 'Error counting criteria'
           });
           context.commit('setCriteriaCount', { criteriaId, count: false });
+          context.commit('unsetCriteriaCountsLoading', criteriaId);
         });
     },
     fetchCounterForWholeSegment(context, { data }) {
+      context.commit('setSegmentCountLoading', true);
       axios
         .post(
           `${fromConfig.URL_COUNTER}?table_name=${context.state.selectedTable}`,
@@ -300,6 +327,7 @@ export default new Vuex.Store({
         .then(({ data }) => {
           const count = data.count;
           context.commit('setSegmentCount', { count });
+          context.commit('setSegmentCountLoading', false);
         })
         .catch(error => {
           context.commit('notification', {
@@ -309,15 +337,18 @@ export default new Vuex.Store({
           });
           const count = false;
           context.commit('setSegmentCount', { count });
+          context.commit('setSegmentCountLoading', false);
         });
     },
     fetchSuggestedSegments(context, { data }) {
+      context.commit('setSuggestedSegmentsLoading', true);
       axios
         .post(`${fromConfig.URL_SUGGESTIONS}`, data)
         .then(({ data }) => {
           const suggestions = data.suggestions;
 
           context.commit('setSuggestedSegments', { suggestions });
+          context.commit('setSuggestedSegmentsLoading', false);
         })
         .catch(error => {
           // context.commit('notification', {
@@ -344,6 +375,7 @@ export default new Vuex.Store({
             }
           ];
           context.commit('setSuggestedSegments', { suggestions });
+          context.commit('setSuggestedSegmentsLoading', false);
         });
     },
     setCriteriaType(context, payload) {

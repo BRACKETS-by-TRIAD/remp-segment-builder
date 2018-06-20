@@ -5,7 +5,7 @@
         {{ percent | currency('%', 1, {symbolOnLeft: false}) }}
       </span>
     </v-progress-circular>
-    <span v-if="!isRecalculating" class="graph-number grey--text text--darken-3">{{ numberOfPassingItems | currency('', 0, { thousandsSeparator: ' ' }) }}</span>
+    <span class="graph-number grey--text text--darken-3" :class="{visible: !isRecalculating}">{{ numberOfPassingItems | currency('', 0, { thousandsSeparator: ' ' }) }}</span>
   </div>
 
 </template>
@@ -24,7 +24,9 @@ export default {
       return this.$store.state.criteriaCounts[this.criteria.id];
     },
     isRecalculating() {
-      return false;
+      return this.$store.state.criteriaCountsLoading.some(
+        criteriaId => criteriaId === this.criteria.id
+      );
     },
     percent() {
       return this.numberOfPassingItems / this.totalCount * 100;
@@ -33,7 +35,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .graph-percent {
   font-weight: 500;
 }
@@ -41,6 +43,10 @@ export default {
   display: block;
   text-align: center;
   font-weight: 500;
+  visibility: hidden;
+  &.visible {
+    visibility: visible;
+  }
 }
 </style>
 
