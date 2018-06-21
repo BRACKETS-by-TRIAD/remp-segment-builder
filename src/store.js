@@ -32,7 +32,8 @@ export default new Vuex.Store({
     selectedCriterias: [],
     selectedParameters: [],
     suggestedSegments: [],
-    suggestedSegmentsLoading: false
+    suggestedSegmentsLoading: false,
+    savingSegmentLoading: false
   },
   getters: {
     tableNames: state => {
@@ -252,6 +253,9 @@ export default new Vuex.Store({
     },
     setSuggestedSegmentsLoading(state, loading) {
       state.suggestedSegmentsLoading = loading;
+    },
+    setSavingSegmentLoading(state, loading) {
+      state.savingSegmentLoading = loading;
     }
   },
   actions: {
@@ -376,6 +380,36 @@ export default new Vuex.Store({
           ];
           context.commit('setSuggestedSegments', { suggestions });
           context.commit('setSuggestedSegmentsLoading', false);
+        });
+    },
+    saveSegment(context) {
+      context.commit('setSavingSegmentLoading', true);
+      const criteria = context.getters.builtWholeSegmentForApi;
+      const data = {
+        name: 'test_1',
+        table_name: context.state.selectedTable,
+        fields: context.state.selectedFields,
+        group_id: fromConfig.GROUP_ID,
+        code: 'test_1',
+        criteria
+      };
+      axios
+        .post(`${fromConfig.URL_POST_PAYLOAD}`, data)
+        .then(response => {
+          context.commit('notification', {
+            show: true,
+            color: 'green',
+            text: 'Segment successfully saved'
+          });
+          context.commit('setSavingSegmentLoading', false);
+        })
+        .catch(error => {
+          context.commit('notification', {
+            show: true,
+            color: 'red',
+            text: 'Error saving segment'
+          });
+          context.commit('setSavingSegmentLoading', false);
         });
     },
     setCriteriaType(context, payload) {

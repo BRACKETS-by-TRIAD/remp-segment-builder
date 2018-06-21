@@ -3,7 +3,7 @@
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
         <v-flex xs12 sm10 md8>
-          <v-card class="elevation-12">
+          <v-card class="elevation-12" :class="{unclickable: savingSegmentLoading}">
             <v-toolbar dark color="primary">
               <v-toolbar-title>Select table to make a segment:</v-toolbar-title>
               <v-spacer></v-spacer>
@@ -31,7 +31,7 @@
                   <v-btn color="normal" large>
                     Cancel
                   </v-btn>
-                  <v-btn color="green" dark large>
+                  <v-btn color="green" dark large @click="saveSegment" :loading="savingSegmentLoading">
                     <v-icon left dark>cloud_done</v-icon>
                     Save
                   </v-btn>
@@ -77,12 +77,20 @@ export default {
     this.$store.dispatch('fetchTablesBlueprint');
   },
   computed: {
-    ...mapState(['selectedCriterias'])
+    ...mapState(['selectedCriterias', 'savingSegmentLoading'])
+  },
+  methods: {
+    saveSegment() {
+      this.$store.dispatch('saveSegment');
+    }
   }
 };
 </script>
 
 <style>
+.unclickable {
+  pointer-events: none;
+}
 .fields-picker {
   max-width: calc(100% - 164px);
   margin-left: 20px;
