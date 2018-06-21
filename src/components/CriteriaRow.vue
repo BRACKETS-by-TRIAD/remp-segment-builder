@@ -47,6 +47,11 @@ export default {
     ParameterAdd,
     CriteriaChart
   },
+  created() {
+    if (this.builtCriteriaForApi) {
+      this.fetchCount(this.builtCriteriaForApi);
+    }
+  },
   computed: {
     parameters() {
       return this.$store.getters.parametersForSelectedCriteria(
@@ -68,11 +73,16 @@ export default {
   watch: {
     builtCriteriaForApi(data, oldData) {
       if (data && !(JSON.stringify(data) == JSON.stringify(oldData))) {
-        this.$store.dispatch('fetchCounterForSingleCriteriaPayload', {
-          data,
-          criteriaId: this.criteria.id
-        });
+        this.fetchCount(data);
       }
+    }
+  },
+  methods: {
+    fetchCount(data) {
+      this.$store.dispatch('fetchCounterForSingleCriteriaPayload', {
+        criteriaId: this.criteria.id,
+        data
+      });
     }
   }
 };

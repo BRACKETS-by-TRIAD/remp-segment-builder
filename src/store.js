@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import axios from 'axios';
 import createLogger from 'vuex/dist/logger';
 import uuid from 'uuid/v1';
+import qs from 'qs';
 import * as fromConfig from './config';
 
 Vue.use(Vuex);
@@ -59,6 +60,14 @@ export default new Vuex.Store({
       return getters.criteriasForSelectedTable.find(
         criteria => criteria.key === criteriaType
       ).params;
+    },
+    specificParameterForCriteriaType: (state, getters) => ({
+      criteriaType,
+      parameterType
+    }) => {
+      return getters.criteriasForSelectedTable.find(
+        criteria => criteria.key === criteriaType
+      ).params[parameterType];
     },
     criteriaTypeById: (state, getters) => id => {
       return state.selectedCriterias.find(criteria => criteria.id === id).type;
@@ -166,8 +175,11 @@ export default new Vuex.Store({
     setSelectedFields(state, selectedFields) {
       state.selectedFields = selectedFields;
     },
-    addCriteria(state) {
+    addEmptyCriteria(state) {
       state.selectedCriterias.push({ id: uuid() });
+    },
+    addCriteria(state, { id, type }) {
+      state.selectedCriterias.push({ id, type });
     },
     removeCriteria(state, criteriaId) {
       state.selectedCriterias = state.selectedCriterias.filter(
@@ -264,8 +276,11 @@ export default new Vuex.Store({
       axios
         .get(fromConfig.URL_TABLES_BLUEPRINT)
         .then(({ data }) => {
-          context.commit('setAjaxLoader', false);
           context.commit('setTablesBlueprint', data.blueprint);
+          context.commit('setAjaxLoader', false);
+          if (fromConfig.SEGMENT_ID) {
+            context.dispatch('fetchSegment');
+          }
         })
         .catch(error => {
           context.commit('setAjaxLoader', false);
@@ -382,22 +397,68 @@ export default new Vuex.Store({
           context.commit('setSuggestedSegmentsLoading', false);
         });
     },
+    fetchSegment(context) {
+      context.commit('setAjaxLoader', true);
+      axios
+        .get(`${fromConfig.URL_GET_PAYLOAD}?id=${fromConfig.SEGMENT_ID}`)
+        .then(({ data }) => {
+          context.dispatch('buildSegmentFromApiPayload', data.segment);
+          context.commit('setAjaxLoader', false);
+        })
+        .catch(error => {
+          console.log(error);
+          context.commit('notification', {
+            show: true,
+            color: 'red',
+            text: 'Error fetching segment'
+          });
+          context.commit('setAjaxLoader', true);
+        });
+    },
+    buildSegmentFromApiPayload(context, payload) {
+      context.commit('setSelectedTable', payload.table_name);
+      context.commit('setSelectedFields', payload.fields.split(','));
+      payload.criteria;
+
+      payload.criteria.nodes.forEach(node => {
+        node.nodes.forEach(node => {
+          const criteriaId = uuid();
+          context.commit('addCriteria', { id: criteriaId, type: node.key });
+          node.value;
+          Object.keys(node.values).forEach(parameterType => {
+            const parameter = {
+              ...context.getters.specificParameterForCriteriaType({
+                criteriaType: node.key,
+                parameterType
+              }),
+              name: parameterType,
+              value: node.values[parameterType] // TODO: refactor to work with _array, date, interval
+            };
+
+            context.commit('addParameterToCriteria', {
+              criteriaId,
+              parameter
+            });
+          });
+        });
+      });
+    },
     saveSegment(context) {
       context.commit('setSavingSegmentLoading', true);
       const data = {
         name: 'test_1',
         table_name: context.state.selectedTable,
-        // fields: context.state.selectedFields,
         fields: 'users.id',
+        // fields: context.state.selectedFields.join(),
         group_id: fromConfig.GROUP_ID,
         code: 'test_1',
-        criteria: context.getters.builtWholeSegmentForApi
+        criteria: JSON.stringify(context.getters.builtWholeSegmentForApi)
       };
       const url = fromConfig.SEGMENT_ID
         ? `${fromConfig.URL_POST_PAYLOAD}?id=${fromConfig.SEGMENT_ID}`
         : fromConfig.URL_POST_PAYLOAD;
       axios
-        .post(url, data)
+        .post(url, qs.stringify(data))
         .then(response => {
           context.commit('notification', {
             show: true,
