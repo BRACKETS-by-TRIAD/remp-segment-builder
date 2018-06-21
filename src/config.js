@@ -10,3 +10,4 @@ export const URL_COUNTER =
   'https://predplatne.dennikn.sk/api/v1/segments/counts';
 export const URL_SUGGESTIONS = null;
 export const GROUP_ID = 7;
+export const SEGMENT_ID = null;

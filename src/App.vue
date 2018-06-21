@@ -33,7 +33,7 @@
                   </v-btn>
                   <v-btn color="green" dark large @click="saveSegment" :loading="savingSegmentLoading">
                     <v-icon left dark>cloud_done</v-icon>
-                    Save
+                    {{ segmentID ? 'Update' : 'Save' }}
                   </v-btn>
                 </v-flex>
               </v-layout>
@@ -60,6 +60,7 @@ import SegmentSizeChart from './components/SegmentSizeChart';
 import SuggestedSegments from './components/SuggestedSegments';
 import Notification from './components/Notification';
 import AjaxLoader from './components/AjaxLoader';
+import * as fromConfig from './config.js';
 
 export default {
   name: 'app',
@@ -75,6 +76,11 @@ export default {
   },
   created() {
     this.$store.dispatch('fetchTablesBlueprint');
+  },
+  data() {
+    return {
+      segmentID: fromConfig.SEGMENT_ID
+    };
   },
   computed: {
     ...mapState(['selectedCriterias', 'savingSegmentLoading'])

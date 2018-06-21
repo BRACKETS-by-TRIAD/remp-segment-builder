@@ -384,17 +384,20 @@ export default new Vuex.Store({
     },
     saveSegment(context) {
       context.commit('setSavingSegmentLoading', true);
-      const criteria = context.getters.builtWholeSegmentForApi;
       const data = {
         name: 'test_1',
         table_name: context.state.selectedTable,
-        fields: context.state.selectedFields,
+        // fields: context.state.selectedFields,
+        fields: 'users.id',
         group_id: fromConfig.GROUP_ID,
         code: 'test_1',
-        criteria
+        criteria: context.getters.builtWholeSegmentForApi
       };
+      const url = fromConfig.SEGMENT_ID
+        ? `${fromConfig.URL_POST_PAYLOAD}?id=${fromConfig.SEGMENT_ID}`
+        : fromConfig.URL_POST_PAYLOAD;
       axios
-        .post(`${fromConfig.URL_POST_PAYLOAD}`, data)
+        .post(url, data)
         .then(response => {
           context.commit('notification', {
             show: true,
