@@ -431,9 +431,20 @@ export default new Vuex.Store({
                 criteriaType: node.key,
                 parameterType
               }),
-              name: parameterType,
-              value: node.values[parameterType] // TODO: refactor to work with _array, date, interval
+              name: parameterType
             };
+            if (
+              ['number', 'number_array', 'datetime'].includes(parameter.type)
+            ) {
+              const payloadValue = node.values[parameterType];
+              parameter.value = Object.keys(payloadValue).map(valueKey => {
+                return { operator: valueKey, value: payloadValue[valueKey] };
+              });
+            } else if (parameter.type === 'interval') {
+              // TODO: finish when interval backend is ready
+            } else {
+              parameter.value = node.values[parameterType];
+            }
 
             context.commit('addParameterToCriteria', {
               criteriaId,
