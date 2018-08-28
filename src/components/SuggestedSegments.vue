@@ -23,12 +23,12 @@ export default {
   name: 'SuggestedSegments',
   computed: {
     ...mapState(['suggestedSegments', 'suggestedSegmentsLoading']),
-    builtWholeSegmentForApi() {
-      return this.$store.getters.builtWholeSegmentForApi;
+    builtWholeSegmentForSuggestion() {
+      return this.$store.getters.builtWholeSegmentForSuggestion;
     }
   },
   watch: {
-    builtWholeSegmentForApi(data, oldData) {
+    builtWholeSegmentForSuggestion(data, oldData) {
       if (data && !(JSON.stringify(data) == JSON.stringify(oldData))) {
         this.$store.dispatch('fetchSuggestedSegments', { data });
       }

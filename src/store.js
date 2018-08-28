@@ -72,6 +72,10 @@ export default new Vuex.Store({
     criteriaTypeById: (state, getters) => id => {
       return state.selectedCriterias.find(criteria => criteria.id === id).type;
     },
+    criteriaNegationById: (state, getters) => id => {
+      return state.selectedCriterias.find(criteria => criteria.id === id)
+        .negation;
+    },
     unusedParametersForCriteria: (state, getters) => criteria => {
       const allParametersForCriteriaType = getters.allParametersForCriteriaType(
         criteria.type
@@ -100,6 +104,7 @@ export default new Vuex.Store({
         parameter => parameter.id === parameterId
       ).value;
     },
+    // TODO: ask to merge to unified request count api and save segment and count segment
     builtWholeSegmentForApi: (state, getters) => {
       const nodes = [];
       try {
@@ -111,8 +116,30 @@ export default new Vuex.Store({
       }
 
       return {
-        version: '1',
-        nodes: [{ type: 'operator', operator: 'AND', nodes }]
+        table_name: state.selectedTable,
+        fields: state.selectedFields,
+        criteria: {
+          version: '1',
+          nodes: [{ type: 'operator', operator: 'AND', nodes }]
+        }
+      };
+    },
+    builtWholeSegmentForSuggestion: (state, getters) => {
+      const nodes = [];
+      try {
+        state.selectedCriterias.forEach(criteria => {
+          nodes.push(getters.builtNodeForCriteria(criteria.id));
+        });
+      } catch (error) {
+        return false;
+      }
+
+      return {
+        table_name: state.selectedTable,
+        criteria: {
+          version: 1,
+          nodes: [{ type: 'operator', operator: 'AND', nodes }]
+        }
       };
     },
     builtSingleCriteriaForApiCount: (state, getters) => criteriaId => {
@@ -209,6 +236,14 @@ export default new Vuex.Store({
       state.criteriaCountsLoading = state.criteriaCountsLoading.filter(
         criteria => criteria.id !== criteriaId
       );
+    },
+    setCriteriaNegation(state, { id, negation }) {
+      state.selectedCriterias = state.selectedCriterias.map(criteria => {
+        if (criteria.id == id) {
+          return { ...criteria, negation };
+        }
+        return criteria;
+      });
     },
     setSegmentCount(state, { count }) {
       state.segmentCount = count;
@@ -364,37 +399,19 @@ export default new Vuex.Store({
       axios
         .post(`${fromConfig.URL_SUGGESTIONS}`, data)
         .then(({ data }) => {
-          const suggestions = data.suggestions;
+          const suggestions = data.segments;
 
           context.commit('setSuggestedSegments', { suggestions });
           context.commit('setSuggestedSegmentsLoading', false);
         })
         .catch(error => {
-          // context.commit('notification', {
-          //   show: true,
-          //   color: 'red',
-          //   text: 'Error fetching suggestions'
-          // });
-          // TODO: this is just for demo purposes, until the backend is finished
-          const suggestions = [
-            {
-              id: 1,
-              name: 'First suggested segment',
-              url: 'https://www.google.com/'
-            },
-            {
-              id: 2,
-              name: 'Second suggested segment',
-              url: 'https://www.google.com/'
-            },
-            {
-              id: 3,
-              name: 'Third suggested segment',
-              url: 'https://www.google.com/'
-            }
-          ];
-          context.commit('setSuggestedSegments', { suggestions });
           context.commit('setSuggestedSegmentsLoading', false);
+          context.commit('notification', {
+            show: true,
+            color: 'red',
+            text: 'Error fetching suggestions'
+          });
+          context.commit('setSuggestedSegments', { suggestions: [] });
         });
     },
     fetchSegment(context) {
@@ -457,19 +474,15 @@ export default new Vuex.Store({
     saveSegment(context) {
       context.commit('setSavingSegmentLoading', true);
       const data = {
-        name: 'test_1',
-        table_name: context.state.selectedTable,
-        fields: 'users.id',
-        // fields: context.state.selectedFields.join(),
+        name: 'test_101',
         group_id: fromConfig.GROUP_ID,
-        code: 'test_1',
-        criteria: JSON.stringify(context.getters.builtWholeSegmentForApi)
+        ...context.getters.builtWholeSegmentForApi
       };
       const url = fromConfig.SEGMENT_ID
         ? `${fromConfig.URL_POST_PAYLOAD}?id=${fromConfig.SEGMENT_ID}`
         : fromConfig.URL_POST_PAYLOAD;
       axios
-        .post(url, qs.stringify(data))
+        .post(url, data)
         .then(response => {
           context.commit('notification', {
             show: true,

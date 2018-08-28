@@ -5,7 +5,7 @@
         <v-card class="elevation-4">
           <v-card-actions>
             <v-spacer></v-spacer>
-            <!-- <CriteriaNot :criteriaId="criteria.id" /> -->
+            <CriteriaNot :criteriaId="criteria.id" />
             <CriteriaDelete :criteriaId="criteria.id" />
           </v-card-actions>
           <v-card-text>
@@ -87,3 +87,16 @@ export default {
   }
 };
 </script>
+
+
+
+<style>
+/* .elevation-4.card:before {
+  content: 'not_interested';
+  font-family: Material Icons;
+  position: absolute;
+  font-size: 160px;
+  line-height: 160px;
+  color: #0000000d;
+} */
+</style>
