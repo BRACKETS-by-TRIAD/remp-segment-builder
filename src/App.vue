@@ -31,10 +31,11 @@
                   <v-btn color="normal" large>
                     Cancel
                   </v-btn>
-                  <v-btn color="green" dark large @click="saveSegment" :loading="savingSegmentLoading">
+                  <SaveButton />
+                  <!-- <v-btn color="green" dark large @click="saveSegment" :loading="savingSegmentLoading">
                     <v-icon left dark>cloud_done</v-icon>
                     {{ segmentID ? 'Update' : 'Save' }}
-                  </v-btn>
+                  </v-btn> -->
                 </v-flex>
               </v-layout>
             </v-card-actions>
@@ -60,6 +61,7 @@ import SegmentSizeChart from './components/SegmentSizeChart';
 import SuggestedSegments from './components/SuggestedSegments';
 import Notification from './components/Notification';
 import AjaxLoader from './components/AjaxLoader';
+import SaveButton from './components/SaveButton';
 import * as fromConfig from './config.js';
 
 export default {
@@ -72,7 +74,8 @@ export default {
     SegmentSizeChart,
     SuggestedSegments,
     Notification,
-    AjaxLoader
+    AjaxLoader,
+    SaveButton
   },
   created() {
     this.$store.dispatch('fetchTablesBlueprint');
