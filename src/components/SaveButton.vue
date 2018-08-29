@@ -11,10 +11,10 @@
         <v-container grid-list-md>
           <v-layout wrap>
             <v-flex xs12>
-              <v-text-field label="Name of the segment"></v-text-field>
+              <v-text-field label="Name of the segment" v-model="segmentName"></v-text-field>
             </v-flex>
             <v-flex xs12>
-              <v-select :items="segmentCategories" item-text="name" item-value="id" label="Category of the segment"></v-select>
+              <v-select :items="orderedSegmentCategories" item-text="name" item-value="id" label="Category of the segment" v-model="segmentCategory"></v-select>
             </v-flex>
           </v-layout>
         </v-container>
@@ -30,14 +30,35 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import * as fromConfig from '../config.js';
 
 export default {
   name: 'SaveButton',
   data() {
     return {
       dialog: false,
-      segmentCategories: []
+      segmentID: fromConfig.SEGMENT_ID
     };
+  },
+  computed: {
+    ...mapGetters(['orderedSegmentCategories']),
+    segmentName: {
+      get() {
+        return this.$store.state.segmentName;
+      },
+      set(value) {
+        return this.$store.dispatch('setSegmentName', value);
+      }
+    },
+    segmentCategory: {
+      get() {
+        return this.$store.state.segmentCategoryID;
+      },
+      set(value) {
+        console.log(value);
+        return this.$store.dispatch('setSegmentCategoryID', value);
+      }
+    }
   },
   methods: {}
 };

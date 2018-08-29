@@ -28,13 +28,16 @@ export default new Vuex.Store({
     segmentCount: false,
     segmentCountLoading: false,
     tablesBlueprint: [],
+    segmentCategories: [],
     selectedTable: null,
     selectedFields: [],
     selectedCriterias: [],
     selectedParameters: [],
     suggestedSegments: [],
     suggestedSegmentsLoading: false,
-    savingSegmentLoading: false
+    savingSegmentLoading: false,
+    segmentName: '',
+    segmentCategoryID: fromConfig.GROUP_ID
   },
   getters: {
     tableNames: state => {
@@ -184,6 +187,9 @@ export default new Vuex.Store({
 
       const node = { type: 'criteria', key, values };
       return node;
+    },
+    orderedSegmentCategories: state => {
+      return state.segmentCategories.sort((a, b) => a.sorting > b.sorting);
     }
   },
   mutations: {
@@ -192,6 +198,15 @@ export default new Vuex.Store({
     },
     setTablesBlueprint(state, payload) {
       state.tablesBlueprint = payload;
+    },
+    setSegmentCategories(state, payload) {
+      state.segmentCategories = payload;
+    },
+    setSegmentName(state, payload) {
+      state.segmentName = payload;
+    },
+    setSegmentCategoryID(state, payload) {
+      state.segmentCategoryID = payload;
     },
     setSelectedTable(state, selectedTable) {
       state.selectedTable = selectedTable;
@@ -323,6 +338,23 @@ export default new Vuex.Store({
             show: true,
             color: 'red',
             text: 'Error fetching blueprint'
+          });
+        });
+    },
+    fetchSegmentCategories(context) {
+      context.commit('setAjaxLoader', true);
+      axios
+        .get(fromConfig.URL_SEGMENT_CATEGORIES)
+        .then(({ data }) => {
+          context.commit('setSegmentCategories', data.groups);
+          context.commit('setAjaxLoader', false);
+        })
+        .catch(error => {
+          context.commit('setAjaxLoader', false);
+          context.commit('notification', {
+            show: true,
+            color: 'red',
+            text: 'Error fetching segment categories'
           });
         });
     },

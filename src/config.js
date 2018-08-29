@@ -11,6 +11,8 @@ export const URL_COUNTER =
   'https://predplatne.dennikn.sk/api/v1/segments/counts';
 export const URL_SUGGESTIONS =
   'https://predplatne.dennikn.sk/api/v1/segments/related';
+export const URL_SEGMENT_CATEGORIES =
+  'https://predplatne.dennikn.sk/api/v1/segments/groups';
 export const GROUP_ID = 7;
 // export const SEGMENT_ID = 212;
 export const SEGMENT_ID = null;

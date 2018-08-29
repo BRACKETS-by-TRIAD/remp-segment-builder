@@ -79,11 +79,7 @@ export default {
   },
   created() {
     this.$store.dispatch('fetchTablesBlueprint');
-  },
-  data() {
-    return {
-      segmentID: fromConfig.SEGMENT_ID
-    };
+    this.$store.dispatch('fetchSegmentCategories');
   },
   computed: {
     ...mapState(['selectedCriterias', 'savingSegmentLoading'])
