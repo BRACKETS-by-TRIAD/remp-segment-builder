@@ -6,7 +6,7 @@ import Vue2Filters from 'vue2-filters';
 import axios from 'axios';
 
 import App from './App.vue';
-import store from './store';
+import store from './store/index';
 import * as fromConfig from './config';
 
 Vue.config.productionTip = false;
