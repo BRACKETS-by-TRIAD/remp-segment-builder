@@ -159,6 +159,7 @@ export default new Vuex.Store({
       };
     },
     builtNodeForCriteria: (state, getters) => criteriaId => {
+      // TODO: send negation
       const key = getters.criteriaTypeById(criteriaId);
       const values = {};
 
@@ -506,8 +507,8 @@ export default new Vuex.Store({
     saveSegment(context) {
       context.commit('setSavingSegmentLoading', true);
       const data = {
-        name: 'test_101',
-        group_id: fromConfig.GROUP_ID,
+        name: context.state.segmentName,
+        group_id: fromConfig.GROUP_ID, // TODO: later change to context.state.segmentCategoryID
         ...context.getters.builtWholeSegmentForApi
       };
       const url = fromConfig.SEGMENT_ID

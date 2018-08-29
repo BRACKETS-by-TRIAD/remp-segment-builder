@@ -32,10 +32,6 @@
                     Cancel
                   </v-btn>
                   <SaveButton />
-                  <!-- <v-btn color="green" dark large @click="saveSegment" :loading="savingSegmentLoading">
-                    <v-icon left dark>cloud_done</v-icon>
-                    {{ segmentID ? 'Update' : 'Save' }}
-                  </v-btn> -->
                 </v-flex>
               </v-layout>
             </v-card-actions>
@@ -83,11 +79,6 @@ export default {
   },
   computed: {
     ...mapState(['selectedCriterias', 'savingSegmentLoading'])
-  },
-  methods: {
-    saveSegment() {
-      this.$store.dispatch('saveSegment');
-    }
   }
 };
 </script>
