@@ -42,10 +42,7 @@ export default {
   },
   fetchCounterAllTotal(context) {
     context.commit('setAjaxLoader', true);
-    const data = {
-      version: '1',
-      nodes: []
-    };
+    const data = context.getters.builtWholeSegmentForApi;
     axios
       .post(
         `${fromConfig.URL_COUNTER}?table_name=${context.state.selectedTable}`,

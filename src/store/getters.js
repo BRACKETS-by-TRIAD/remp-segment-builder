@@ -113,8 +113,11 @@ export default {
     }
 
     return {
-      version: '1',
-      nodes: [{ type: 'operator', operator: 'AND', nodes }]
+      table_name: state.selectedTable,
+      criteria: {
+        version: '1',
+        nodes: [{ type: 'operator', operator: 'AND', nodes }]
+      }
     };
   },
   builtNodeForCriteria: (state, getters) => criteriaId => {
