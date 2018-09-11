@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: 'NumberParameter',
+  name: 'DecimalParameter',
   props: {
     parameter: Object
   },
@@ -39,8 +39,10 @@ export default {
         { text: 'Lower or Equal', value: 'lte' }
       ],
       numberRules: [
-        // TODO: not required
-        v => /^\s*(\+|-)?\d+\s*$/.test(v) || 'Number must be valid'
+        v =>
+          // TODO: not required
+          /^\s*(\+|-)?((\d+(\.\d+)?)|(\.\d+))\s*$/.test(v) ||
+          'Decimal must be valid'
       ]
     };
   },
