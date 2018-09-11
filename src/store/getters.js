@@ -130,20 +130,7 @@ export default {
       if (Array.isArray(parameter.value) && parameter.value.length === 0)
         return;
 
-      if (['number', 'number_array', 'datetime'].includes(parameter.type)) {
-        values[parameter.name] = {};
-        parameter.value.forEach(item => {
-          values[parameter.name][item.operator] = item.value;
-        });
-      } else if (parameter.type === 'interval') {
-        values[parameter.name] = {
-          [parameter.value.operator]: `${parameter.value.amount} ${
-            parameter.value.timeframe
-          }`
-        };
-      } else {
-        values[parameter.name] = parameter.value;
-      }
+      values[parameter.name] = parameter.value;
     });
 
     if (Object.keys(values).length === 0) throw false;

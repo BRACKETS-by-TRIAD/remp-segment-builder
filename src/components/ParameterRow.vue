@@ -7,7 +7,6 @@
         <NumberParameter v-if="shouldShowNumberInput" :parameter="parameter" />
         <DecimalParameter v-if="shouldShowDecimalInput" :parameter="parameter" />
         <DatetimeParameter v-if="shouldShowDatetimeInput" :parameter="parameter" />
-        <IntervalParameter v-if="shouldShowIntervalInput" :parameter="parameter" />
       </v-flex>
       <v-flex class="parameter-delete-wrapper">
         <ParameterDelete :parameterId="parameter.id" v-if="!parameter.required" />
@@ -24,7 +23,6 @@ import StringParameter from './ParameterTypes/StringParameter';
 import NumberParameter from './ParameterTypes/NumberParameter';
 import DecimalParameter from './ParameterTypes/DecimalParameter';
 import DatetimeParameter from './ParameterTypes/DatetimeParameter';
-import IntervalParameter from './ParameterTypes/IntervalParameter';
 import ParameterDelete from './ParameterDelete';
 
 export default {
@@ -36,7 +34,6 @@ export default {
     NumberParameter,
     DecimalParameter,
     DatetimeParameter,
-    IntervalParameter,
     ParameterDelete
   },
   computed: {
@@ -57,9 +54,6 @@ export default {
     },
     shouldShowDatetimeInput() {
       return this.parameter.type === 'datetime';
-    },
-    shouldShowIntervalInput() {
-      return this.parameter.type === 'interval';
     }
   }
 };
