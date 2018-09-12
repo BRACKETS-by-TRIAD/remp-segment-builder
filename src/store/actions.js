@@ -161,24 +161,9 @@ export default {
               criteriaType: node.key,
               parameterType
             }),
-            name: parameterType
+            name: parameterType,
+            value: node.values[parameterType]
           };
-          // TODO: fix number
-          if (['number'].includes(parameter.type)) {
-            const payloadValue = node.values[parameterType];
-            parameter.value = Object.keys(payloadValue).map(valueKey => {
-              return {
-                operator: valueKey,
-                value: payloadValue[valueKey]
-              };
-            });
-          }
-          // TODO: datetime
-          else {
-            parameter.value = node.values[parameterType];
-          }
-
-          console.log(node.values[parameterType]);
 
           context.commit('addParameterToCriteria', {
             criteriaId,

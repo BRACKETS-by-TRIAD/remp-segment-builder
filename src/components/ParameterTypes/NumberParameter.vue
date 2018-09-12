@@ -45,12 +45,12 @@ export default {
     };
   },
   created() {
-    const value = this.$store.getters.parameterValueById(this.parameter.id);
+    const value = this.parameter.value;
+    const defaultValue = this.parameter.default;
     if (value) {
-      Object.entries(value).forEach(([key, value], i) => {
-        this['selectedOperator' + (i + 1)] = key;
-        this['number' + (i + 1)] = String(value);
-      });
+      this.setLocalVariablesFromValue(value);
+    } else if (defaultValue) {
+      this.setLocalVariablesFromValue(defaultValue);
     }
   },
   methods: {
@@ -70,6 +70,12 @@ export default {
       return this.$store.commit('setParameterValue', {
         parameterId,
         parameterValue
+      });
+    },
+    setLocalVariablesFromValue(data) {
+      Object.entries(data).forEach(([key, value], i) => {
+        this['selectedOperator' + (i + 1)] = key;
+        this['number' + (i + 1)] = String(value);
       });
     }
   },
