@@ -79,9 +79,24 @@ export default {
     state.selectedParameters.push({ id: uuid(), criteriaId, ...parameter });
   },
   removeParameter(state, parameterId) {
-    state.selectedParameters = state.selectedParameters.filter(
-      parameter => parameter.id != parameterId
-    );
+    const criteriaId = state.selectedParameters.find(
+      parameter => parameter.id === parameterId
+    ).criteriaId;
+    let criteriaParametersCount = 0;
+
+    state.selectedParameters = state.selectedParameters.filter(parameter => {
+      if (parameter.criteriaId === criteriaId) {
+        criteriaParametersCount++;
+      }
+
+      return parameter.id != parameterId;
+    });
+
+    if (criteriaParametersCount <= 1) {
+      state.selectedCriterias = state.selectedCriterias.filter(
+        criteria => criteria.id != criteriaId
+      );
+    }
   },
   setRequiredParametersForCriteria(state, payload) {
     const parametersForCriteria = state.tablesBlueprint
