@@ -86,24 +86,6 @@ export default {
       }
     };
   },
-  builtWholeSegmentForSuggestion: (state, getters) => {
-    const nodes = [];
-    try {
-      state.selectedCriterias.forEach(criteria => {
-        nodes.push(getters.builtNodeForCriteria(criteria.id));
-      });
-    } catch (error) {
-      return false;
-    }
-
-    return {
-      table_name: state.selectedTable,
-      criteria: {
-        version: 1,
-        nodes: [{ type: 'operator', operator: 'AND', nodes }]
-      }
-    };
-  },
   builtSingleCriteriaForApiCount: (state, getters) => criteriaId => {
     const nodes = [];
     try {
