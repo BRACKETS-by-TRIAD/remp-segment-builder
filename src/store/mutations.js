@@ -21,6 +21,7 @@ export default {
     state.selectedFields = [];
     state.selectedCriterias = [];
     state.selectedParameters = [];
+    state.suggestedSegments = [];
   },
   setSelectedFields(state, selectedFields) {
     state.selectedFields = selectedFields;
