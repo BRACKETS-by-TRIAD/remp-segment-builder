@@ -65,9 +65,7 @@ export default {
       );
     },
     builtCriteriaForApi() {
-      return this.$store.getters.builtSingleCriteriaForApiCount(
-        this.criteria.id
-      );
+      return this.$store.getters.builtSegmentForApi(this.criteria.id);
     }
   },
   watch: {

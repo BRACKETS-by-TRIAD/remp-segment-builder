@@ -39,7 +39,7 @@ export default {
       return this.numberOfPassingItems / this.totalCount * 100;
     },
     builtWholeSegmentForApi() {
-      return this.$store.getters.builtWholeSegmentForApi;
+      return this.$store.getters.builtSegmentForApi();
     }
   },
   watch: {

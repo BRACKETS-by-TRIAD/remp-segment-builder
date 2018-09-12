@@ -42,7 +42,7 @@ export default {
   },
   fetchCounterAllTotal(context) {
     context.commit('setAjaxLoader', true);
-    const data = context.getters.builtWholeSegmentForApi;
+    const data = context.getters.builtSegmentForApi();
     axios
       .post(
         `${fromConfig.URL_COUNTER}?table_name=${context.state.selectedTable}`,
@@ -184,7 +184,7 @@ export default {
     const data = {
       name: context.state.segmentName,
       group_id: fromConfig.GROUP_ID, // TODO: later change to context.state.segmentCategoryID
-      ...context.getters.builtWholeSegmentForApi
+      ...context.getters.builtSegmentForApi()
     };
     const url = fromConfig.SEGMENT_ID
       ? `${fromConfig.URL_POST_PAYLOAD}?id=${fromConfig.SEGMENT_ID}`

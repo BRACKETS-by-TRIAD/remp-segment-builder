@@ -66,13 +66,16 @@ export default {
       parameter => parameter.id === parameterId
     ).value;
   },
-  // TODO: ask to merge to unified request count api and save segment and count segment
-  builtWholeSegmentForApi: (state, getters) => {
+  builtSegmentForApi: (state, getters) => (criteriaId = null) => {
     const nodes = [];
     try {
-      state.selectedCriterias.forEach(criteria => {
-        nodes.push(getters.builtNodeForCriteria(criteria.id));
-      });
+      if (criteriaId) {
+        nodes.push(getters.builtNodeForCriteria(criteriaId));
+      } else {
+        state.selectedCriterias.forEach(criteria => {
+          nodes.push(getters.builtNodeForCriteria(criteria.id));
+        });
+      }
     } catch (error) {
       return false;
     }
@@ -80,22 +83,6 @@ export default {
     return {
       table_name: state.selectedTable,
       fields: state.selectedFields,
-      criteria: {
-        version: '1',
-        nodes: [{ type: 'operator', operator: 'AND', nodes }]
-      }
-    };
-  },
-  builtSingleCriteriaForApiCount: (state, getters) => criteriaId => {
-    const nodes = [];
-    try {
-      nodes.push(getters.builtNodeForCriteria(criteriaId));
-    } catch (error) {
-      return false;
-    }
-
-    return {
-      table_name: state.selectedTable,
       criteria: {
         version: '1',
         nodes: [{ type: 'operator', operator: 'AND', nodes }]
