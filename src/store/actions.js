@@ -143,15 +143,18 @@ export default {
       });
   },
   buildSegmentFromApiPayload(context, payload) {
+    context.commit('setSegmentName', payload.name);
     context.commit('setSelectedTable', payload.table_name);
     context.commit('setSelectedFields', payload.fields.split(','));
-    payload.criteria;
 
     payload.criteria.nodes.forEach(node => {
       node.nodes.forEach(node => {
         const criteriaId = uuid();
-        context.commit('addCriteria', { id: criteriaId, type: node.key });
-        node.value;
+        context.commit('addCriteria', {
+          id: criteriaId,
+          type: node.key,
+          negation: node.negation
+        });
         Object.keys(node.values).forEach(parameterType => {
           const parameter = {
             ...context.getters.specificParameterForCriteriaType({

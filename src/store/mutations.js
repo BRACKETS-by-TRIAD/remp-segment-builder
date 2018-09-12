@@ -28,8 +28,8 @@ export default {
   addEmptyCriteria(state) {
     state.selectedCriterias.push({ id: uuid() });
   },
-  addCriteria(state, { id, type }) {
-    state.selectedCriterias.push({ id, type });
+  addCriteria(state, { id, type, negation }) {
+    state.selectedCriterias.push({ id, type, negation });
   },
   removeCriteria(state, criteriaId) {
     state.selectedCriterias = state.selectedCriterias.filter(

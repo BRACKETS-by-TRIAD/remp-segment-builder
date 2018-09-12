@@ -14,5 +14,5 @@ export const URL_SUGGESTIONS =
 export const URL_SEGMENT_CATEGORIES =
   'https://predplatne.dennikn.sk/api/v1/segments/groups';
 export const GROUP_ID = 7;
-// export const SEGMENT_ID = 240;
+// export const SEGMENT_ID = 249;
 export const SEGMENT_ID = null;
