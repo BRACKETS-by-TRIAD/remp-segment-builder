@@ -17,6 +17,16 @@ export default {
   props: {
     parameter: Object
   },
+  created() {
+    if (typeof this.parameter.value === 'undefined') {
+      const parameterId = this.parameter.id;
+      const parameterValue = this.parameter.default;
+      this.$store.commit('setParameterValue', {
+        parameterId,
+        parameterValue
+      });
+    }
+  },
   computed: {
     parameterValue: {
       get() {

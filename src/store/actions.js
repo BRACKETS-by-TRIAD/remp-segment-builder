@@ -163,16 +163,22 @@ export default {
             }),
             name: parameterType
           };
-          if (['number', 'number_array', 'datetime'].includes(parameter.type)) {
+          // TODO: fix number
+          if (['number'].includes(parameter.type)) {
             const payloadValue = node.values[parameterType];
             parameter.value = Object.keys(payloadValue).map(valueKey => {
-              return { operator: valueKey, value: payloadValue[valueKey] };
+              return {
+                operator: valueKey,
+                value: payloadValue[valueKey]
+              };
             });
-          } else if (parameter.type === 'interval') {
-            // TODO: finish when interval backend is ready
-          } else {
+          }
+          // TODO: datetime
+          else {
             parameter.value = node.values[parameterType];
           }
+
+          console.log(node.values[parameterType]);
 
           context.commit('addParameterToCriteria', {
             criteriaId,
