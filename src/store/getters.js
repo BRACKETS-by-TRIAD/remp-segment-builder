@@ -90,8 +90,8 @@ export default {
     };
   },
   builtNodeForCriteria: (state, getters) => criteriaId => {
-    // TODO: send negation
     const key = getters.criteriaTypeById(criteriaId);
+    const negation = !!getters.criteriaNegationById(criteriaId);
     const values = {};
 
     getters.parametersForSelectedCriteria(criteriaId).forEach(parameter => {
@@ -104,7 +104,7 @@ export default {
 
     if (Object.keys(values).length === 0) throw false;
 
-    const node = { type: 'criteria', key, values };
+    const node = { type: 'criteria', key, negation, values };
     return node;
   },
   orderedSegmentCategories: state => {
