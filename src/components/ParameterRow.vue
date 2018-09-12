@@ -6,6 +6,7 @@
         <StringParameter v-if="shouldShowStringInput" :parameter="parameter" />
         <NumberParameter v-if="shouldShowNumberInput" :parameter="parameter" />
         <DecimalParameter v-if="shouldShowDecimalInput" :parameter="parameter" />
+        <NumberArrayParameter v-if="shouldShowNumberArrayInput" :parameter="parameter" />
         <DatetimeParameter v-if="shouldShowDatetimeInput" :parameter="parameter" />
       </v-flex>
       <v-flex class="parameter-delete-wrapper">
@@ -22,6 +23,7 @@ import BooleanParameter from './ParameterTypes/BooleanParameter';
 import StringParameter from './ParameterTypes/StringParameter';
 import NumberParameter from './ParameterTypes/NumberParameter';
 import DecimalParameter from './ParameterTypes/DecimalParameter';
+import NumberArrayParameter from './ParameterTypes/NumberArrayParameter';
 import DatetimeParameter from './ParameterTypes/DatetimeParameter';
 import ParameterDelete from './ParameterDelete';
 
@@ -33,6 +35,7 @@ export default {
     StringParameter,
     NumberParameter,
     DecimalParameter,
+    NumberArrayParameter,
     DatetimeParameter,
     ParameterDelete
   },
@@ -51,6 +54,9 @@ export default {
     },
     shouldShowDecimalInput() {
       return this.parameter.type === 'decimal';
+    },
+    shouldShowNumberArrayInput() {
+      return this.parameter.type === 'number_array';
     },
     shouldShowDatetimeInput() {
       return this.parameter.type === 'datetime';

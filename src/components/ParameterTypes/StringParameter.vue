@@ -1,9 +1,9 @@
 <template>
   <div>
-    <!-- string single available -->
-    <v-select v-if="shouldShowStringSingleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.name" chips deletable-chips></v-select>
-    <!-- string multiple available -->
-    <v-select v-if="shouldShowStringMultipleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.name" chips deletable-chips multiple></v-select>
+    <!-- string single with options available -->
+    <v-select v-if="shouldShowStringSingleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.name" chips deletable-chips autocomplete></v-select>
+    <!-- string multiple with options available -->
+    <v-select v-if="shouldShowStringMultipleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.name" chips deletable-chips multiple autocomplete></v-select>
     <!-- string multiple -->
     <v-select v-if="shouldShowStringMultiple" v-model="parameterValue" :label="parameter.name" chips deletable-chips tags multiple></v-select>
     <!-- string single -->

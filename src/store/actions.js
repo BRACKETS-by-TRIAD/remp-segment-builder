@@ -134,7 +134,6 @@ export default {
         context.commit('setAjaxLoader', false);
       })
       .catch(error => {
-        console.log(error);
         context.commit('notification', {
           show: true,
           color: 'red',
