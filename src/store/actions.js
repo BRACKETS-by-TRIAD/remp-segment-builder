@@ -214,6 +214,20 @@ export default {
   setCriteriaType(context, payload) {
     context.commit('setCriteriaType', payload);
     context.commit('removeParametersForCriteria', payload.id);
-    context.commit('setRequiredParametersForCriteria', payload);
+    context.dispatch('setRequiredParametersForCriteria', payload);
+  },
+  setRequiredParametersForCriteria(context, payload) {
+    const parametersForCriteria = context.state.tablesBlueprint
+      .find(table => table.table === context.state.selectedTable)
+      .criteria.find(criteria => criteria.key === payload.type).params;
+    Object.entries(parametersForCriteria).forEach(([name, parameter]) => {
+      if (parameter.required) {
+        parameter.name = name;
+        context.commit('addParameterToCriteria', {
+          criteriaId: payload.id,
+          parameter
+        });
+      }
+    });
   }
 };

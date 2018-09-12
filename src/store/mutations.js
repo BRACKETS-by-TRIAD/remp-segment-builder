@@ -76,7 +76,11 @@ export default {
     state.segmentCountLoading = loading;
   },
   addParameterToCriteria(state, { criteriaId, parameter }) {
-    state.selectedParameters.push({ id: uuid(), criteriaId, ...parameter });
+    state.selectedParameters.push({
+      id: uuid(),
+      criteriaId,
+      ...parameter
+    });
   },
   removeParameter(state, parameterId) {
     const criteriaId = state.selectedParameters.find(
@@ -96,21 +100,6 @@ export default {
       state.selectedCriterias = state.selectedCriterias.filter(
         criteria => criteria.id != criteriaId
       );
-    }
-  },
-  setRequiredParametersForCriteria(state, payload) {
-    const parametersForCriteria = state.tablesBlueprint
-      .find(table => table.table === state.selectedTable)
-      .criteria.find(criteria => criteria.key === payload.type).params;
-    for (const [key, value] of Object.entries(parametersForCriteria)) {
-      if (value.required) {
-        state.selectedParameters.push({
-          id: uuid(),
-          criteriaId: payload.id,
-          name: key,
-          ...value
-        });
-      }
     }
   },
   removeParametersForCriteria(state, criteriaId) {

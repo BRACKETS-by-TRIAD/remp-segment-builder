@@ -23,9 +23,9 @@ export default {
     }
   },
   created() {
-    if (this.parameter.default) {
+    if (typeof this.parameter.value === 'undefined') {
       const parameterId = this.parameter.id;
-      const parameterValue = this.parameter.default;
+      const parameterValue = !!this.parameter.default;
       this.$store.commit('setParameterValue', {
         parameterId,
         parameterValue
