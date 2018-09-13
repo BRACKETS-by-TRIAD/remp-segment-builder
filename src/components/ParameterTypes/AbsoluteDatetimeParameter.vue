@@ -69,7 +69,13 @@ export default {
     };
   },
   created() {
-    // TODO:
+    const value = this.parameter.value;
+    const defaultValue = this.parameter.default;
+    if (value) {
+      this.setLocalVariablesFromValue(value);
+    } else if (defaultValue) {
+      this.setLocalVariablesFromValue(defaultValue);
+    }
   },
   computed: {
     date1InCorrectFormatForServer() {
@@ -102,6 +108,14 @@ export default {
       return this.$store.commit('setParameterValue', {
         parameterId,
         parameterValue
+      });
+    },
+    setLocalVariablesFromValue(data) {
+      if (!data.absolute) return;
+
+      Object.entries(data.absolute).forEach(([key, value], i) => {
+        this['selectedOperator' + (i + 1)] = key;
+        this['date' + (i + 1)] = value.slice(0, -1) + '.000' + 'Z';
       });
     }
   },

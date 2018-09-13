@@ -5,11 +5,11 @@
       <v-flex>
         <v-tabs v-model="dateTimeType" centered slider-color="primary">
           <v-tab href="#absolute" ripple>Absolute</v-tab>
-          <v-tab href="#relative" ripple>Relative</v-tab>
+          <v-tab href="#interval" ripple>Relative</v-tab>
           <v-tab-item id="absolute">
             <AbsoluteDatetimeParameter :parameter="parameter" />
           </v-tab-item>
-          <v-tab-item id="relative">
+          <v-tab-item id="interval">
             <RelativeDatetimeParameter :parameter="parameter" />
           </v-tab-item>
         </v-tabs>
@@ -33,7 +33,9 @@ export default {
   },
   data() {
     return {
-      dateTimeType: 'absolute'
+      dateTimeType: this.parameter.value
+        ? this.parameter.value.type
+        : 'absolute'
     };
   }
 };

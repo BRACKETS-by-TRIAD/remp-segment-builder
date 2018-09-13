@@ -42,7 +42,10 @@ export default {
   },
   fetchCounterAllTotal(context) {
     context.commit('setAjaxLoader', true);
-    const data = context.getters.builtSegmentForApi();
+    const data = {
+      table_name: context.state.selectedTable,
+      criteria: { version: '1', nodes: [] }
+    };
     axios
       .post(
         `${fromConfig.URL_COUNTER}?table_name=${context.state.selectedTable}`,
@@ -145,6 +148,7 @@ export default {
   buildSegmentFromApiPayload(context, payload) {
     context.commit('setSegmentName', payload.name);
     context.commit('setSelectedTable', payload.table_name);
+    context.dispatch('fetchCounterAllTotal');
     context.commit('setSelectedFields', payload.fields.split(','));
 
     payload.criteria.nodes.forEach(node => {
