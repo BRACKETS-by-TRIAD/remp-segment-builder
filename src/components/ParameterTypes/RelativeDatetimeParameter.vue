@@ -68,7 +68,13 @@ export default {
     };
   },
   created() {
-    // TODO:
+    const value = this.parameter.value;
+    const defaultValue = this.parameter.default;
+    if (value) {
+      this.setLocalVariablesFromValue(value);
+    } else if (defaultValue) {
+      this.setLocalVariablesFromValue(defaultValue);
+    }
   },
   methods: {
     sendValuesToStore() {
@@ -110,6 +116,27 @@ export default {
       return this.$store.commit('setParameterValue', {
         parameterId,
         parameterValue
+      });
+    },
+    setLocalVariablesFromValue(data) {
+      if (!data.interval) return;
+
+      Object.entries(data.interval).forEach(([key, interval], i) => {
+        this['selectedOperator' + (i + 1)] = key;
+        this['amount' + (i + 1)] = interval.value
+          ? Math.abs(interval.value)
+          : null;
+
+        let unit;
+        if (interval.unit === 'now') {
+          unit = interval.unit;
+        } else if (interval.value >= 0) {
+          unit = interval.unit + '-future';
+        } else if (interval.value < 0) {
+          unit = interval.unit + '-past';
+        }
+
+        this['selectedTimeframe' + (i + 1)] = unit;
       });
     }
   },
