@@ -11,7 +11,6 @@
             </v-toolbar>
 
             <v-card-text>
-              <FieldsPicker class="fields-picker" />
 
               <CriteriaRow v-for="(criteria, index) in selectedCriterias" :key="criteria.id" :criteria="criteria" class="mb-3" :class="{lastCriteria: index+1 == selectedCriterias.length}" />
 
@@ -64,7 +63,6 @@ export default {
   name: 'app',
   components: {
     TablePicker,
-    FieldsPicker,
     CriteriaRow,
     CriteriaAdd,
     SegmentSizeChart,
@@ -86,10 +84,6 @@ export default {
 <style>
 .unclickable {
   pointer-events: none;
-}
-.fields-picker {
-  max-width: calc(100% - 164px);
-  margin-left: 20px;
 }
 .main-action-buttons {
   padding-bottom: 20px;

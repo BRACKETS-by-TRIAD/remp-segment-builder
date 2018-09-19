@@ -19,7 +19,7 @@ export default {
   setSelectedTable(state, selectedTable) {
     state.selectedTable = selectedTable;
     state.selectedFields = [];
-    state.selectedCriterias = [];
+    state.selectedCriterias = [{ id: uuid() }];
     state.selectedParameters = [];
     state.suggestedSegments = [];
   },

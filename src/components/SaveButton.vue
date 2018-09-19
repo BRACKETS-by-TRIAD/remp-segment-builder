@@ -16,6 +16,9 @@
             <v-flex xs12>
               <v-select :items="orderedSegmentCategories" item-text="name" item-value="id" label="Category of the segment" v-model="segmentCategory"></v-select>
             </v-flex>
+            <v-flex xs12>
+              <FieldsPicker />
+            </v-flex>
           </v-layout>
         </v-container>
       </v-card-text>
@@ -30,10 +33,14 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
+import FieldsPicker from './FieldsPicker';
 import * as fromConfig from '../config.js';
 
 export default {
   name: 'SaveButton',
+  components: {
+    FieldsPicker
+  },
   data() {
     return {
       dialog: false,
