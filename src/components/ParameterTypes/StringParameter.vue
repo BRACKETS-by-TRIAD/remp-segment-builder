@@ -3,9 +3,23 @@
     <!-- string single with options available -->
     <v-select v-if="shouldShowStringSingleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.name" chips deletable-chips autocomplete></v-select>
     <!-- string multiple with options available -->
-    <v-select v-if="shouldShowStringMultipleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.name" chips deletable-chips multiple autocomplete></v-select>
+    <v-select v-if="shouldShowStringMultipleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.name" chips deletable-chips multiple autocomplete>
+      <template slot="selection" slot-scope="data">
+        <v-chip :selected="data.selected" :key="JSON.stringify(data.item)" close class="chip--select-multi" @input="data.parent.selectItem(data.item)">
+          {{ data.item }}
+        </v-chip>
+        <span class="or">or</span>
+      </template>
+    </v-select>
     <!-- string multiple -->
-    <v-select v-if="shouldShowStringMultiple" v-model="parameterValue" :label="parameter.name" chips deletable-chips tags multiple></v-select>
+    <v-select v-if="shouldShowStringMultiple" v-model="parameterValue" :label="parameter.name" chips deletable-chips tags multiple>
+      <template slot="selection" slot-scope="data">
+        <v-chip :selected="data.selected" :key="JSON.stringify(data.item)" close class="chip--select-multi" @input="data.parent.selectItem(data.item)">
+          {{ data.item }}
+        </v-chip>
+        <span class="or">or</span>
+      </template>
+    </v-select>
     <!-- string single -->
     <v-text-field v-if="shouldShowStringSingle" v-model="parameterValue" :label="parameter.name"></v-text-field>
   </div>
@@ -60,3 +74,16 @@ export default {
   }
 };
 </script>
+<style scoped lang="scss">
+.input-group__selections .or {
+  padding: 0 6px 0 3px;
+  color: #212121;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  &:last-of-type {
+    display: none;
+  }
+}
+</style>
+

@@ -1,9 +1,23 @@
 <template>
   <div>
     <!-- multiple numbers with available options -->
-    <v-select v-if="shouldShowNumberMultipleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.name" chips deletable-chips multiple autocomplete></v-select>
+    <v-select v-if="shouldShowNumberMultipleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.name" chips deletable-chips multiple autocomplete>
+      <template slot="selection" slot-scope="data">
+        <v-chip :selected="data.selected" :key="JSON.stringify(data.item)" close class="chip--select-multi" @input="data.parent.selectItem(data.item)">
+          {{ data.item.text }}
+        </v-chip>
+        <span class="or">or</span>
+      </template>
+    </v-select>
     <!-- multiple numbers -->
-    <v-select v-if="shouldShowNumberMultiple" v-model="parameterValue" :label="parameter.name" chips deletable-chips tags multiple></v-select>
+    <v-select v-if="shouldShowNumberMultiple" v-model="parameterValue" :label="parameter.name" chips deletable-chips tags multiple>
+      <template slot="selection" slot-scope="data">
+        <v-chip :selected="data.selected" :key="JSON.stringify(data.item)" close class="chip--select-multi" @input="data.parent.selectItem(data.item)">
+          {{ data.item }}
+        </v-chip>
+        <span class="or">or</span>
+      </template>
+    </v-select>
   </div>
 </template>
 
@@ -62,3 +76,15 @@ export default {
   }
 };
 </script>
+<style scoped lang="scss">
+.input-group__selections .or {
+  padding: 0 6px 0 3px;
+  color: #212121;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  &:last-of-type {
+    display: none;
+  }
+}
+</style>
