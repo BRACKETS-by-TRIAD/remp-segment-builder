@@ -23,6 +23,15 @@
       </v-flex>
       <CriteriaChart class="ml-4" :criteria="criteria" />
     </v-layout>
+    <v-layout>
+      <v-flex>
+        <div class="text-xs-center and-badge">
+          <v-badge color="blue darken-1">
+            <span slot="badge">AND</span>
+          </v-badge>
+        </div>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
@@ -88,13 +97,18 @@ export default {
 
 
 
-<style>
-/* .elevation-4.card:before {
-  content: 'not_interested';
-  font-family: Material Icons;
-  position: absolute;
-  font-size: 160px;
-  line-height: 160px;
-  color: #0000000d;
-} */
+<style lang="scss">
+.and-badge {
+  margin-top: 20px;
+  width: calc(100% - 125px);
+  .badge {
+    &__badge {
+      width: 42px;
+      height: 42px;
+    }
+  }
+}
+.lastCriteria .and-badge {
+  display: none;
+}
 </style>
