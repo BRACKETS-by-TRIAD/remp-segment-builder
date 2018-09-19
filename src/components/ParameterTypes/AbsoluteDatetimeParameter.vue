@@ -52,11 +52,9 @@ export default {
       selectedOperator2: null,
       date2: null,
       operators: [
-        { text: 'Equal', value: 'eq' },
-        { text: 'Greater than', value: 'gt' },
-        { text: 'Greater or Equal', value: 'gte' },
-        { text: 'Lower than', value: 'lt' },
-        { text: 'Lower or Equal', value: 'lte' }
+        { text: 'Is', value: 'eq' },
+        { text: 'After', value: 'gte' },
+        { text: 'Before', value: 'lt' }
       ],
       datetimePickerConfig: {
         enableTime: true,

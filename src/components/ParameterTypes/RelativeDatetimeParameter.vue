@@ -46,11 +46,9 @@ export default {
       amount2: null,
       selectedTimeframe2: 'day-past',
       operators: [
-        { text: 'Equal', value: 'eq' },
-        { text: 'Greater than', value: 'gt' },
-        { text: 'Greater or Equal', value: 'gte' },
-        { text: 'Lower than', value: 'lt' },
-        { text: 'Lower or Equal', value: 'lte' }
+        { text: 'Is', value: 'eq' },
+        { text: 'More than', value: 'gte' },
+        { text: 'Less than', value: 'lt' }
       ],
       timeframes: [
         { text: 'now', value: 'now' },
