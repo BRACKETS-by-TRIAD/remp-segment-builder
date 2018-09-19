@@ -81,8 +81,10 @@ export default {
         type: 'interval',
         interval: {}
       };
+      let shoudSendToStore = false;
 
       if (this.amount1 && new RegExp(/^\d*\.?\d*$/).test(this.amount1)) {
+        shoudSendToStore = true;
         const unit = this.selectedTimeframe1.split('-').shift();
         const value =
           this.selectedTimeframe1.split('-').pop() === 'past'
@@ -94,6 +96,7 @@ export default {
         };
       }
       if (this.amount2 && new RegExp(/^\d*\.?\d*$/).test(this.amount2)) {
+        shoudSendToStore = true;
         const unit = this.selectedTimeframe2.split('-').shift();
         const value =
           this.selectedTimeframe2.split('-').pop() === 'past'
@@ -105,16 +108,20 @@ export default {
         };
       }
       if (this.selectedTimeframe1 === 'now') {
+        shoudSendToStore = true;
         parameterValue.interval[this.selectedOperator1] = { unit: 'now' };
       }
       if (this.selectedTimeframe2 === 'now') {
+        shoudSendToStore = true;
         parameterValue.interval[this.selectedOperator2] = { unit: 'now' };
       }
 
-      return this.$store.commit('setParameterValue', {
-        parameterId,
-        parameterValue
-      });
+      if (shoudSendToStore) {
+        this.$store.commit('setParameterValue', {
+          parameterId,
+          parameterValue
+        });
+      }
     },
     setLocalVariablesFromValue(data) {
       if (!data.interval) return;
