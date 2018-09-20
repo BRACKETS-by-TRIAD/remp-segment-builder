@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- multiple numbers with available options -->
-    <v-select v-if="shouldShowNumberMultipleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.name" chips deletable-chips multiple autocomplete>
+    <v-select v-if="shouldShowNumberMultipleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.name" chips deletable-chips multiple autocomplete :hint="parameter.help" persistent-hint>
       <template slot="selection" slot-scope="data">
         <v-chip :selected="data.selected" :key="JSON.stringify(data.item)" close class="chip--select-multi" @input="data.parent.selectItem(data.item)">
           {{ data.item.text }}
@@ -10,7 +10,7 @@
       </template>
     </v-select>
     <!-- multiple numbers -->
-    <v-select v-if="shouldShowNumberMultiple" v-model="parameterValue" :label="parameter.name" chips deletable-chips tags multiple>
+    <v-select v-if="shouldShowNumberMultiple" v-model="parameterValue" :label="parameter.name" chips deletable-chips tags multiple :hint="parameter.help" persistent-hint>
       <template slot="selection" slot-scope="data">
         <v-chip :selected="data.selected" :key="JSON.stringify(data.item)" close class="chip--select-multi" @input="data.parent.selectItem(data.item)">
           {{ data.item }}

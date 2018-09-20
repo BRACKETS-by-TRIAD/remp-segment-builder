@@ -16,6 +16,7 @@
         <v-text-field v-model="number2" type="number" :rules="numberRules" :label="parameter.name" prepend-icon="money"></v-text-field>
       </v-flex>
     </v-layout>
+    <p class="help-hint">{{ parameter.help }}</p>
   </div>
 </template>
 
@@ -97,5 +98,11 @@ export default {
 <style scoped lang="scss">
 .operator {
   width: 155px;
+}
+.help-hint {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 12px;
+  position: relative;
+  top: -20px;
 }
 </style>

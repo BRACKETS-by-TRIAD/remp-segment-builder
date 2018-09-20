@@ -13,6 +13,7 @@
             <RelativeDatetimeParameter :parameter="parameter" />
           </v-tab-item>
         </v-tabs>
+        <p class="help-hint">{{ parameter.help }}</p>
       </v-flex>
     </v-layout>
   </div>
@@ -44,5 +45,11 @@ export default {
 <style lang="scss" scoped>
 .tabs__bar {
   margin-bottom: 20px;
+}
+.help-hint {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 12px;
+  position: relative;
+  top: -20px;
 }
 </style>

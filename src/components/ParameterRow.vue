@@ -2,6 +2,10 @@
   <div class="parameter-row">
     <v-layout>
       <v-flex>
+        <!-- <v-tooltip bottom>
+          <v-icon slot="activator" color="grey" dark>help</v-icon>
+          <span>{{ parameter.help}}</span>
+        </v-tooltip> -->
         <BooleanParameter v-if="shouldShowBooleanInput" :parameter="parameter" />
         <StringParameter v-if="shouldShowStringInput" :parameter="parameter" />
         <NumberParameter v-if="shouldShowNumberInput" :parameter="parameter" />
@@ -38,6 +42,9 @@ export default {
     NumberArrayParameter,
     DatetimeParameter,
     ParameterDelete
+  },
+  created() {
+    console.log(this.parameter);
   },
   computed: {
     shouldShowBooleanInput() {
