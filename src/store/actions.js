@@ -149,7 +149,8 @@ export default {
     context.commit('setSegmentName', payload.name);
     context.commit('setSelectedTable', payload.table_name);
     context.dispatch('fetchCounterAllTotal');
-    context.commit('setSelectedFields', payload.fields.split(','));
+    context.commit('setSelectedFields', payload.fields);
+    context.commit('clearAllCriteria');
 
     payload.criteria.nodes.forEach(node => {
       node.nodes.forEach(node => {

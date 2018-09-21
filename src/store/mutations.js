@@ -32,6 +32,9 @@ export default {
   addCriteria(state, { id, type, negation }) {
     state.selectedCriterias.push({ id, type, negation });
   },
+  clearAllCriteria(state) {
+    state.selectedCriterias = [];
+  },
   removeCriteria(state, criteriaId) {
     state.selectedCriterias = state.selectedCriterias.filter(
       criteria => criteria.id != criteriaId
