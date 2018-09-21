@@ -1,5 +1,6 @@
 const env = {
   AUTH_TOKEN: '',
-  API_HOST: ''
+  API_HOST: '',
+  CANCEL_PATH: ''
 };
 export default env;

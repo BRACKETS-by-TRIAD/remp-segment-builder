@@ -1,6 +1,7 @@
 import env from '../env';
 
 export const AUTH_TOKEN = env.AUTH_TOKEN;
+export const CANCEL_PATH = env.CANCEL_PATH;
 export const URL_TABLES_BLUEPRINT = `${env.API_HOST}/api/v1/segments/criteria`;
 export const URL_GET_PAYLOAD = `${env.API_HOST}/api/v1/segments/show`;
 export const URL_POST_PAYLOAD = `${env.API_HOST}/api/v1/segments/detail`;

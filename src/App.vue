@@ -27,7 +27,7 @@
             <v-card-actions class="main-action-buttons">
               <v-layout text-xs-right>
                 <v-flex>
-                  <v-btn color="normal" large>
+                  <v-btn color="normal" large v-if="config.CANCEL_PATH" :href="config.CANCEL_PATH">
                     Cancel
                   </v-btn>
                   <SaveButton />
@@ -57,7 +57,7 @@ import SuggestedSegments from './components/SuggestedSegments';
 import Notification from './components/Notification';
 import AjaxLoader from './components/AjaxLoader';
 import SaveButton from './components/SaveButton';
-import * as fromConfig from './config.js';
+import * as config from './config.js';
 
 export default {
   name: 'app',
@@ -70,6 +70,11 @@ export default {
     Notification,
     AjaxLoader,
     SaveButton
+  },
+  data() {
+    return {
+      config
+    };
   },
   created() {
     this.$store.dispatch('fetchTablesBlueprint');
