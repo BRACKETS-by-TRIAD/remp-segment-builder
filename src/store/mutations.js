@@ -86,24 +86,9 @@ export default {
     });
   },
   removeParameter(state, parameterId) {
-    const criteriaId = state.selectedParameters.find(
-      parameter => parameter.id === parameterId
-    ).criteriaId;
-    let criteriaParametersCount = 0;
-
     state.selectedParameters = state.selectedParameters.filter(parameter => {
-      if (parameter.criteriaId === criteriaId) {
-        criteriaParametersCount++;
-      }
-
       return parameter.id != parameterId;
     });
-
-    if (criteriaParametersCount <= 1) {
-      state.selectedCriterias = state.selectedCriterias.filter(
-        criteria => criteria.id != criteriaId
-      );
-    }
   },
   removeParametersForCriteria(state, criteriaId) {
     state.selectedParameters = [
