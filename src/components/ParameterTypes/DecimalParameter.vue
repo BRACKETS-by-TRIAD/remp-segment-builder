@@ -5,7 +5,7 @@
         <v-select v-model="selectedOperator1" class="operator" :items="operators" label="Operator 1"></v-select>
       </v-flex>
       <v-flex>
-        <v-text-field v-model="number1" type="number" :rules="numberRules" :label="parameter.name" prepend-icon="money"></v-text-field>
+        <v-text-field v-model="number1" type="number" :rules="numberRules" :label="parameter.label" prepend-icon="money"></v-text-field>
       </v-flex>
     </v-layout>
     <v-layout v-if="selectedOperator1 != 'eq'">
@@ -13,7 +13,7 @@
         <v-select v-model="selectedOperator2" class="operator" :items="operators" label="Operator 2"></v-select>
       </v-flex>
       <v-flex>
-        <v-text-field v-model="number2" type="number" :rules="numberRules" :label="parameter.name" prepend-icon="money"></v-text-field>
+        <v-text-field v-model="number2" type="number" :rules="numberRules" :label="parameter.label" prepend-icon="money"></v-text-field>
       </v-flex>
     </v-layout>
     <p class="help-hint">{{ parameter.help }}</p>

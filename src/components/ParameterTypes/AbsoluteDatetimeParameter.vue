@@ -6,7 +6,7 @@
       </v-flex>
       <v-flex sm6>
         <div class="input-group input-group--prepend-icon input-group--text-field primary--text">
-          <label v-if="!date1">{{ parameter.name }}</label>
+          <label v-if="!date1">{{ parameter.label }}</label>
           <div class="input-group__input">
             <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
             <flat-pickr v-model="date1" :config="datetimePickerConfig"></flat-pickr>
@@ -21,7 +21,7 @@
       </v-flex>
       <v-flex sm6>
         <div class="input-group input-group--prepend-icon input-group--text-field primary--text">
-          <label v-if="!date2">{{ parameter.name }}</label>
+          <label v-if="!date2">{{ parameter.label }}</label>
           <div class="input-group__input">
             <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
             <flat-pickr v-model="date2" :config="datetimePickerConfig"></flat-pickr>

@@ -5,7 +5,7 @@
     </v-btn>
     <v-list>
       <v-list-tile v-for="(item, index) in unusedParametersForCriteria" :key="index" @click="addParameter(item)">
-        <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+        <v-list-tile-title>{{ item.label }}</v-list-tile-title>
       </v-list-tile>
     </v-list>
   </v-menu>

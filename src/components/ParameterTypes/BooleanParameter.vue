@@ -1,5 +1,5 @@
 <template>
-  <v-switch :label="parameter.name" v-model="parameterValue" color="green" :hint="parameter.help" persistent-hint></v-switch>
+  <v-switch :label="parameter.label" v-model="parameterValue" color="green" :hint="parameter.help" persistent-hint></v-switch>
 </template>
 
 <script>

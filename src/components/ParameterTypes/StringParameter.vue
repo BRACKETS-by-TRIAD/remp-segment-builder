@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- string single with options available -->
-    <v-select v-if="shouldShowStringSingleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.name" chips deletable-chips autocomplete :hint="parameter.help" persistent-hint></v-select>
+    <v-select v-if="shouldShowStringSingleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.label" chips deletable-chips autocomplete :hint="parameter.help" persistent-hint></v-select>
     <!-- string multiple with options available -->
-    <v-select v-if="shouldShowStringMultipleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.name" chips deletable-chips multiple autocomplete :hint="parameter.help" persistent-hint>
+    <v-select v-if="shouldShowStringMultipleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.label" chips deletable-chips multiple autocomplete :hint="parameter.help" persistent-hint>
       <template slot="selection" slot-scope="data">
         <v-chip :selected="data.selected" :key="JSON.stringify(data.item)" close class="chip--select-multi" @input="data.parent.selectItem(data.item)">
           {{ data.item }}
@@ -12,7 +12,7 @@
       </template>
     </v-select>
     <!-- string multiple -->
-    <v-select v-if="shouldShowStringMultiple" v-model="parameterValue" :label="parameter.name" chips deletable-chips tags multiple :hint="parameter.help" persistent-hint>
+    <v-select v-if="shouldShowStringMultiple" v-model="parameterValue" :label="parameter.label" chips deletable-chips tags multiple :hint="parameter.help" persistent-hint>
       <template slot="selection" slot-scope="data">
         <v-chip :selected="data.selected" :key="JSON.stringify(data.item)" close class="chip--select-multi" @input="data.parent.selectItem(data.item)">
           {{ data.item }}
@@ -21,7 +21,7 @@
       </template>
     </v-select>
     <!-- string single -->
-    <v-text-field v-if="shouldShowStringSingle" v-model="parameterValue" :label="parameter.name" :hint="parameter.help" persistent-hint></v-text-field>
+    <v-text-field v-if="shouldShowStringSingle" v-model="parameterValue" :label="parameter.label" :hint="parameter.help" persistent-hint></v-text-field>
   </div>
 </template>
 
