@@ -63,7 +63,6 @@ export default {
         return this.$store.state.segmentCategoryID;
       },
       set(value) {
-        console.log(value);
         return this.$store.commit('setSegmentCategoryID', value);
       }
     }

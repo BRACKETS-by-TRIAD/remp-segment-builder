@@ -150,6 +150,7 @@ export default {
     context.commit('setSelectedTable', payload.table_name);
     context.dispatch('fetchCounterAllTotal');
     context.commit('setSelectedFields', payload.fields);
+    context.commit('setSegmentCategoryID', payload.group_id);
     context.commit('clearAllCriteria');
 
     payload.criteria.nodes.forEach(node => {
