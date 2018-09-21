@@ -3,6 +3,9 @@
 
     <v-layout>
       <v-flex>
+        <span class="datetime-label">
+          {{ parameter.label }}
+        </span>
         <v-tabs v-model="dateTimeType" slider-color="primary">
           <v-tab href="#absolute" ripple>Absolute</v-tab>
           <v-tab href="#interval" ripple>Relative</v-tab>
@@ -43,6 +46,10 @@ export default {
 </script>
 
 <style lang="scss">
+.datetime-label {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 12px;
+}
 .tabs__bar {
   margin-bottom: 20px;
 }
