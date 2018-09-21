@@ -3,7 +3,7 @@
 
     <v-layout>
       <v-flex>
-        <v-tabs v-model="dateTimeType" centered slider-color="primary">
+        <v-tabs v-model="dateTimeType" slider-color="primary">
           <v-tab href="#absolute" ripple>Absolute</v-tab>
           <v-tab href="#interval" ripple>Relative</v-tab>
           <v-tab-item id="absolute">
@@ -13,7 +13,7 @@
             <RelativeDatetimeParameter :parameter="parameter" />
           </v-tab-item>
         </v-tabs>
-        <p class="help-hint">{{ parameter.help }}</p>
+        <p class="help-hint help-hint--without-margin">{{ parameter.help }}</p>
       </v-flex>
     </v-layout>
   </div>
@@ -42,7 +42,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .tabs__bar {
   margin-bottom: 20px;
 }
@@ -51,5 +51,8 @@ export default {
   font-size: 12px;
   position: relative;
   top: -20px;
+  &--without-margin {
+    margin-bottom: 0;
+  }
 }
 </style>

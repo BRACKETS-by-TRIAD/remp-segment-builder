@@ -3,17 +3,15 @@
     <v-layout align-center>
       <v-flex>
         <v-card class="elevation-4">
-          <v-card-actions>
+          <v-card-actions class="card-header">
+            <CriteriaSelect :criteriaId="criteria.id" />
             <v-spacer></v-spacer>
             <CriteriaNot :criteriaId="criteria.id" />
             <CriteriaDelete :criteriaId="criteria.id" />
           </v-card-actions>
-          <v-card-text>
+          <v-card-text :class="{zeroPadding: !parameters.length}">
             <v-layout align-center>
-              <v-flex md3>
-                <CriteriaSelect :criteriaId="criteria.id" />
-              </v-flex>
-              <v-flex md8 offset-md1>
+              <v-flex>
                 <ParameterRow v-for="parameter in parameters" :key="parameter.id" :parameter="parameter" :criteria="criteria" />
                 <ParameterAdd v-if="shouldShowParameterAddButton" :criteria="criteria" />
               </v-flex>
@@ -110,5 +108,12 @@ export default {
 }
 .lastCriteria .and-badge {
   display: none;
+}
+.zeroPadding {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.card-header {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 </style>

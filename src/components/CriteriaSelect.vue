@@ -29,8 +29,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .criteria-select {
   max-width: 200px;
+  position: relative;
+  left: 10px;
+  top: 2px;
+  &.input-group--dirty {
+    top: 12px;
+  }
 }
 </style>

@@ -2,10 +2,6 @@
   <div class="parameter-row">
     <v-layout>
       <v-flex>
-        <!-- <v-tooltip bottom>
-          <v-icon slot="activator" color="grey" dark>help</v-icon>
-          <span>{{ parameter.help}}</span>
-        </v-tooltip> -->
         <BooleanParameter v-if="shouldShowBooleanInput" :parameter="parameter" />
         <StringParameter v-if="shouldShowStringInput" :parameter="parameter" />
         <NumberParameter v-if="shouldShowNumberInput" :parameter="parameter" />
@@ -43,9 +39,6 @@ export default {
     DatetimeParameter,
     ParameterDelete
   },
-  created() {
-    console.log(this.parameter);
-  },
   computed: {
     shouldShowBooleanInput() {
       return this.parameter.type === 'boolean';
@@ -78,11 +71,15 @@ export default {
   margin-left: 30px;
 }
 .parameter-row {
-  // border-bottom: 1px dashed #212121;
-  margin-bottom: 30px;
-  &:last-of-type {
-    // border-bottom: none;
-    margin-bottom: 0;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 2px dashed #f4f4f4;
+  margin-left: -16px;
+  padding-left: 16px;
+  margin-right: -16px;
+  padding-right: 16px;
+  &:last-child {
+    border: none;
   }
 }
 </style>

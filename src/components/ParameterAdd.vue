@@ -39,6 +39,7 @@ export default {
 .add-parameter {
   margin-left: -8px !important;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 </style>
 

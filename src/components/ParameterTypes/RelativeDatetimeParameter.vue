@@ -1,24 +1,24 @@
 <template>
   <div>
     <v-layout>
-      <v-flex>
-        <v-select class="operator operator--first" :items="operators" v-model="selectedOperator1" label="Operator"></v-select>
+      <v-flex sm4>
+        <v-select class="operator" :items="operators" v-model="selectedOperator1" label="Operator"></v-select>
       </v-flex>
-      <v-flex>
+      <v-flex sm3>
         <v-text-field class="amount" v-model="amount1" type="number" :disabled="selectedTimeframe1==='now'" :rules="numberRules" label="Amount"></v-text-field>
       </v-flex>
-      <v-flex>
+      <v-flex sm5>
         <v-select class="timeframe" :items="timeframes" v-model="selectedTimeframe1" label="Timeframe" append-icon="restore"></v-select>
       </v-flex>
     </v-layout>
     <v-layout v-if="selectedOperator1 !== 'eq'">
-      <v-flex>
-        <v-select class="operator operator--first" :items="operators" v-model="selectedOperator2" label="Operator"></v-select>
+      <v-flex sm4>
+        <v-select class="operator" :items="operators" v-model="selectedOperator2" label="Operator"></v-select>
       </v-flex>
-      <v-flex>
+      <v-flex sm3>
         <v-text-field class="amount" v-model="amount2" type="number" :disabled="selectedTimeframe2==='now'" :rules="numberRules" label="Amount"></v-text-field>
       </v-flex>
-      <v-flex>
+      <v-flex sm5>
         <v-select class="timeframe" :items="timeframes" v-model="selectedTimeframe2" label="Timeframe" append-icon="restore"></v-select>
       </v-flex>
     </v-layout>
@@ -170,13 +170,11 @@ export default {
 
 <style scoped lang="scss">
 .operator {
-  width: 155px;
+  padding-right: 20px;
 }
 .amount {
-  margin-left: 10px;
+  padding-right: 20px;
 }
 .timeframe {
-  width: 150px;
-  margin-left: 18px;
 }
 </style>

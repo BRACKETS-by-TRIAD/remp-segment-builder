@@ -1,10 +1,10 @@
 <template>
   <div>
     <v-layout>
-      <v-flex>
-        <v-select class="operator operator--first" :items="operators" v-model="selectedOperator1" label="Operator 1"></v-select>
+      <v-flex sm6>
+        <v-select class="absolute-operator" :items="operators" v-model="selectedOperator1" label="Operator 1"></v-select>
       </v-flex>
-      <v-flex>
+      <v-flex sm6>
         <div class="input-group input-group--prepend-icon input-group--text-field primary--text">
           <label v-if="!date1">{{ parameter.name }}</label>
           <div class="input-group__input">
@@ -16,10 +16,10 @@
       </v-flex>
     </v-layout>
     <v-layout v-if="selectedOperator1 !== 'eq'">
-      <v-flex>
-        <v-select class="operator operator--first" :items="operators" v-model="selectedOperator2" label="Operator 2"></v-select>
+      <v-flex sm6>
+        <v-select class="absolute-operator" :items="operators" v-model="selectedOperator2" label="Operator 2"></v-select>
       </v-flex>
-      <v-flex>
+      <v-flex sm6>
         <div class="input-group input-group--prepend-icon input-group--text-field primary--text">
           <label v-if="!date2">{{ parameter.name }}</label>
           <div class="input-group__input">
@@ -135,11 +135,8 @@ export default {
 </script>
 
 <style lang="scss">
-.operator {
-  width: 155px;
-}
-.tabs__bar {
-  margin-bottom: 20px;
+.absolute-operator {
+  padding-right: 30px;
 }
 
 // override default flatpickr styles
