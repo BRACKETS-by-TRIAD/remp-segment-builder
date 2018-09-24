@@ -23,6 +23,11 @@ export default {
       criteria => criteria.key === criteriaType
     ).params;
   },
+  availableFieldsForCriteriaType: (state, getters) => criteriaType => {
+    return getters.criteriasForSelectedTable.find(
+      criteria => criteria.key === criteriaType
+    ).fields;
+  },
   specificParameterForCriteriaType: (state, getters) => ({
     criteriaType,
     parameterType
@@ -33,6 +38,10 @@ export default {
   },
   criteriaTypeById: (state, getters) => id => {
     return state.selectedCriterias.find(criteria => criteria.id === id).type;
+  },
+  criteriaSelectedFieldsById: (state, getters) => id => {
+    return state.selectedCriterias.find(criteria => criteria.id === id)
+      .selectedFields;
   },
   criteriaNegationById: (state, getters) => id => {
     return state.selectedCriterias.find(criteria => criteria.id === id)
@@ -92,6 +101,7 @@ export default {
   builtNodeForCriteria: (state, getters) => criteriaId => {
     const key = getters.criteriaTypeById(criteriaId);
     const negation = !!getters.criteriaNegationById(criteriaId);
+    const fields = getters.criteriaSelectedFieldsById(criteriaId);
     const values = {};
 
     getters.parametersForSelectedCriteria(criteriaId).forEach(parameter => {
@@ -104,7 +114,7 @@ export default {
 
     if (Object.keys(values).length === 0) throw false;
 
-    const node = { type: 'criteria', key, negation, values };
+    const node = { type: 'criteria', key, negation, fields, values };
     return node;
   },
   orderedSegmentCategories: state => {

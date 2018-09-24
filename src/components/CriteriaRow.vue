@@ -6,6 +6,7 @@
           <v-card-actions class="card-header">
             <CriteriaSelect :criteriaId="criteria.id" />
             <v-spacer></v-spacer>
+            <SelectFieldsForCriteria v-if="criteria.availableFields && criteria.availableFields.length" :criteriaId="criteria.id" :availableFields="criteria.availableFields" />
             <CriteriaNot :criteriaId="criteria.id" />
             <CriteriaDelete :criteriaId="criteria.id" />
           </v-card-actions>
@@ -40,6 +41,7 @@ import CriteriaSelect from './CriteriaSelect';
 import ParameterRow from './ParameterRow';
 import ParameterAdd from './ParameterAdd';
 import CriteriaChart from './CriteriaChart';
+import SelectFieldsForCriteria from './SelectFieldsForCriteria';
 
 export default {
   name: 'CriteriaRow',
@@ -52,7 +54,8 @@ export default {
     CriteriaSelect,
     ParameterRow,
     ParameterAdd,
-    CriteriaChart
+    CriteriaChart,
+    SelectFieldsForCriteria
   },
   created() {
     if (this.builtCriteriaForApi) {

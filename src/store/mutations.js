@@ -29,8 +29,14 @@ export default {
   addEmptyCriteria(state) {
     state.selectedCriterias.push({ id: uuid() });
   },
-  addCriteria(state, { id, type, negation }) {
-    state.selectedCriterias.push({ id, type, negation });
+  addCriteria(state, { id, type, negation, availableFields, selectedFields }) {
+    state.selectedCriterias.push({
+      id,
+      type,
+      negation,
+      availableFields,
+      selectedFields
+    });
   },
   clearAllCriteria(state) {
     state.selectedCriterias = [];
@@ -45,10 +51,18 @@ export default {
       )
     ];
   },
-  setCriteriaType(state, { id, type }) {
+  setCriteriaType(state, { id, type, availableFields }) {
     state.selectedCriterias = state.selectedCriterias.map(criteria => {
       if (criteria.id == id) {
-        return { ...criteria, type };
+        return { ...criteria, type, availableFields };
+      }
+      return criteria;
+    });
+  },
+  setCriteriaSelectedFields(state, { id, selectedFields }) {
+    state.selectedCriterias = state.selectedCriterias.map(criteria => {
+      if (criteria.id == id) {
+        return { ...criteria, selectedFields };
       }
       return criteria;
     });

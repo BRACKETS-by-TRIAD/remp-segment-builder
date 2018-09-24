@@ -156,10 +156,15 @@ export default {
     payload.criteria.nodes.forEach(node => {
       node.nodes.forEach(node => {
         const criteriaId = uuid();
+        const availableFields = context.getters.availableFieldsForCriteriaType(
+          node.key
+        );
         context.commit('addCriteria', {
           id: criteriaId,
           type: node.key,
-          negation: node.negation
+          negation: node.negation,
+          selectedFields: node.fields,
+          availableFields
         });
         Object.keys(node.values).forEach(parameterType => {
           const parameter = {

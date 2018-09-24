@@ -9,5 +9,5 @@ export const URL_COUNTER = `${env.API_HOST}/api/v1/segments/counts`;
 export const URL_SUGGESTIONS = `${env.API_HOST}/api/v1/segments/related`;
 export const URL_SEGMENT_CATEGORIES = `${env.API_HOST}/api/v1/segments/groups`;
 export const GROUP_ID = 7;
-// export const SEGMENT_ID = 253;
+// export const SEGMENT_ID = 254;
 export const SEGMENT_ID = null;

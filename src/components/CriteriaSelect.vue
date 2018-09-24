@@ -21,7 +21,8 @@ export default {
       set(value) {
         return this.$store.dispatch('setCriteriaType', {
           id: this.criteriaId,
-          type: value
+          type: value,
+          availableFields: this.criteriasForSelectedTable.find(item => item.key === value).fields
         });
       }
     }
