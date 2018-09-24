@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- string single with options available -->
-    <v-select v-if="shouldShowStringSingleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.label" chips deletable-chips autocomplete :hint="parameter.help" persistent-hint></v-select>
+    <v-select v-if="shouldShowStringSingleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.label" chips deletable-chips autocomplete :hint="parameter.help" persistent-hint :filter="removeDiacriticsFilter"></v-select>
     <!-- string multiple with options available -->
-    <v-select v-if="shouldShowStringMultipleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.label" chips deletable-chips multiple autocomplete :hint="parameter.help" persistent-hint>
+    <v-select v-if="shouldShowStringMultipleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.label" chips deletable-chips multiple autocomplete :hint="parameter.help" persistent-hint :filter="removeDiacriticsFilter">
       <template slot="selection" slot-scope="data">
         <v-chip :selected="data.selected" :key="JSON.stringify(data.item)" close class="chip--select-multi" @input="data.parent.selectItem(data.item)">
           {{ data.item }}
@@ -26,10 +26,17 @@
 </template>
 
 <script>
+import { removeDiacriticsFilter } from '../../helpers';
+
 export default {
   name: 'StringParameter',
   props: {
     parameter: Object
+  },
+  data() {
+    return {
+      removeDiacriticsFilter
+    }
   },
   created() {
     if (typeof this.parameter.value === 'undefined') {

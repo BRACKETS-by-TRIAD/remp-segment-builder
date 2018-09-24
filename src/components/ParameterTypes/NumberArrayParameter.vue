@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- multiple numbers with available options -->
-    <v-select v-if="shouldShowNumberMultipleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.label" chips deletable-chips multiple autocomplete :hint="parameter.help" persistent-hint>
+    <v-select v-if="shouldShowNumberMultipleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.label" chips deletable-chips multiple autocomplete :hint="parameter.help" persistent-hint :filter="removeDiacriticsFilter">
       <template slot="selection" slot-scope="data">
         <v-chip :selected="data.selected" :key="JSON.stringify(data.item)" close class="chip--select-multi" @input="data.parent.selectItem(data.item)">
           {{ data.item.text }}
@@ -22,10 +22,17 @@
 </template>
 
 <script>
+import { removeDiacriticsFilter } from '../../helpers';
+
 export default {
   name: 'NumberArrayParameter',
   props: {
     parameter: Object
+  },
+  data() {
+    return {
+      removeDiacriticsFilter
+    }
   },
   created() {
     if (typeof this.parameter.value === 'undefined') {
