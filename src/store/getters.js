@@ -1,3 +1,5 @@
+import CriteriaNodeEmptyParamatersException from './../exceptions/CriteriaNodeEmptyParamatersException';
+
 export default {
   tableNames: state => {
     return state.tablesBlueprint.map(item => item.table);
@@ -85,8 +87,12 @@ export default {
           nodes.push(getters.builtNodeForCriteria(criteria.id));
         });
       }
-    } catch (error) {
-      return false;
+    } catch(e) {
+      if(e instanceof CriteriaNodeEmptyParamatersException) {
+        // send empty nodes
+      } else {
+        return false;
+      }
     }
 
     return {
@@ -103,19 +109,24 @@ export default {
     const negation = !!getters.criteriaNegationById(criteriaId);
     const fields = getters.criteriaSelectedFieldsById(criteriaId);
     const values = {};
-
+    
     getters.parametersForSelectedCriteria(criteriaId).forEach(parameter => {
-      if (parameter.value == undefined) return;
-      if (Array.isArray(parameter.value) && parameter.value.length === 0)
+      if (parameter.value == undefined) {
         return;
+      }
 
+      if (Array.isArray(parameter.value) && parameter.value.length === 0) {
+        return;
+      }
+        
       values[parameter.name] = parameter.value;
     });
 
-    if (Object.keys(values).length === 0) throw false;
+    if (Object.keys(values).length === 0) {
+      throw new CriteriaNodeEmptyParamatersException();
+    }
 
-    const node = { type: 'criteria', key, negation, fields, values };
-    return node;
+    return { type: 'criteria', key, negation, fields, values };
   },
   orderedSegmentCategories: state => {
     return state.segmentCategories.sort((a, b) => a.sorting > b.sorting);
