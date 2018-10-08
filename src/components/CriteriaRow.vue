@@ -20,7 +20,7 @@
           </v-card-text>
         </v-card>
       </v-flex>
-      <CriteriaChart class="ml-4" :criteria="criteria" />
+      <CriteriaChart class="ml-4" :criteria="criteria" v-if="shouldShowCriteriaChart" />
     </v-layout>
     <v-layout>
       <v-flex>
@@ -76,6 +76,15 @@ export default {
     },
     builtCriteriaForApi() {
       return this.$store.getters.builtSegmentForApi(this.criteria.id);
+    },
+    shouldShowCriteriaChart() {
+      return this.parameters.length > 0 && this.parameters.filter((parameter) => {
+        if(parameter.type === 'string_array' || parameter.type === 'number_array') {
+          return (parameter.value && parameter.value.length > 0);
+        } else {
+          return parameter.value !== undefined;
+        }
+      }).length > 0;
     }
   },
   watch: {
