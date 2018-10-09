@@ -1,26 +1,14 @@
 <template>
   <div>
     <v-layout>
-      <v-flex sm4>
         <v-select class="operator" :items="operators" v-model="selectedOperator1" label="Operator"></v-select>
-      </v-flex>
-      <v-flex sm3>
         <v-text-field class="amount" v-model="amount1" type="number" :disabled="selectedTimeframe1==='now'" :rules="numberRules" label="Amount"></v-text-field>
-      </v-flex>
-      <v-flex sm5>
         <v-select class="timeframe" :items="timeframes" v-model="selectedTimeframe1" label="Timeframe" append-icon="restore"></v-select>
-      </v-flex>
     </v-layout>
     <v-layout v-if="selectedOperator1 !== 'eq'">
-      <v-flex sm4>
         <v-select class="operator" :items="operators" v-model="selectedOperator2" label="Operator"></v-select>
-      </v-flex>
-      <v-flex sm3>
         <v-text-field class="amount" v-model="amount2" type="number" :disabled="selectedTimeframe2==='now'" :rules="numberRules" label="Amount"></v-text-field>
-      </v-flex>
-      <v-flex sm5>
         <v-select class="timeframe" :items="timeframes" v-model="selectedTimeframe2" label="Timeframe" append-icon="restore"></v-select>
-      </v-flex>
     </v-layout>
   </div>
 
@@ -47,8 +35,8 @@ export default {
       selectedTimeframe2: 'day-past',
       operators: [
         { text: 'Is', value: 'eq' },
-        { text: 'More than', value: 'gte' },
-        { text: 'Less than', value: 'lt' }
+        { text: 'After', value: 'gte' },
+        { text: 'Before', value: 'lt' }
       ],
       timeframes: [
         { text: 'now', value: 'now' },
@@ -175,6 +163,13 @@ export default {
 .amount {
   padding-right: 20px;
 }
+.operator {
+  max-width: 250px;
+}
 .timeframe {
+  max-width: 175px;
+}
+.amount {
+  max-width: 125px;
 }
 </style>

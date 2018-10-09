@@ -1,32 +1,27 @@
 <template>
   <div>
     <v-layout>
-      <v-flex sm6>
-        <v-select class="absolute-operator" :items="operators" v-model="selectedOperator1" label="Operator 1"></v-select>
-      </v-flex>
-      <v-flex sm6>
-        <div class="input-group input-group--prepend-icon input-group--text-field primary--text">
-          <div class="input-group__input">
-            <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
-            <flat-pickr v-model="date1" :config="datetimePickerConfig"></flat-pickr>
-          </div>
-          <div class="input-group__details"></div>
+      <v-select class="absolute-operator" :items="operators" v-model="selectedOperator1" label="Operator 1"></v-select>
+
+      <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframe">
+        <div class="input-group__input">
+          <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
+          <flat-pickr v-model="date1" :config="datetimePickerConfig"></flat-pickr>
         </div>
-      </v-flex>
+        <div class="input-group__details"></div>
+      </div>
     </v-layout>
+
     <v-layout v-if="selectedOperator1 !== 'eq'">
-      <v-flex sm6>
-        <v-select class="absolute-operator" :items="operators" v-model="selectedOperator2" label="Operator 2"></v-select>
-      </v-flex>
-      <v-flex sm6>
-        <div class="input-group input-group--prepend-icon input-group--text-field primary--text">
-          <div class="input-group__input">
-            <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
-            <flat-pickr v-model="date2" :config="datetimePickerConfig"></flat-pickr>
-          </div>
-          <div class="input-group__details"></div>
+      <v-select class="absolute-operator" :items="operators" v-model="selectedOperator2" label="Operator 2"></v-select>
+
+      <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframe">
+        <div class="input-group__input">
+          <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
+          <flat-pickr v-model="date2" :config="datetimePickerConfig"></flat-pickr>
         </div>
-      </v-flex>
+        <div class="input-group__details"></div>
+      </div>
     </v-layout>
   </div>
 </template>
@@ -133,74 +128,80 @@ export default {
 </script>
 
 <style lang="scss">
-.absolute-operator {
-  padding-right: 30px;
-}
+  .absolute-operator {
+    padding-right: 30px;
+  }
 
-// override default flatpickr styles
-$calendarColor: #3477cc;
-$calendarBorderRadius: 3px;
+  // override default flatpickr styles
+  $calendarColor: #3477cc;
+  $calendarBorderRadius: 3px;
 
-.flatpickr-calendar {
-  font-family: Roboto, sans-serif !important;
-  border-radius: $calendarBorderRadius;
-}
-.flatpickr-months .flatpickr-month {
-  border-top-left-radius: $calendarBorderRadius;
-  border-top-right-radius: $calendarBorderRadius;
-}
-.flatpickr-time {
-  border-bottom-left-radius: $calendarBorderRadius;
-  border-bottom-right-radius: $calendarBorderRadius;
-}
-span.flatpickr-weekday {
-  color: white;
-}
-.flatpickr-calendar.arrowTop:after {
-  border-bottom-color: $calendarColor;
-}
-.flatpickr-calendar.arrowBottom:after {
-  border-top-color: $calendarColor;
-}
-.flatpickr-months .flatpickr-month,
-.flatpickr-weekdays,
-span.flatpickr-weekday,
-.flatpickr-months .flatpickr-month {
-  background: $calendarColor;
-}
-.flatpickr-day.selected,
-.flatpickr-day.startRange,
-.flatpickr-day.endRange,
-.flatpickr-day.selected.inRange,
-.flatpickr-day.startRange.inRange,
-.flatpickr-day.endRange.inRange,
-.flatpickr-day.selected:focus,
-.flatpickr-day.startRange:focus,
-.flatpickr-day.endRange:focus,
-.flatpickr-day.selected:hover,
-.flatpickr-day.startRange:hover,
-.flatpickr-day.endRange:hover,
-.flatpickr-day.selected.prevMonthDay,
-.flatpickr-day.startRange.prevMonthDay,
-.flatpickr-day.endRange.prevMonthDay,
-.flatpickr-day.selected.nextMonthDay,
-.flatpickr-day.startRange.nextMonthDay,
-.flatpickr-day.endRange.nextMonthDay {
-  background: $calendarColor;
-  border-color: $calendarColor;
-}
-.flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n + 1)),
-.flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n + 1)),
-.flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n + 1)) {
-  -webkit-box-shadow: -10px 0 0 $calendarColor;
-  box-shadow: -10px 0 0 $calendarColor;
-}
-.flatpickr-day.week.selected {
-  -webkit-box-shadow: -5px 0 0 $calendarColor, 5px 0 0 $calendarColor;
-  box-shadow: -5px 0 0 $calendarColor, 5px 0 0 $calendarColor;
-}
-.flatpickr-months .flatpickr-prev-month:hover svg,
-.flatpickr-months .flatpickr-next-month:hover svg {
-  fill: white;
-}
+  .flatpickr-calendar {
+    font-family: Roboto, sans-serif !important;
+    border-radius: $calendarBorderRadius;
+  }
+  .flatpickr-months .flatpickr-month {
+    border-top-left-radius: $calendarBorderRadius;
+    border-top-right-radius: $calendarBorderRadius;
+  }
+  .flatpickr-time {
+    border-bottom-left-radius: $calendarBorderRadius;
+    border-bottom-right-radius: $calendarBorderRadius;
+  }
+  span.flatpickr-weekday {
+    color: white;
+  }
+  .flatpickr-calendar.arrowTop:after {
+    border-bottom-color: $calendarColor;
+  }
+  .flatpickr-calendar.arrowBottom:after {
+    border-top-color: $calendarColor;
+  }
+  .flatpickr-months .flatpickr-month,
+  .flatpickr-weekdays,
+  span.flatpickr-weekday,
+  .flatpickr-months .flatpickr-month {
+    background: $calendarColor;
+  }
+  .flatpickr-day.selected,
+  .flatpickr-day.startRange,
+  .flatpickr-day.endRange,
+  .flatpickr-day.selected.inRange,
+  .flatpickr-day.startRange.inRange,
+  .flatpickr-day.endRange.inRange,
+  .flatpickr-day.selected:focus,
+  .flatpickr-day.startRange:focus,
+  .flatpickr-day.endRange:focus,
+  .flatpickr-day.selected:hover,
+  .flatpickr-day.startRange:hover,
+  .flatpickr-day.endRange:hover,
+  .flatpickr-day.selected.prevMonthDay,
+  .flatpickr-day.startRange.prevMonthDay,
+  .flatpickr-day.endRange.prevMonthDay,
+  .flatpickr-day.selected.nextMonthDay,
+  .flatpickr-day.startRange.nextMonthDay,
+  .flatpickr-day.endRange.nextMonthDay {
+    background: $calendarColor;
+    border-color: $calendarColor;
+  }
+  .flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n + 1)),
+  .flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n + 1)),
+  .flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n + 1)) {
+    -webkit-box-shadow: -10px 0 0 $calendarColor;
+    box-shadow: -10px 0 0 $calendarColor;
+  }
+  .flatpickr-day.week.selected {
+    -webkit-box-shadow: -5px 0 0 $calendarColor, 5px 0 0 $calendarColor;
+    box-shadow: -5px 0 0 $calendarColor, 5px 0 0 $calendarColor;
+  }
+  .flatpickr-months .flatpickr-prev-month:hover svg,
+  .flatpickr-months .flatpickr-next-month:hover svg {
+    fill: white;
+  }
+  .absolute-operator {
+    max-width: 250px;
+  }
+  .timeframe {
+    max-width: 190px;
+  }
 </style>
