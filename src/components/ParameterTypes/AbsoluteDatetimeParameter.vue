@@ -77,15 +77,30 @@
                   <label for="">Select a week</label>
                 </div>
                 <div class="input-group__details">
-                  <template v-if="dateRangeFrom && dateRangeTo">{{ dateRangeFromFormated }} to {{ dateRangeToFormated }}</template>
+                  <template v-if="dateRangeWeekFrom && dateRangeWeekTo">{{ dateRangeWeekFromFormated }} to {{ dateRangeWeekToFormated }}</template>
                 </div>
               </div>
             </v-layout>
           </v-tab-item>
 
-          <!-- <v-tab-item id="month">
-            <flat-pickr v-model="dateRangeMonth" :config="monthPickerConfig"></flat-pickr>
-          </v-tab-item> -->
+          <v-tab-item id="month">
+            <v-layout justify-center>
+              <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframeDateRange">
+                <div class="input-group__input">
+                  <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
+                  <flat-pickr 
+                    v-model="dateRangeMonth" 
+                    :config="monthPickerConfig"
+                  >
+                  </flat-pickr>
+                  <label for="">Select a month</label>
+                </div>
+                <div class="input-group__details">
+                  <template v-if="dateRangeMonthFrom && dateRangeMonthTo">{{ dateRangeMonthFromFormated }} to {{ dateRangeMonthToFormated }}</template>
+                </div>
+              </div>
+            </v-layout>
+          </v-tab-item>
         </v-tabs>
 
         <v-card-actions>
@@ -132,8 +147,10 @@ export default {
 
       // dateRangeWeekFrontend: null,
       
-      dateRangeFrom: null,
-      dateRangeTo: null,
+      dateRangeWeekFrom: null,
+      dateRangeWeekTo: null,
+      dateRangeMonthFrom: null,
+      dateRangeMonthTo: null,
 
       operators: [
         { text: 'Is', value: 'gte-lt' },
@@ -160,24 +177,16 @@ export default {
         plugins: [new weekSelectPlugin({})],
         dateFormat: 'Z',
         altInput: true,
-        altFormat: 'd.m.Y'
+        altFormat: 'd.m.Y',
+        enableTime: false,
       },
       //https://github.com/flatpickr/flatpickr/issues/1438 buhuhuu :(
       monthPickerConfig: {
         plugins: [new monthSelectPlugin({})],
-        // onChange: function(selectedDates, dateStr, instance) {
-        //     var elment = instance.element.getAttribute('data-credititem');       
-        // },
+        dateFormat: 'Z',
+        altInput: true,
+        altFormat: 'd.m.Y',
         enableTime: false,
-        // onChange: [function(){
-        //     // extract the week number
-        //     // note: "this" is bound to the flatpickr instance
-        //     const weekNumber = this.selectedDates[0]
-        //         ? this.config.getWeek(this.selectedDates[0])
-        //         : null;
-
-        //     console.log(weekNumber);
-        // }]
       },
       dialog: false
     };
@@ -208,11 +217,17 @@ export default {
     date2Formated() {
       return moment(this.date2).format('DD.MM. YYYY');
     },
-    dateRangeFromFormated() {
-      return moment(this.dateRangeFrom).format('DD.MM. YYYY');
+    dateRangeWeekFromFormated() {
+      return moment(this.dateRangeWeekFrom).format('DD.MM. YYYY');
     },
-    dateRangeToFormated() {
-      return moment(this.dateRangeTo).format('DD.MM. YYYY');
+    dateRangeWeekToFormated() {
+      return moment(this.dateRangeWeekTo).format('DD.MM. YYYY');
+    },
+    dateRangeMonthFromFormated() {
+      return moment(this.dateRangeMonthFrom).format('DD.MM. YYYY');
+    },
+    dateRangeMonthToFormated() {
+      return moment(this.dateRangeMonthTo).format('DD.MM. YYYY');
     },
   },
   methods: {
@@ -255,8 +270,8 @@ export default {
       this.dateRangeWeek = null;
       this.dateRangeMonth = null;
       
-      this.dateRangeTo = null;
-      this.dateRangeFrom = null;
+      this.dateRangeWeekTo = null;
+      this.dateRangeWeekFrom = null;
 
       this.dateRangeType = 'week'; //fix for active tab
     },
@@ -280,15 +295,15 @@ export default {
         this.date1 = dayStart;
         this.date2 = dayEnd;
       } else if(this.dateRangeType == 'week') {
-        this.date1 = this.dateRangeFrom;
-        this.date2 = this.dateRangeTo;
+        this.date1 = this.dateRangeWeekFrom;
+        this.date2 = this.dateRangeWeekTo;
       } else if(this.dateRangeType == 'month') {
-        // TODO:
+        this.date1 = this.dateRangeMonthFrom;
+        this.date2 = this.dateRangeMonthTo;
       }
     },
-    getMonday(value) {
-      const date = new Date(value),
-            day  = date.getDay(),
+    getMonday(date) {
+      const day  = date.getDay(),
             diff = date.getDate() - day + (day == 0 ? -6:1); 
 
       return new Date(date.setDate(diff));
@@ -342,19 +357,43 @@ export default {
     // },
     dateRangeWeek(value) {
         if(value) {
-          const monday = this.getMonday(value);
-          const sunday = this.addDays(monday, 7);
+          const date   = new Date(value),
+                monday = this.getMonday(date),
+                sunday = this.addDays(monday, 7);
 
           monday.setMinutes(0);
           monday.setHours(0);
           sunday.setMinutes(0);
           sunday.setHours(0);
 
-          this.dateRangeFrom = monday;
-          this.dateRangeTo = sunday;
+          this.dateRangeWeekFrom = monday;
+          this.dateRangeWeekTo = sunday;
         } else {
-          this.dateRangeFrom = null;
-          this.dateRangeTo = null;
+          this.dateRangeWeekFrom = null;
+          this.dateRangeWeekTo = null;
+        }
+    },
+    dateRangeMonth(value) {
+        if(value) {
+          const date  = new Date(value),
+                year  = date.getFullYear(), 
+                month = date.getMonth();
+
+          const firstDay           = new Date(year, month, 1);
+          const firstDayOfNewMonth = new Date(year, month + 1, 1);
+
+          firstDay.setMinutes(0);
+          firstDay.setHours(0);
+          firstDayOfNewMonth.setMinutes(0);
+          firstDayOfNewMonth.setHours(0);
+
+          
+
+          this.dateRangeMonthFrom = firstDay;
+          this.dateRangeMonthTo = firstDayOfNewMonth;
+        } else {
+          this.dateRangeMonthFrom = null;
+          this.dateRangeMonthTo = null;
         }
     }
   }
