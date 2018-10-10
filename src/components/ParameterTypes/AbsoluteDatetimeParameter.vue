@@ -1,9 +1,19 @@
 <template>
   <div>
     <v-layout>
-      <v-select class="absolute-operator" :items="operators" v-model="selectedOperator1" label="Operator 1"></v-select>
+      <v-select class="absolute-operator" :items="operators" v-model="selectedOperatorFrontend" label="Operator 1"></v-select>
 
-      <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframe">
+      <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframe" v-if="selectedOperatorFrontend === 'gte-lt'"> 
+         <!-- input-group--focused -->
+        <!-- <label>Timeframe</label> -->
+        <div class="input-group__input">
+          <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
+          <input readonly="readonly" tabindex="0" aria-label="Regular" type="text" @click="dialog = true">
+        </div>
+        <div class="input-group__details"></div>
+      </div>
+
+      <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframe" v-if="selectedOperatorFrontend !== 'gte-lt'">
         <div class="input-group__input">
           <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
           <flat-pickr v-model="date1" :config="datetimePickerConfig"></flat-pickr>
@@ -12,7 +22,7 @@
       </div>
     </v-layout>
 
-    <v-layout v-if="selectedOperator1 !== 'eq'">
+    <v-layout v-if="selectedOperatorFrontend !== 'gte-lt'">
       <v-select class="absolute-operator" :items="operators" v-model="selectedOperator2" label="Operator 2"></v-select>
 
       <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframe">
@@ -23,13 +33,68 @@
         <div class="input-group__details"></div>
       </div>
     </v-layout>
+
+    <v-dialog v-model="dialog" max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Date Range</span>
+        </v-card-title>
+
+        <v-tabs v-model="dateRangeType" slider-color="primary" centered>
+          <v-tab href="#day" ripple>Day</v-tab>
+          <v-tab href="#week" ripple>Week</v-tab>
+          <v-tab href="#month" ripple>Month</v-tab>
+
+          <v-tab-item id="day" active>
+            <v-layout justify-center>
+              <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframe">
+                <div class="input-group__input">
+                  <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
+                  <flat-pickr v-model="dateRangeDay" :config="datePickerConfig"></flat-pickr>
+                </div>
+                <div class="input-group__details"></div>
+              </div>
+            </v-layout>
+          </v-tab-item>
+          
+          <v-tab-item id="week">
+            <v-layout justify-center>
+              <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframe">
+                <div class="input-group__input">
+                  <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
+                  <flat-pickr v-model="dateRangeWeek" :config="weekPickerConfig"></flat-pickr>
+                </div>
+                <div class="input-group__details"></div>
+              </div>
+            </v-layout>
+          </v-tab-item>
+
+          <!-- <v-tab-item id="month">
+            <flat-pickr v-model="dateRangeMonth" :config="monthPickerConfig"></flat-pickr>
+          </v-tab-item> -->
+        </v-tabs>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click.native="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="onDialogSave">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    
   </div>
 </template>
 
 <script>
 import flatPickr from 'vue-flatpickr-component';
+import weekSelectPlugin from 'flatpickr/dist/plugins/weekSelect/weekSelect';
+import monthSelectPlugin from 'flatpickr/dist/plugins/monthSelect/monthSelect';
+
 import 'flatpickr/dist/flatpickr.css';
 import 'flatpickr/dist/themes/material_green.css';
+import 'flatpickr/dist/plugins/monthSelect/monthSelect.css';
+
+import moment from 'moment';
 
 export default {
   name: 'RelativeDatetimeParameter',
@@ -40,12 +105,17 @@ export default {
   data() {
     return {
       dateTimeType: 'absolute',
-      selectedOperator1: 'eq',
+      dateRangeType: 'day',
+      selectedOperatorFrontend: 'gte-lt',
+      selectedOperator1: 'gte-lt',
       date1: null,
       selectedOperator2: null,
       date2: null,
+      dateRangeDay: null,
+      dateRangeWeek: null,
+      dateRangeMonth: null,
       operators: [
-        { text: 'Is', value: 'eq' },
+        { text: 'Is', value: 'gte-lt' },
         { text: 'After', value: 'gte' },
         { text: 'Before', value: 'lt' }
       ],
@@ -56,10 +126,44 @@ export default {
         dateFormat: 'Z',
         altInput: true,
         altFormat: 'd.m.Y H:i:S'
-      }
+      },
+      datePickerConfig: {
+        enableTime: false,
+        time_24hr: false,
+        enableSeconds: false,
+        dateFormat: 'Z',
+        altInput: true,
+        altFormat: 'd.m.Y'
+      },
+      weekPickerConfig: {
+        plugins: [new weekSelectPlugin({})],
+        dateFormat: 'Z',
+        altInput: true,
+        altFormat: 'd.m.Y'
+      },
+      //https://github.com/flatpickr/flatpickr/issues/1438 buhuhuu :(
+      monthPickerConfig: {
+        plugins: [new monthSelectPlugin({})],
+        // onChange: function(selectedDates, dateStr, instance) {
+        //     var elment = instance.element.getAttribute('data-credititem');       
+        // },
+        enableTime: false,
+        // onChange: [function(){
+        //     // extract the week number
+        //     // note: "this" is bound to the flatpickr instance
+        //     const weekNumber = this.selectedDates[0]
+        //         ? this.config.getWeek(this.selectedDates[0])
+        //         : null;
+
+        //     console.log(weekNumber);
+        // }]
+      },
+      dialog: false
     };
   },
   created() {
+    flatpickr.l10ns.default.firstDayOfWeek = 1;
+
     const value = this.parameter.value;
     const defaultValue = this.parameter.default;
     if (value) {
@@ -70,10 +174,12 @@ export default {
   },
   computed: {
     date1InCorrectFormatForServer() {
-      return this.date1.split('.').shift() + 'Z';
+      // return this.date1.split('.').shift() + 'Z';
+      return moment(this.date1).toISOString();
     },
     date2InCorrectFormatForServer() {
-      return this.date2.split('.').shift() + 'Z';
+      // return this.date2.split('.').shift() + 'Z';
+      return moment(this.date2).toISOString();
     }
   },
   methods: {
@@ -108,9 +214,72 @@ export default {
         this['selectedOperator' + (i + 1)] = key;
         this['date' + (i + 1)] = value.slice(0, -1) + '.000' + 'Z';
       });
+    },
+    onDialogSave() {
+      this.dialog = false;
+
+      this.selectedOperatorFrontend = 'gte-lt';
+      this.selectedOperator1 = 'gte';
+      this.selectedOperator2 = 'lt';
+
+      if(this.dateRangeType == 'day') {
+        const value  = this.dateRangeDay;
+        const dayStart = new Date(value);
+        const dayEnd = this.addDays(dayStart, 1);
+
+        dayStart.setMinutes(0);
+        dayStart.setHours(0);
+        dayEnd.setMinutes(0);
+        dayEnd.setHours(0);
+
+        this.date1 = dayStart;
+        this.date2 = dayEnd;
+      } else if(this.dateRangeType == 'week') {
+        const value  = this.dateRangeWeek;
+        const monday = this.getMonday(value);
+        const sunday = this.addDays(monday, 7);
+
+        monday.setMinutes(0);
+        monday.setHours(0);
+        sunday.setMinutes(0);
+        sunday.setHours(0);
+
+        this.date1 = monday;
+        this.date2 = sunday;
+      } else if(this.dateRangeType == 'month') {
+        // TODO:
+      }
+    },
+    getMonday(value) {
+      const date = new Date(value),
+            day  = date.getDay(),
+            diff = date.getDate() - day + (day == 0 ? -6:1); 
+
+      return new Date(date.setDate(diff));
+    },
+    addDays(date, days) {
+      const result = new Date(date);
+      result.setDate(result.getDate() + days);
+
+      return result;
     }
   },
   watch: {
+    selectedOperatorFrontend(value) {
+      if(value === 'gte-lt') {
+        this.selectedOperator1 = null;
+        this.selectedOperator2 = null;
+      } else if(value === 'gte') {
+        this.selectedOperator1 = 'gte';
+        this.selectedOperator2 = null;
+      } else if (value === 'lt') {
+        this.selectedOperator1 = 'lt';
+        this.selectedOperator2 = null;
+      }
+
+      this.date1 = null;
+      this.date2 = null;
+    },
     date1(value) {
       this.sendValuesToStore();
     },
@@ -121,7 +290,13 @@ export default {
       this.sendValuesToStore();
     },
     selectedOperator2(value) {
-      this.sendValuesToStore();
+      if(value === 'gte-lt') {
+        this.selectedOperatorFrontend = 'gte-lt';
+        this.selectedOperator1 = null;
+        this.selectedOperator2 = null;
+      } else {
+        this.sendValuesToStore();
+      }
     }
   }
 };
