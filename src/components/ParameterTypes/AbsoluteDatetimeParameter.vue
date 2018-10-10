@@ -3,14 +3,16 @@
     <v-layout>
       <v-select class="absolute-operator" :items="operators" v-model="selectedOperatorFrontend" label="Operator 1"></v-select>
 
-      <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframe" v-if="selectedOperatorFrontend === 'gte-lt'"> 
+      <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframeDateRange" v-if="selectedOperatorFrontend === 'gte-lt'"> 
          <!-- input-group--focused -->
         <!-- <label>Timeframe</label> -->
         <div class="input-group__input">
           <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
-          <input readonly="readonly" tabindex="0" aria-label="Regular" type="text" @click="dialog = true">
+          <input readonly="readonly" tabindex="0" aria-label="Regular" type="text" @click="openDialog" placeholder="Select a date range">
         </div>
-        <div class="input-group__details"></div>
+        <div class="input-group__details no-wrap">
+          <template v-if="date1 && date2">{{ date1Formated }} to {{ date2Formated }}</template>
+        </div>
       </div>
 
       <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframe" v-if="selectedOperatorFrontend !== 'gte-lt'">
@@ -37,7 +39,7 @@
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title>
-          <span class="headline">Date Range</span>
+          <span class="headline text-xs-center">Date Range</span>
         </v-card-title>
 
         <v-tabs v-model="dateRangeType" slider-color="primary" centered>
@@ -50,7 +52,12 @@
               <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframe">
                 <div class="input-group__input">
                   <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
-                  <flat-pickr v-model="dateRangeDay" :config="datePickerConfig"></flat-pickr>
+                  <flat-pickr 
+                    v-model="dateRangeDay" 
+                    :config="datePickerConfig"
+                    placeholder="Select a day"
+                  >
+                  </flat-pickr>
                 </div>
                 <div class="input-group__details"></div>
               </div>
@@ -59,12 +66,19 @@
           
           <v-tab-item id="week">
             <v-layout justify-center>
-              <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframe">
+              <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframeDateRange">
                 <div class="input-group__input">
                   <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
-                  <flat-pickr v-model="dateRangeWeek" :config="weekPickerConfig"></flat-pickr>
+                  <flat-pickr 
+                    v-model="dateRangeWeek" 
+                    :config="weekPickerConfig"
+                  >
+                  </flat-pickr>
+                  <label for="">Select a week</label>
                 </div>
-                <div class="input-group__details"></div>
+                <div class="input-group__details">
+                  <template v-if="dateRangeFrom && dateRangeTo">{{ dateRangeFromFormated }} to {{ dateRangeToFormated }}</template>
+                </div>
               </div>
             </v-layout>
           </v-tab-item>
@@ -111,9 +125,16 @@ export default {
       date1: null,
       selectedOperator2: null,
       date2: null,
+
       dateRangeDay: null,
       dateRangeWeek: null,
       dateRangeMonth: null,
+
+      // dateRangeWeekFrontend: null,
+      
+      dateRangeFrom: null,
+      dateRangeTo: null,
+
       operators: [
         { text: 'Is', value: 'gte-lt' },
         { text: 'After', value: 'gte' },
@@ -175,12 +196,24 @@ export default {
   computed: {
     date1InCorrectFormatForServer() {
       // return this.date1.split('.').shift() + 'Z';
-      return moment(this.date1).toISOString();
+      return moment(this.date1).utcOffset(0, true).toISOString();
     },
     date2InCorrectFormatForServer() {
       // return this.date2.split('.').shift() + 'Z';
-      return moment(this.date2).toISOString();
-    }
+      return moment(this.date2).utcOffset(0, true).toISOString();
+    },
+    date1Formated() {
+      return moment(this.date1).format('DD.MM. YYYY');
+    },
+    date2Formated() {
+      return moment(this.date2).format('DD.MM. YYYY');
+    },
+    dateRangeFromFormated() {
+      return moment(this.dateRangeFrom).format('DD.MM. YYYY');
+    },
+    dateRangeToFormated() {
+      return moment(this.dateRangeTo).format('DD.MM. YYYY');
+    },
   },
   methods: {
     sendValuesToStore() {
@@ -215,6 +248,18 @@ export default {
         this['date' + (i + 1)] = value.slice(0, -1) + '.000' + 'Z';
       });
     },
+    openDialog() {
+      this.dialog = true;
+
+      this.dateRangeDay = null;
+      this.dateRangeWeek = null;
+      this.dateRangeMonth = null;
+      
+      this.dateRangeTo = null;
+      this.dateRangeFrom = null;
+
+      this.dateRangeType = 'week'; //fix for active tab
+    },
     onDialogSave() {
       this.dialog = false;
 
@@ -235,17 +280,8 @@ export default {
         this.date1 = dayStart;
         this.date2 = dayEnd;
       } else if(this.dateRangeType == 'week') {
-        const value  = this.dateRangeWeek;
-        const monday = this.getMonday(value);
-        const sunday = this.addDays(monday, 7);
-
-        monday.setMinutes(0);
-        monday.setHours(0);
-        sunday.setMinutes(0);
-        sunday.setHours(0);
-
-        this.date1 = monday;
-        this.date2 = sunday;
+        this.date1 = this.dateRangeFrom;
+        this.date2 = this.dateRangeTo;
       } else if(this.dateRangeType == 'month') {
         // TODO:
       }
@@ -297,6 +333,29 @@ export default {
       } else {
         this.sendValuesToStore();
       }
+    },
+    // dateRangeWeekFrontend(value) {
+    //   if(value) {
+    //     this.dateRangeWeek = value;
+    //     this.dateRangeWeekFrontend = new Date();
+    //   }
+    // },
+    dateRangeWeek(value) {
+        if(value) {
+          const monday = this.getMonday(value);
+          const sunday = this.addDays(monday, 7);
+
+          monday.setMinutes(0);
+          monday.setHours(0);
+          sunday.setMinutes(0);
+          sunday.setHours(0);
+
+          this.dateRangeFrom = monday;
+          this.dateRangeTo = sunday;
+        } else {
+          this.dateRangeFrom = null;
+          this.dateRangeTo = null;
+        }
     }
   }
 };
@@ -378,5 +437,19 @@ export default {
   }
   .timeframe {
     max-width: 190px;
+  }
+  .timeframeDateRange {
+    max-width: 210px;
+    input {
+      color: transparent !important;
+    }
+  }
+  .dialog {
+    .headline {
+      width: 100%
+    }
+  }
+  .no-wrap {
+    white-space: nowrap;
   }
 </style>
