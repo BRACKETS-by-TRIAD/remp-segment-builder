@@ -88,11 +88,14 @@
               <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframeDateRange">
                 <div class="input-group__input">
                   <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
-                  <flat-pickr 
+                  <datepicker 
                     v-model="dateRangeMonth" 
-                    :config="monthPickerConfig"
-                  >
-                  </flat-pickr>
+                    :minimumView="'month'" 
+                    :maximumView="'month'"
+                    name="monthPicker"
+                    @opened="datepickerOpenedFunction" 
+                    @closed="datepickerClosedFunction">
+                  </datepicker>
                   <label for="">Select a month</label>
                 </div>
                 <div class="input-group__details">
@@ -117,17 +120,18 @@
 <script>
 import flatPickr from 'vue-flatpickr-component';
 import weekSelectPlugin from 'flatpickr/dist/plugins/weekSelect/weekSelect';
-import monthSelectPlugin from 'flatpickr/dist/plugins/monthSelect/monthSelect';
+import Datepicker from 'vuejs-datepicker';
+// import monthSelectPlugin from 'flatpickr/dist/plugins/monthSelect/monthSelect';
 
 import 'flatpickr/dist/flatpickr.css';
 import 'flatpickr/dist/themes/material_green.css';
-import 'flatpickr/dist/plugins/monthSelect/monthSelect.css';
+// import 'flatpickr/dist/plugins/monthSelect/monthSelect.css';
 
 import moment from 'moment';
 
 export default {
   name: 'RelativeDatetimeParameter',
-  components: { flatPickr },
+  components: { flatPickr, Datepicker },
   props: {
     parameter: Object
   },
@@ -181,13 +185,14 @@ export default {
         enableTime: false,
       },
       //https://github.com/flatpickr/flatpickr/issues/1438 buhuhuu :(
-      monthPickerConfig: {
-        plugins: [new monthSelectPlugin({})],
-        dateFormat: 'Z',
-        altInput: true,
-        altFormat: 'd.m.Y',
-        enableTime: false,
-      },
+      // https://github.com/flatpickr/flatpickr/issues/269
+      // monthPickerConfig: {
+      //   plugins: [new monthSelectPlugin({})],
+      //   dateFormat: 'Z',
+      //   altInput: true,
+      //   altFormat: 'd.m.Y',
+      //   enableTime: false,
+      // },
       dialog: false
     };
   },
@@ -313,6 +318,12 @@ export default {
       result.setDate(result.getDate() + days);
 
       return result;
+    },
+    datepickerOpenedFunction() {
+      document.querySelector(".dialog .tabs__items").style["overflow"] = "visible";
+    },
+    datepickerClosedFunction() {
+      document.querySelector(".dialog .tabs__items").style["overflow"] = "hidden";
     }
   },
   watch: {
@@ -374,6 +385,7 @@ export default {
         }
     },
     dateRangeMonth(value) {
+      console.log(value);
         if(value) {
           const date  = new Date(value),
                 year  = date.getFullYear(), 
@@ -386,8 +398,6 @@ export default {
           firstDay.setHours(0);
           firstDayOfNewMonth.setMinutes(0);
           firstDayOfNewMonth.setHours(0);
-
-          
 
           this.dateRangeMonthFrom = firstDay;
           this.dateRangeMonthTo = firstDayOfNewMonth;
@@ -484,8 +494,12 @@ export default {
     }
   }
   .dialog {
+    overflow: visible;
     .headline {
       width: 100%
+    }
+    .tabs__items {
+      // overflow: visible;
     }
   }
   .no-wrap {
