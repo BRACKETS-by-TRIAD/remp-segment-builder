@@ -94,7 +94,10 @@
                     :maximumView="'month'"
                     name="monthPicker"
                     @opened="datepickerOpenedFunction" 
-                    @closed="datepickerClosedFunction">
+                    @closed="datepickerClosedFunction"
+                    @selected="datepickerClosedFunction"
+                    @cleared="datepickerClosedFunction"
+                  >
                   </datepicker>
                   <label for="">Select a month</label>
                 </div>
@@ -515,6 +518,7 @@ export default {
     .vdp-datepicker__calendar {
       border: none;
       border-radius: $calendarBorderRadius;
+      overflow: hidden;
 
       -webkit-box-shadow: 0 3px 13px rgba(0,0,0,.08);
       box-shadow: 0 3px 13px rgba(0,0,0,.08);
@@ -522,21 +526,32 @@ export default {
     
     header {
       .month__year_btn, .prev, .next{
+        background: #3477cc;
+      }
+
+      .month__year_btn {
         font-weight: 700;
         font-size: 19px;
-        background: #3477cc;
         color: white;
         &:hover, &:active {
-          background: #3477cc !important;
+          background: #3477cc!important
+        }
+      }
+
+      .prev, .next {
+        -webkit-transition: .25s ease;
+        transition: .25s ease;
+        &:hover, &:active {
+          background: #2a62ab!important
         }
       }
 
       .prev:after {
-        border-right: 10px solid white;
+        border-right: 10px solid white !important;
       }
 
       .next:after {
-        border-left: 10px solid white;
+        border-left: 10px solid white !important;
       }
     }
 
@@ -545,7 +560,7 @@ export default {
       color: #484848;
       &:hover, &.selected, &.selected:hover {
         border-radius: 0;
-        background: #e2e2e2;
+        background: #e2e2e2 !important;
         border-color: #e2e2e2 !important;
       }
     }
