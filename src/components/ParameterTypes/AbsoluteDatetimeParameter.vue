@@ -509,4 +509,45 @@ export default {
   .no-wrap {
     white-space: nowrap;
   }
+  .vdp-datepicker {
+    font-family: Roboto, sans-serif !important;
+
+    .vdp-datepicker__calendar {
+      border: none;
+      border-radius: $calendarBorderRadius;
+
+      -webkit-box-shadow: 0 3px 13px rgba(0,0,0,.08);
+      box-shadow: 0 3px 13px rgba(0,0,0,.08);
+    }
+    
+    header {
+      .month__year_btn, .prev, .next{
+        font-weight: 700;
+        font-size: 19px;
+        background: #3477cc;
+        color: white;
+        &:hover, &:active {
+          background: #3477cc !important;
+        }
+      }
+
+      .prev:after {
+        border-right: 10px solid white;
+      }
+
+      .next:after {
+        border-left: 10px solid white;
+      }
+    }
+
+    .cell {
+      font-size: 14px;
+      color: #484848;
+      &:hover, &.selected, &.selected:hover {
+        border-radius: 0;
+        background: #e2e2e2;
+        border-color: #e2e2e2 !important;
+      }
+    }
+  }
 </style>
