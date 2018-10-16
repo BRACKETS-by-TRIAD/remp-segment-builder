@@ -81,6 +81,9 @@ export default {
       return this.parameters.length > 0 && this.parameters.filter((parameter) => {
         if(parameter.type === 'string_array' || parameter.type === 'number_array') {
           return (parameter.value && parameter.value.length > 0);
+        } 
+        else if(parameter.type === 'datetime')  {
+          return parameter.value !== null && parameter.value !== undefined;
         } else {
           return parameter.value !== undefined;
         }

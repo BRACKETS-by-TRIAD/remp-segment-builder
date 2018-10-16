@@ -242,7 +242,12 @@ export default {
         type: 'absolute',
         absolute: {}
       };
-      if (!this.date1 && !this.date2) return;
+      if (!this.date1 && !this.date2) {
+        return this.$store.commit('setParameterValue', {
+        parameterId,
+        parameterValue: null
+      });
+      }
 
       if (this.date1) {
         parameterValue.absolute[
@@ -385,7 +390,6 @@ export default {
         }
     },
     dateRangeMonth(value) {
-      console.log(value);
         if(value) {
           const date  = new Date(value),
                 year  = date.getFullYear(), 
