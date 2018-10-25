@@ -10,10 +10,16 @@
           <v-tab href="#absolute" ripple>Absolute</v-tab>
           <v-tab href="#interval" ripple>Relative</v-tab>
           <v-tab-item id="absolute">
-            <AbsoluteDatetimeParameter :parameter="parameter" />
+            <AbsoluteDatetimeParameter 
+              :parameter="parameter" 
+              :isFocused="dateTimeType == 'absolute'"
+            />
           </v-tab-item>
           <v-tab-item id="interval">
-            <RelativeDatetimeParameter :parameter="parameter" />
+            <RelativeDatetimeParameter 
+              :parameter="parameter" 
+              :isFocused="dateTimeType == 'interval'"
+            />
           </v-tab-item>
         </v-tabs>
         <p class="help-hint help-hint--without-margin">{{ parameter.help }}</p>
@@ -41,6 +47,14 @@ export default {
         ? this.parameter.value.type
         : 'absolute'
     };
+  },
+  watch: {
+    dateTimeType(value) {
+      this.$store.commit('setParameterValue', {
+        parameterId: this.parameter.id,
+        parameterValue: null
+      });
+    },
   }
 };
 </script>

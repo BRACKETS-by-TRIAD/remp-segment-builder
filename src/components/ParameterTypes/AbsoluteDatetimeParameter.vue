@@ -136,7 +136,8 @@ export default {
   name: 'RelativeDatetimeParameter',
   components: { flatPickr, Datepicker },
   props: {
-    parameter: Object
+    parameter: Object,
+    isFocused: Boolean
   },
   data() {
     return {
@@ -279,14 +280,47 @@ export default {
     openDialog() {
       this.dialog = true;
 
-      this.dateRangeDay = null;
-      this.dateRangeWeek = null;
-      this.dateRangeMonth = null;
-      
-      this.dateRangeWeekTo = null;
-      this.dateRangeWeekFrom = null;
+      if(this.date1 && this.date2) {
+        const interval = moment.duration(moment(this.date2).diff(this.date1)),
+              diffDays = Math.floor(interval.asDays());
 
-      this.dateRangeType = 'week'; //fix for active tab
+        console.log(diffDays);
+
+        if(diffDays == 1) {
+          this.dateRangeDay = this.date1;
+          this.dateRangeWeek = null;
+          this.dateRangeMonth = null;
+
+          this.dateRangeType = 'day';
+        } else if(diffDays == 7) {
+          // this.dateRangeWeekFrom = this.date1;
+          // this.dateRangeWeekTo = this.date2;
+
+          this.dateRangeDay = null;
+          this.dateRangeWeek = this.date1;
+          this.dateRangeMonth = null;
+          
+          this.dateRangeType = 'week';
+        } else if(diffDays > 27) {
+          //   this.dateRangeMonthFrom = this.date1;
+          // this.dateRangeMonthTo = this.date2;
+          this.dateRangeDay = null;
+          this.dateRangeWeek = null;
+          this.dateRangeMonth = this.date1;;
+
+          this.dateRangeType = 'month';
+        }
+      } else {
+        this.dateRangeDay = null;
+        this.dateRangeWeek = null;
+        this.dateRangeMonth = null;
+        
+        // this.dateRangeWeekTo = null;
+        // this.dateRangeWeekFrom = null;
+        
+        this.dateRangeType = 'week';
+      }
+  
     },
     onDialogSave() {
       this.dialog = false;
@@ -335,6 +369,14 @@ export default {
     }
   },
   watch: {
+    isFocused(newValue, oldValue) {
+      if(newValue !== oldValue) {
+        this.date1 = "";
+        this.date2 = null;
+        this.selectedOperator1 = 'gte-lt',
+        this.selectedOperator2 = null;
+      }
+    },
     selectedOperatorFrontend(value) {
       if(value === 'gte-lt') {
         this.selectedOperator1 = null;

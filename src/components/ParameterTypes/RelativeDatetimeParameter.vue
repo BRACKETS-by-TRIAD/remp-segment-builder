@@ -23,7 +23,8 @@ export default {
   name: 'AbsoluteDatetimeParameter',
   components: { flatPickr },
   props: {
-    parameter: Object
+    parameter: Object,
+    isFocused: Boolean
   },
   data() {
     return {
@@ -48,8 +49,8 @@ export default {
         { text: 'months from now', value: 'month-future' }
       ],
       numberRules: [
-        v => !!v || 'Number is required',
-        v => /^\d*\.?\d*$/.test(v) || 'Number must be valid'
+        // v => !!v || 'Number is required',
+        v => /^\d*\.?\d*$/.test(v) || /^$/.test(v) || 'Number must be valid'
       ]
     };
   },
@@ -134,6 +135,17 @@ export default {
     }
   },
   watch: {
+    isFocused(newValue, oldValue) {
+      if(newValue !== oldValue) {
+        this.selectedOperator1 = 'eq';
+        this.amount1 = "";
+        this.selectedTimeframe1 = 'day-past';
+        this.selectedOperator2 = null;
+        this.amount2 = null;
+        this.selectedTimeframe2 = 'day-past';
+      }
+    },
+
     selectedOperator1(value) {
       this.sendValuesToStore();
     },
