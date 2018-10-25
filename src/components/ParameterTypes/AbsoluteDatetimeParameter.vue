@@ -284,8 +284,6 @@ export default {
         const interval = moment.duration(moment(this.date2).diff(this.date1)),
               diffDays = Math.floor(interval.asDays());
 
-        console.log(diffDays);
-
         if(diffDays == 1) {
           this.dateRangeDay = this.date1;
           this.dateRangeWeek = null;
