@@ -287,6 +287,12 @@ export default {
     openDialog() {
       this.dialog = true;
 
+      document.querySelector(".dialog").addEventListener("click", function(e) {
+        if(e.target.nodeName.toLowerCase() != 'input') {
+          document.querySelector(".dialog .tabs__items").style["overflow"] = "hidden";
+        }
+      }); 
+
       if(this.date1 && this.date2) {
         const interval = moment.duration(moment(this.date2).diff(this.date1)),
               diffDays = Math.floor(interval.asDays());
