@@ -8,11 +8,16 @@
         <!-- <label>Timeframe</label> -->
         <div class="input-group__input">
           <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
-          <input readonly="readonly" tabindex="0" aria-label="Regular" type="text" @click="openDialog" placeholder="Select a date range">
+          <input 
+            readonly="readonly" 
+            tabindex="0" 
+            aria-label="Regular" 
+            type="text" 
+            @click="openDialog" 
+            :placeholder="(date1 && date2) ? date1Formated+' to '+date2Formated : 'Select a date range'"
+          >
         </div>
-        <div class="input-group__details no-wrap">
-          <template v-if="date1 && date2">{{ date1Formated }} to {{ date2Formated }}</template>
-        </div>
+        <div class="input-group__details no-wrap"></div>
       </div>
 
       <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframe" v-if="selectedOperatorFrontend !== 'gte-lt'">
@@ -49,7 +54,7 @@
 
           <v-tab-item id="day" active>
             <v-layout justify-center>
-              <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframe">
+              <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframeInModal">
                 <div class="input-group__input">
                   <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
                   <flat-pickr 
@@ -66,7 +71,7 @@
           
           <v-tab-item id="week">
             <v-layout justify-center>
-              <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframeDateRange">
+              <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframeDateRangeInModal">
                 <div class="input-group__input">
                   <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
                   <flat-pickr 
@@ -74,10 +79,11 @@
                     :config="weekPickerConfig"
                   >
                   </flat-pickr>
-                  <label for="">Select a week</label>
+                  <label v-if="!dateRangeWeekFrom || !dateRangeWeekTo" for="">Select a week</label>
+                  <label v-if="dateRangeWeekFrom && dateRangeWeekTo" for="">{{ dateRangeWeekFromFormated }} to {{ dateRangeWeekToFormated }}</label>
                 </div>
                 <div class="input-group__details">
-                  <template v-if="dateRangeWeekFrom && dateRangeWeekTo">{{ dateRangeWeekFromFormated }} to {{ dateRangeWeekToFormated }}</template>
+                  
                 </div>
               </div>
             </v-layout>
@@ -85,7 +91,7 @@
 
           <v-tab-item id="month">
             <v-layout justify-center>
-              <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframeDateRange">
+              <div class="input-group input-group--prepend-icon input-group--text-field primary--text timeframeDateRangeInModal">
                 <div class="input-group__input">
                   <i aria-hidden="true" class="icon material-icons input-group__prepend-icon">event</i>
                   <datepicker 
@@ -99,10 +105,11 @@
                     @cleared="datepickerClosedFunction"
                   >
                   </datepicker>
-                  <label for="">Select a month</label>
+                  <label v-if="!dateRangeMonthFrom || !dateRangeMonthTo" for="">Select a month</label>
+                  <label v-if="dateRangeMonthFrom && dateRangeMonthTo">{{ dateRangeMonthFromFormated }} to {{ dateRangeMonthToFormated }}</label>
                 </div>
                 <div class="input-group__details">
-                  <template v-if="dateRangeMonthFrom && dateRangeMonthTo">{{ dateRangeMonthFromFormated }} to {{ dateRangeMonthToFormated }}</template>
+                  
                 </div>
               </div>
             </v-layout>
@@ -534,8 +541,20 @@ export default {
   .timeframe {
     max-width: 190px;
   }
+  .timeframeInModal {
+    max-width: 190px;
+    input {
+      color: rgba(0,0,0,.54) !important;
+    }
+  }
   .timeframeDateRange {
-    max-width: 210px;
+    max-width: 240px;
+    input {
+      color: transparent !important;
+    }
+  }
+  .timeframeDateRangeInModal {
+    max-width: 255px;
     input {
       color: transparent !important;
     }

@@ -9,7 +9,7 @@
         <NumberArrayParameter v-if="shouldShowNumberArrayInput" :parameter="parameter" />
         <DatetimeParameter v-if="shouldShowDatetimeInput" :parameter="parameter" />
       </v-flex>
-      <v-flex class="parameter-delete-wrapper">
+      <v-flex class="parameter-delete-wrapper" v-if="!parameter.required">
         <ParameterDelete :parameterId="parameter.id" v-if="!parameter.required" />
       </v-flex>
     </v-layout>
