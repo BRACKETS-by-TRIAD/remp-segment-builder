@@ -28,5 +28,5 @@ export default {
   suggestedSegmentsLoading: false,
   savingSegmentLoading: false,
   segmentName: '',
-  segmentCategoryID: fromConfig.GROUP_ID
+  segmentCategoryID: null
 };

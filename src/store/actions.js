@@ -188,7 +188,7 @@ export default {
     context.commit('setSavingSegmentLoading', true);
     const data = {
       name: context.state.segmentName,
-      group_id: fromConfig.GROUP_ID, // TODO: later change to context.state.segmentCategoryID
+      group_id: context.state.segmentCategoryID,
       ...context.getters.builtSegmentForApi()
     };
     const url = fromConfig.SEGMENT_ID
