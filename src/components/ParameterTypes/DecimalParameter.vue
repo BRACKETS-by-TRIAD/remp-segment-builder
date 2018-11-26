@@ -1,20 +1,12 @@
 <template>
   <div>
     <v-layout>
-      <v-flex>
         <v-select v-model="selectedOperator1" class="operator" :items="operators" label="Operator 1"></v-select>
-      </v-flex>
-      <v-flex>
-        <v-text-field v-model="number1" type="number" :rules="numberRules" :label="parameter.label" prepend-icon="money"></v-text-field>
-      </v-flex>
+        <v-text-field class="operator-value" v-model="number1" type="number" :rules="numberRules" :label="parameter.label" prepend-icon="money"></v-text-field>
     </v-layout>
     <v-layout v-if="selectedOperator1 != 'eq'">
-      <v-flex>
         <v-select v-model="selectedOperator2" class="operator" :items="operators" label="Operator 2"></v-select>
-      </v-flex>
-      <v-flex>
-        <v-text-field v-model="number2" type="number" :rules="numberRules" :label="parameter.label" prepend-icon="money"></v-text-field>
-      </v-flex>
+        <v-text-field class="operator-value" v-model="number2" type="number" :rules="numberRules" :label="parameter.label" prepend-icon="money"></v-text-field>
     </v-layout>
     <p class="help-hint">{{ parameter.help }}</p>
   </div>
@@ -110,7 +102,11 @@ export default {
 
 <style scoped lang="scss">
 .operator {
-  width: 155px;
+  max-width: 355px;
+}
+.operator-value {
+  max-width: 250px;
+  margin-left: 25px;
 }
 .help-hint {
   color: rgba(0, 0, 0, 0.54);
