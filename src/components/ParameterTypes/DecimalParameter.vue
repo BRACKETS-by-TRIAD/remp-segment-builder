@@ -21,6 +21,9 @@
 </template>
 
 <script>
+
+import debounce from 'lodash/debounce';
+
 export default {
   name: 'DecimalParameter',
   props: {
@@ -55,11 +58,14 @@ export default {
     }
   },
   methods: {
-    sendValuesToStore() {
+    sendValuesToStore: debounce(function () {
       const parameterId = this.parameter.id;
       const parameterValue = {};
+      let shouldSendToStore = false;
+
       if ((this.number1 || this.number1 == 0) && this.number1.length) {
         parameterValue[this.selectedOperator1] = Number(this.number1);
+        shouldSendToStore = true;
       }
       if (
         this.selectedOperator2 &&
@@ -67,12 +73,17 @@ export default {
         this.number2.length
       ) {
         parameterValue[this.selectedOperator2] = Number(this.number2);
+        shouldSendToStore = true;
       }
-      return this.$store.commit('setParameterValue', {
-        parameterId,
-        parameterValue
-      });
-    },
+
+      if(shouldSendToStore) {
+        return this.$store.commit('setParameterValue', {
+          parameterId,
+          parameterValue
+        });
+      }
+    }, 500),
+
     setLocalVariablesFromValue(data) {
       Object.entries(data).forEach(([key, value], i) => {
         this['selectedOperator' + (i + 1)] = key;
