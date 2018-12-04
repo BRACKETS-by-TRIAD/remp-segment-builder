@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-layout align-center>
+    <v-layout align-center class="criteria-row">
       <v-flex>
         <v-card class="elevation-4">
           <v-card-actions class="card-header">
@@ -128,6 +128,9 @@ export default {
 
 
 <style lang="scss">
+.criteria-row {
+  min-height: 121px;
+}
 .and-badge {
   margin-top: 20px;
   width: calc(100% - 125px);
