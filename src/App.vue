@@ -1,5 +1,6 @@
 <template>
   <v-app id="app">
+    <AjaxLoader/>
     <v-container fluid>
       <v-layout justify-center>
         <v-flex>
@@ -46,7 +47,6 @@
     </v-container>
 
     <Notification/>
-    <AjaxLoader/>
   </v-app>
 </template>
 

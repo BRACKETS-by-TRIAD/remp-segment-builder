@@ -1,15 +1,15 @@
 <template>
-  <v-progress-circular v-if="ajaxLoader" class="ajax-loader" indeterminate color="primary"></v-progress-circular>
+  <v-progress-linear v-if="ajaxLoader" class="ajax-loader" indeterminate color="primary"></v-progress-linear>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import axios from 'axios';
+import { mapState } from "vuex";
+import axios from "axios";
 
 export default {
-  name: 'AjaxLoader',
+  name: "AjaxLoader",
   computed: {
-    ...mapState(['ajaxLoader'])
+    ...mapState(["ajaxLoader"])
   },
   data() {
     return {
@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     setLoading(value) {
-      this.$store.commit('setAjaxLoader', value);
+      this.$store.commit("setAjaxLoader", value);
     }
   },
   created() {
@@ -59,9 +59,9 @@ export default {
 
 <style scoped lang="scss">
 .ajax-loader {
-  position: fixed;
-  top: 20px;
-  right: 30px;
+  position: absolute;
+  top: -14px;
+  left: 0;
 }
 </style>
 
