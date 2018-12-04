@@ -1,7 +1,8 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="500px">
     <v-btn slot="activator" color="green" dark large :loading="savingSegmentLoading">
-      <v-icon left dark>cloud_done</v-icon> {{ segmentID ? 'Update' : 'Save' }}
+      <v-icon left dark>cloud_done</v-icon>
+      {{ segmentID ? 'Update' : 'Save' }}
     </v-btn>
     <v-card>
       <v-card-title>
@@ -14,10 +15,16 @@
               <v-text-field label="Name of the segment" v-model="segmentName"></v-text-field>
             </v-flex>
             <v-flex xs12>
-              <v-select :items="orderedSegmentCategories" item-text="name" item-value="id" label="Category of the segment" v-model="segmentCategory"></v-select>
+              <v-select
+                :items="orderedSegmentCategories"
+                item-text="name"
+                item-value="id"
+                label="Category of the segment"
+                v-model="segmentCategory"
+              ></v-select>
             </v-flex>
             <v-flex xs12>
-              <FieldsPicker />
+              <FieldsPicker/>
             </v-flex>
           </v-layout>
         </v-container>
@@ -32,12 +39,12 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
-import FieldsPicker from './FieldsPicker';
-import * as fromConfig from '../config.js';
+import { mapGetters, mapState } from "vuex";
+import FieldsPicker from "./FieldsPicker";
+import * as fromConfig from "../config.js";
 
 export default {
-  name: 'SaveButton',
+  name: "SaveButton",
   components: {
     FieldsPicker
   },
@@ -48,14 +55,14 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['orderedSegmentCategories']),
-    ...mapState(['savingSegmentLoading']),
+    ...mapGetters(["orderedSegmentCategories"]),
+    ...mapState(["savingSegmentLoading"]),
     segmentName: {
       get() {
         return this.$store.state.segmentName;
       },
       set(value) {
-        return this.$store.commit('setSegmentName', value);
+        return this.$store.commit("setSegmentName", value);
       }
     },
     segmentCategory: {
@@ -63,17 +70,21 @@ export default {
         return this.$store.state.segmentCategoryID;
       },
       set(value) {
-        return this.$store.commit('setSegmentCategoryID', value);
+        return this.$store.commit("setSegmentCategoryID", value);
       }
     }
   },
   methods: {
     saveSegment() {
       this.dialog = false;
-      this.$store.dispatch('saveSegment');
+      this.$store.dispatch("saveSegment");
     }
   }
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.container.grid-list-md {
+  padding: 8px;
+}
+</style>

@@ -1,26 +1,38 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-layout align-center>
       <v-flex>
         <v-card class="elevation-4">
           <v-card-actions class="card-header">
-            <CriteriaSelect :criteriaId="criteria.id" />
+            <CriteriaSelect :criteriaId="criteria.id"/>
             <v-spacer></v-spacer>
-            <SelectFieldsForCriteria v-if="criteria.availableFields && criteria.availableFields.length" :criteriaId="criteria.id" :availableFields="criteria.availableFields" />
-            <CriteriaNot :criteriaId="criteria.id" />
-            <CriteriaDelete :criteriaId="criteria.id" />
+            <SelectFieldsForCriteria
+              v-if="criteria.availableFields && criteria.availableFields.length"
+              :criteriaId="criteria.id"
+              :availableFields="criteria.availableFields"
+            />
+            <CriteriaNot :criteriaId="criteria.id"/>
+            <CriteriaDelete :criteriaId="criteria.id"/>
           </v-card-actions>
           <v-card-text :class="{zeroPadding: !parameters.length}">
             <v-layout align-center>
               <v-flex>
-                <ParameterRow v-for="parameter in parameters" :key="parameter.id" :parameter="parameter" :criteria="criteria" />
-                <ParameterAdd v-if="shouldShowParameterAddButton" :criteria="criteria" />
+                <ParameterRow
+                  v-for="parameter in parameters"
+                  :key="parameter.id"
+                  :parameter="parameter"
+                  :criteria="criteria"
+                />
+                <ParameterAdd v-if="shouldShowParameterAddButton" :criteria="criteria"/>
               </v-flex>
             </v-layout>
           </v-card-text>
         </v-card>
       </v-flex>
-      <CriteriaChart class="ml-4" :criteria="criteria" v-if="shouldShowCriteriaChart" />
+      <CriteriaChart
+        :class="['ml-4', {'invisible': !shouldShowCriteriaChart}]"
+        :criteria="criteria"
+      />
     </v-layout>
     <v-layout>
       <v-flex>
@@ -35,16 +47,16 @@
 </template>
 
 <script>
-import CriteriaDelete from './CriteriaDelete';
-import CriteriaNot from './CriteriaNot';
-import CriteriaSelect from './CriteriaSelect';
-import ParameterRow from './ParameterRow';
-import ParameterAdd from './ParameterAdd';
-import CriteriaChart from './CriteriaChart';
-import SelectFieldsForCriteria from './SelectFieldsForCriteria';
+import CriteriaDelete from "./CriteriaDelete";
+import CriteriaNot from "./CriteriaNot";
+import CriteriaSelect from "./CriteriaSelect";
+import ParameterRow from "./ParameterRow";
+import ParameterAdd from "./ParameterAdd";
+import CriteriaChart from "./CriteriaChart";
+import SelectFieldsForCriteria from "./SelectFieldsForCriteria";
 
 export default {
-  name: 'CriteriaRow',
+  name: "CriteriaRow",
   props: {
     criteria: Object
   },
@@ -78,16 +90,21 @@ export default {
       return this.$store.getters.builtSegmentForApi(this.criteria.id);
     },
     shouldShowCriteriaChart() {
-      return this.parameters.length > 0 && this.parameters.filter((parameter) => {
-        if(parameter.type === 'string_array' || parameter.type === 'number_array') {
-          return (parameter.value && parameter.value.length > 0);
-        } 
-        else if(parameter.type === 'datetime')  {
-          return parameter.value !== null && parameter.value !== undefined;
-        } else {
-          return parameter.value !== undefined;
-        }
-      }).length > 0;
+      return (
+        this.parameters.length > 0 &&
+        this.parameters.filter(parameter => {
+          if (
+            parameter.type === "string_array" ||
+            parameter.type === "number_array"
+          ) {
+            return parameter.value && parameter.value.length > 0;
+          } else if (parameter.type === "datetime") {
+            return parameter.value !== null && parameter.value !== undefined;
+          } else {
+            return parameter.value !== undefined;
+          }
+        }).length > 0
+      );
     }
   },
   watch: {
@@ -99,7 +116,7 @@ export default {
   },
   methods: {
     fetchCount(data) {
-      this.$store.dispatch('fetchCounterForSingleCriteriaPayload', {
+      this.$store.dispatch("fetchCounterForSingleCriteriaPayload", {
         criteriaId: this.criteria.id,
         data
       });
@@ -114,7 +131,7 @@ export default {
 .and-badge {
   margin-top: 20px;
   width: calc(100% - 125px);
-  .badge {
+  .v-badge {
     &__badge {
       width: 42px;
       height: 42px;
@@ -130,5 +147,8 @@ export default {
 }
 .card-header {
   background-color: rgba(0, 0, 0, 0.05);
+}
+.invisible {
+  opacity: 0;
 }
 </style>

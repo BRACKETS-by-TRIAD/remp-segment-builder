@@ -1,23 +1,20 @@
 <template>
   <div>
-
     <v-layout>
       <v-flex>
-        <span class="datetime-label">
-          {{ parameter.label }}
-        </span>
+        <span class="datetime-label">{{ parameter.label }}</span>
         <v-tabs v-model="dateTimeType" slider-color="primary">
           <v-tab href="#absolute" ripple>Absolute</v-tab>
           <v-tab href="#interval" ripple>Relative</v-tab>
-          <v-tab-item id="absolute">
-            <AbsoluteDatetimeParameter 
-              :parameter="parameter" 
+          <v-tab-item value="absolute">
+            <AbsoluteDatetimeParameter
+              :parameter="parameter"
               :isFocused="dateTimeType == 'absolute'"
             />
           </v-tab-item>
-          <v-tab-item id="interval">
-            <RelativeDatetimeParameter 
-              :parameter="parameter" 
+          <v-tab-item value="interval">
+            <RelativeDatetimeParameter
+              :parameter="parameter"
               :isFocused="dateTimeType == 'interval'"
             />
           </v-tab-item>
@@ -29,11 +26,11 @@
 </template>
 
 <script>
-import RelativeDatetimeParameter from './RelativeDatetimeParameter';
-import AbsoluteDatetimeParameter from './AbsoluteDatetimeParameter';
+import RelativeDatetimeParameter from "./RelativeDatetimeParameter";
+import AbsoluteDatetimeParameter from "./AbsoluteDatetimeParameter";
 
 export default {
-  name: 'DatetimeParameter',
+  name: "DatetimeParameter",
   components: {
     RelativeDatetimeParameter,
     AbsoluteDatetimeParameter
@@ -45,16 +42,16 @@ export default {
     return {
       dateTimeType: this.parameter.value
         ? this.parameter.value.type
-        : 'absolute'
+        : "absolute"
     };
   },
   watch: {
     dateTimeType(value) {
-      this.$store.commit('setParameterValue', {
+      this.$store.commit("setParameterValue", {
         parameterId: this.parameter.id,
         parameterValue: null
       });
-    },
+    }
   }
 };
 </script>
@@ -64,14 +61,14 @@ export default {
   color: rgba(0, 0, 0, 0.54);
   font-size: 12px;
 }
-.tabs__bar {
+.v-tabs__bar {
   margin-bottom: 20px;
 }
 .help-hint {
   color: rgba(0, 0, 0, 0.54);
   font-size: 12px;
   position: relative;
-  top: -20px;
+  top: -15px;
   &--without-margin {
     margin-bottom: 0;
   }

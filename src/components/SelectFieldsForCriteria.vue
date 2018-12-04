@@ -1,14 +1,11 @@
 <template>
   <v-dialog v-model="dialog" max-width="500px">
-
     <v-tooltip bottom slot="activator">
       <v-btn slot="activator" icon>
-
         <v-badge left>
           <span slot="badge" v-if="selectedFields">{{ selectedFields.length }}</span>
           <v-icon>view_week</v-icon>
         </v-badge>
-
       </v-btn>
       <span>Select fields you are interested in</span>
     </v-tooltip>
@@ -21,7 +18,14 @@
         <v-container grid-list-md>
           <v-layout wrap>
             <v-flex xs12>
-              <v-select :items="availableFields" v-model="selectedFields" label="Fields of criteria" chips deletable-chips multiple autocomplete></v-select>
+              <v-autocomplete
+                :items="availableFields"
+                v-model="selectedFields"
+                label="Fields of criteria"
+                chips
+                deletable-chips
+                multiple
+              ></v-autocomplete>
             </v-flex>
           </v-layout>
         </v-container>
@@ -31,13 +35,13 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
-import FieldsPicker from './FieldsPicker';
-import * as fromConfig from '../config.js';
+import { mapGetters, mapState } from "vuex";
+import FieldsPicker from "./FieldsPicker";
+import * as fromConfig from "../config.js";
 
 export default {
-  name: 'SelectFieldsForCriteria',
-  props: ['availableFields', 'criteriaId'],
+  name: "SelectFieldsForCriteria",
+  props: ["availableFields", "criteriaId"],
   data() {
     return {
       dialog: false
@@ -49,7 +53,7 @@ export default {
         return this.$store.getters.criteriaSelectedFieldsById(this.criteriaId);
       },
       set(value) {
-        return this.$store.commit('setCriteriaSelectedFields', {
+        return this.$store.commit("setCriteriaSelectedFields", {
           id: this.criteriaId,
           selectedFields: value
         });

@@ -1,20 +1,49 @@
 <template>
   <div>
     <!-- multiple numbers with available options -->
-    <v-select v-if="shouldShowNumberMultipleWithOptions" v-model="parameterValue" :items="availableOptions" :label="parameter.label" chips deletable-chips multiple autocomplete :hint="parameter.help" persistent-hint :filter="removeDiacriticsFilter">
+    <v-autocomplete
+      v-if="shouldShowNumberMultipleWithOptions"
+      v-model="parameterValue"
+      :items="availableOptions"
+      :label="parameter.label"
+      chips
+      deletable-chips
+      multiple
+      :hint="parameter.help"
+      persistent-hint
+      :filter="removeDiacriticsFilter"
+    >
       <template slot="selection" slot-scope="data">
-        <v-chip :selected="data.selected" :key="JSON.stringify(data.item)" close class="chip--select-multi" @input="data.parent.selectItem(data.item)">
-          {{ data.item.text }}
-        </v-chip>
+        <v-chip
+          :selected="data.selected"
+          :key="JSON.stringify(data.item)"
+          close
+          class="chip--select-multi"
+          @input="data.parent.selectItem(data.item)"
+        >{{ data.item.text }}</v-chip>
         <span class="or">or</span>
       </template>
-    </v-select>
+    </v-autocomplete>
     <!-- multiple numbers -->
-    <v-select v-if="shouldShowNumberMultiple" v-model="parameterValue" :label="parameter.label" chips deletable-chips tags multiple :hint="parameter.help" persistent-hint>
+    <v-select
+      v-if="shouldShowNumberMultiple"
+      v-model="parameterValue"
+      :label="parameter.label"
+      chips
+      deletable-chips
+      tags
+      multiple
+      :hint="parameter.help"
+      persistent-hint
+    >
       <template slot="selection" slot-scope="data">
-        <v-chip :selected="data.selected" :key="JSON.stringify(data.item)" close class="chip--select-multi" @input="data.parent.selectItem(data.item)">
-          {{ data.item }}
-        </v-chip>
+        <v-chip
+          :selected="data.selected"
+          :key="JSON.stringify(data.item)"
+          close
+          class="chip--select-multi"
+          @input="data.parent.selectItem(data.item)"
+        >{{ data.item }}</v-chip>
         <span class="or">or</span>
       </template>
     </v-select>
@@ -22,23 +51,23 @@
 </template>
 
 <script>
-import { removeDiacriticsFilter } from '../../helpers';
+import { removeDiacriticsFilter } from "../../helpers";
 
 export default {
-  name: 'NumberArrayParameter',
+  name: "NumberArrayParameter",
   props: {
     parameter: Object
   },
   data() {
     return {
       removeDiacriticsFilter
-    }
+    };
   },
   created() {
-    if (typeof this.parameter.value === 'undefined') {
+    if (typeof this.parameter.value === "undefined") {
       const parameterId = this.parameter.id;
       const parameterValue = this.parameter.default;
-      this.$store.commit('setParameterValue', {
+      this.$store.commit("setParameterValue", {
         parameterId,
         parameterValue
       });
@@ -61,18 +90,18 @@ export default {
           .filter(item => !isNaN(Number(item)))
           .map(item => Number(item));
 
-        return this.$store.commit('setParameterValue', {
+        return this.$store.commit("setParameterValue", {
           parameterId,
           parameterValue: parameterValuesConvertedToNumbers
         });
       }
     },
     shouldShowNumberMultipleWithOptions() {
-      return this.parameter.type === 'number_array' && this.parameter.available;
+      return this.parameter.type === "number_array" && this.parameter.available;
     },
     shouldShowNumberMultiple() {
       return (
-        this.parameter.type === 'number_array' && !this.parameter.available
+        this.parameter.type === "number_array" && !this.parameter.available
       );
     },
     availableOptions() {
@@ -84,7 +113,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.input-group__selections .or {
+.v-select__selections .or {
   padding: 0 6px 0 3px;
   color: #212121;
   font-size: 10px;

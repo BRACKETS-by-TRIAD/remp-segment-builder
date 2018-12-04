@@ -1,20 +1,30 @@
 <template>
-  <v-container v-if="numberOfPassingItems !== false">
+  <v-container fluid v-if="numberOfPassingItems !== false">
     <v-layout>
       <v-flex>
         <div class="segment-size-wrapper">
           <h2 class="title" :class="{visible: !isRecalculating}">
             Total Size of Segment:
-            <span class="primary--text percent">
-              {{ percent | currency('%', 1, {symbolOnLeft: false}) }}
-            </span>
-            <span>
-              ({{ numberOfPassingItems | currency('', 0, { thousandsSeparator: ' ' }) }})
-            </span>
-            <v-progress-circular class="segment-size-loading" indeterminate color="primary" v-if="segmentCountLoading" :size="20" :width="3"></v-progress-circular>
+            <span
+              class="primary--text percent"
+            >{{ percent | currency('%', 1, {symbolOnLeft: false}) }}</span>
+            <span>({{ numberOfPassingItems | currency('', 0, { thousandsSeparator: ' ' }) }})</span>
+            <v-progress-circular
+              class="segment-size-loading"
+              indeterminate
+              color="primary"
+              v-if="segmentCountLoading"
+              :size="20"
+              :width="3"
+            ></v-progress-circular>
           </h2>
           <div>
-            <v-progress-linear :value="percent ? percent : 0" :height="9" :indeterminate="isRecalculating" color="primary" />
+            <v-progress-linear
+              :value="percent ? percent : 0"
+              :height="9"
+              :indeterminate="isRecalculating"
+              color="primary"
+            />
           </div>
         </div>
       </v-flex>
@@ -23,12 +33,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 
 export default {
-  name: 'SegmentSizeChart',
+  name: "SegmentSizeChart",
   computed: {
-    ...mapState(['totalCount', 'segmentCountLoading']),
+    ...mapState(["totalCount", "segmentCountLoading"]),
     numberOfPassingItems() {
       return this.$store.state.segmentCount;
     },
@@ -36,7 +46,7 @@ export default {
       return false;
     },
     percent() {
-      return this.numberOfPassingItems / this.totalCount * 100;
+      return (this.numberOfPassingItems / this.totalCount) * 100;
     },
     builtWholeSegmentForApi() {
       return this.$store.getters.builtSegmentForApi();
@@ -45,7 +55,7 @@ export default {
   watch: {
     builtWholeSegmentForApi(data, oldData) {
       if (data && !(JSON.stringify(data) == JSON.stringify(oldData))) {
-        this.$store.dispatch('fetchCounterForWholeSegment', { data });
+        this.$store.dispatch("fetchCounterForWholeSegment", { data });
       }
     }
   }
