@@ -1,8 +1,8 @@
 <template>
   <v-app id="app">
-    <v-container fluid fill-height>
-      <v-layout align-center justify-center>
-        <v-flex xs12 sm10 md8>
+    <v-container fluid>
+      <v-layout justify-center>
+        <v-flex>
           <v-card class="elevation-12" :class="{unclickable: savingSegmentLoading}">
             <v-toolbar dark color="primary">
               <v-toolbar-title>Select table to make a segment:</v-toolbar-title>
