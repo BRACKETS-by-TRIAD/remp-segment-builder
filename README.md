@@ -1,7 +1,7 @@
 ## Install guide
 
 1. Run `yarn install`
-1. Be sure to have segment config filled in a global scope. It should look like this:
+2. Be sure to have segment config filled in a global scope. It should look like this:
 
 ```js
 window.Segments = {
@@ -14,4 +14,4 @@ window.Segments = {
 };
 ```
 
-1. `yarn serve` during development, or `yarn build` for production
+3. `yarn serve` during development, or `yarn build` for production
