@@ -48,12 +48,12 @@ export default {
     percent() {
       return (this.numberOfPassingItems / this.totalCount) * 100;
     },
-    builtWholeSegmentForApi() {
-      return this.$store.getters.builtSegmentForApi();
+    builtWholeSegmentForApiCount() {
+      return this.$store.getters.builtSegmentForApiCount();
     }
   },
   watch: {
-    builtWholeSegmentForApi(data, oldData) {
+    builtWholeSegmentForApiCount(data, oldData) {
       if (data && !(JSON.stringify(data) == JSON.stringify(oldData))) {
         this.$store.dispatch("fetchCounterForWholeSegment", { data });
       }

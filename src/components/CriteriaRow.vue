@@ -70,8 +70,8 @@ export default {
     SelectFieldsForCriteria
   },
   created() {
-    if (this.builtCriteriaForApi) {
-      this.fetchCount(this.builtCriteriaForApi);
+    if (this.builtCriteriaForApiCount) {
+      this.fetchCount(this.builtCriteriaForApiCount);
     }
   },
   computed: {
@@ -86,8 +86,8 @@ export default {
         this.$store.getters.unusedParametersForCriteria(this.criteria).length
       );
     },
-    builtCriteriaForApi() {
-      return this.$store.getters.builtSegmentForApi(this.criteria.id);
+    builtCriteriaForApiCount() {
+      return this.$store.getters.builtSegmentForApiCount(this.criteria.id);
     },
     shouldShowCriteriaChart() {
       return (
@@ -108,7 +108,7 @@ export default {
     }
   },
   watch: {
-    builtCriteriaForApi(data, oldData) {
+    builtCriteriaForApiCount(data, oldData) {
       if (data && !(JSON.stringify(data) == JSON.stringify(oldData))) {
         this.fetchCount(data);
       }

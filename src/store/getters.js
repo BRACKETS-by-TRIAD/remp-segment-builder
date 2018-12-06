@@ -87,8 +87,8 @@ export default {
           nodes.push(getters.builtNodeForCriteria(criteria.id));
         });
       }
-    } catch(e) {
-      if(e instanceof CriteriaNodeEmptyParamatersException) {
+    } catch (e) {
+      if (e instanceof CriteriaNodeEmptyParamatersException) {
         // send empty nodes
       } else {
         return false;
@@ -109,7 +109,7 @@ export default {
     const negation = !!getters.criteriaNegationById(criteriaId);
     const fields = getters.criteriaSelectedFieldsById(criteriaId);
     const values = {};
-    
+
     getters.parametersForSelectedCriteria(criteriaId).forEach(parameter => {
       if (parameter.value == undefined) {
         return;
@@ -118,7 +118,7 @@ export default {
       if (Array.isArray(parameter.value) && parameter.value.length === 0) {
         return;
       }
-        
+
       values[parameter.name] = parameter.value;
     });
 
@@ -127,6 +127,15 @@ export default {
     }
 
     return { type: 'criteria', key, negation, fields, values };
+  },
+  builtSegmentForApiCount: (state, getters) => (criteriaId = null) => {
+    const builtSegmentForApi = getters.builtSegmentForApi(criteriaId);
+    if (builtSegmentForApi) {
+      const { fields, ...builtSegmentForApiCount } = builtSegmentForApi;
+      return builtSegmentForApiCount;
+    }
+
+    return builtSegmentForApi;
   },
   orderedSegmentCategories: state => {
     return state.segmentCategories.sort((a, b) => a.sorting > b.sorting);
