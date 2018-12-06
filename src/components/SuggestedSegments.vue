@@ -25,6 +25,7 @@
 
 <script>
 import { mapState } from "vuex";
+import isEqual from "lodash/isEqual";
 
 export default {
   name: "SuggestedSegments",
@@ -36,7 +37,7 @@ export default {
   },
   watch: {
     builtWholeSegmentForSuggestion(data, oldData) {
-      if (data && !(JSON.stringify(data) == JSON.stringify(oldData))) {
+      if (!isEqual(data, oldData)) {
         this.$store.dispatch("fetchSuggestedSegments", { data });
       }
     }

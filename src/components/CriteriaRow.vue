@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import isEqual from "lodash/isEqual";
+
 import CriteriaDelete from "./CriteriaDelete";
 import CriteriaNot from "./CriteriaNot";
 import CriteriaSelect from "./CriteriaSelect";
@@ -109,7 +111,7 @@ export default {
   },
   watch: {
     builtCriteriaForApiCount(data, oldData) {
-      if (data && !(JSON.stringify(data) == JSON.stringify(oldData))) {
+      if (!isEqual(data, oldData)) {
         this.fetchCount(data);
       }
     }

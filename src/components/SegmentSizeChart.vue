@@ -34,6 +34,7 @@
 
 <script>
 import { mapState } from "vuex";
+import isEqual from "lodash/isEqual";
 
 export default {
   name: "SegmentSizeChart",
@@ -54,7 +55,7 @@ export default {
   },
   watch: {
     builtWholeSegmentForApiCount(data, oldData) {
-      if (data && !(JSON.stringify(data) == JSON.stringify(oldData))) {
+      if (!isEqual(data, oldData)) {
         this.$store.dispatch("fetchCounterForWholeSegment", { data });
       }
     }
