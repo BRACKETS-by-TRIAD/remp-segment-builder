@@ -32,7 +32,7 @@ export default {
   computed: {
     ...mapState(["suggestedSegments", "suggestedSegmentsLoading"]),
     builtWholeSegmentForSuggestion() {
-      return this.$store.getters.builtSegmentForApi();
+      return this.$store.getters.builtSegmentForApiCountAndSuggestions();
     }
   },
   watch: {

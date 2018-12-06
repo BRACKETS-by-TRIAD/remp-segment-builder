@@ -128,11 +128,16 @@ export default {
 
     return { type: 'criteria', key, negation, fields, values };
   },
-  builtSegmentForApiCount: (state, getters) => (criteriaId = null) => {
+  builtSegmentForApiCountAndSuggestions: (state, getters) => (
+    criteriaId = null
+  ) => {
     const builtSegmentForApi = getters.builtSegmentForApi(criteriaId);
     if (builtSegmentForApi) {
-      const { fields, ...builtSegmentForApiCount } = builtSegmentForApi;
-      return builtSegmentForApiCount;
+      const {
+        fields,
+        ...builtSegmentForApiCountAndSuggestions
+      } = builtSegmentForApi;
+      return builtSegmentForApiCountAndSuggestions;
     }
 
     return builtSegmentForApi;

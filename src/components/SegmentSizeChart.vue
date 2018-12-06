@@ -50,7 +50,7 @@ export default {
       return (this.numberOfPassingItems / this.totalCount) * 100;
     },
     builtWholeSegmentForApiCount() {
-      return this.$store.getters.builtSegmentForApiCount();
+      return this.$store.getters.builtSegmentForApiCountAndSuggestions();
     }
   },
   watch: {

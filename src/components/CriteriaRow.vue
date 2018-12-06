@@ -89,7 +89,9 @@ export default {
       );
     },
     builtCriteriaForApiCount() {
-      return this.$store.getters.builtSegmentForApiCount(this.criteria.id);
+      return this.$store.getters.builtSegmentForApiCountAndSuggestions(
+        this.criteria.id
+      );
     },
     shouldShowCriteriaChart() {
       return (
