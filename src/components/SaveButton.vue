@@ -41,7 +41,6 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import FieldsPicker from "./FieldsPicker";
-import * as fromConfig from "../config.js";
 
 export default {
   name: "SaveButton",
@@ -50,13 +49,12 @@ export default {
   },
   data() {
     return {
-      dialog: false,
-      segmentID: fromConfig.SEGMENT_ID
+      dialog: false
     };
   },
   computed: {
     ...mapGetters(["orderedSegmentCategories"]),
-    ...mapState(["savingSegmentLoading"]),
+    ...mapState(["savingSegmentLoading", "segmentID"]),
     segmentName: {
       get() {
         return this.$store.state.segmentName;

@@ -10,7 +10,7 @@ export default {
       .then(({ data }) => {
         context.commit('setTablesBlueprint', data.blueprint);
         context.commit('setAjaxLoader', false);
-        if (fromConfig.SEGMENT_ID) {
+        if (context.state.segmentID) {
           context.dispatch('fetchSegment');
         }
       })
@@ -131,7 +131,7 @@ export default {
   fetchSegment(context) {
     context.commit('setAjaxLoader', true);
     axios
-      .get(`${fromConfig.URL_GET_PAYLOAD}?id=${fromConfig.SEGMENT_ID}`)
+      .get(`${fromConfig.URL_GET_PAYLOAD}?id=${context.state.segmentID}`)
       .then(({ data }) => {
         context.dispatch('buildSegmentFromApiPayload', data.segment);
         context.commit('setAjaxLoader', false);
@@ -191,12 +191,13 @@ export default {
       group_id: context.state.segmentCategoryID,
       ...context.getters.builtSegmentForApi()
     };
-    const url = fromConfig.SEGMENT_ID
-      ? `${fromConfig.URL_POST_PAYLOAD}?id=${fromConfig.SEGMENT_ID}`
+    const url = context.state.segmentID
+      ? `${fromConfig.URL_POST_PAYLOAD}?id=${context.state.segmentID}`
       : fromConfig.URL_POST_PAYLOAD;
     axios
       .post(url, data)
       .then(response => {
+        context.commit('setSegmentID', response.data.id);
         context.commit('notification', {
           show: true,
           color: 'green',

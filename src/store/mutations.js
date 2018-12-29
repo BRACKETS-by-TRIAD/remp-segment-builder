@@ -16,6 +16,9 @@ export default {
   setSegmentCategoryID(state, payload) {
     state.segmentCategoryID = payload;
   },
+  setSegmentID(state, payload) {
+    state.segmentID = payload;
+  },
   setSelectedTable(state, selectedTable) {
     state.selectedTable = selectedTable;
     state.selectedFields = [];

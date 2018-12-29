@@ -83,6 +83,7 @@ export default {
     };
   },
   created() {
+    this.$store.commit("setSegmentID", config.SEGMENT_ID);
     this.$store.dispatch("fetchTablesBlueprint");
     this.$store.dispatch("fetchSegmentCategories");
   },

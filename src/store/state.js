@@ -28,5 +28,6 @@ export default {
   suggestedSegmentsLoading: false,
   savingSegmentLoading: false,
   segmentName: '',
+  segmentID: null,
   segmentCategoryID: null
 };
