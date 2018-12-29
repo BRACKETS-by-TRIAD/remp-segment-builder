@@ -32,6 +32,7 @@
               <v-layout text-xs-right>
                 <v-flex>
                   <v-btn
+                    target="_top"
                     color="normal"
                     large
                     v-if="config.CANCEL_PATH"
