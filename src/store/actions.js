@@ -66,23 +66,31 @@ export default {
   },
   fetchCounterForSingleCriteriaPayload(context, { data, criteriaId }) {
     context.commit('setCriteriaCountsLoading', criteriaId);
+    if (counterCancelTokens[criteriaId]) {
+      counterCancelTokens[criteriaId].cancel();
+    }
+    counterCancelTokens[criteriaId] = axios.CancelToken.source();
+
     axios
       .post(
         `${fromConfig.URL_COUNTER}?table_name=${context.state.selectedTable}`,
-        data
+        data,
+        { cancelToken: counterCancelTokens[criteriaId].token }
       )
       .then(({ data }) => {
         context.commit('setCriteriaCount', { criteriaId, count: data.count });
         context.commit('unsetCriteriaCountsLoading', criteriaId);
       })
       .catch(error => {
-        context.commit('notification', {
-          show: true,
-          color: 'red',
-          text: 'Error counting criteria'
-        });
-        context.commit('setCriteriaCount', { criteriaId, count: false });
-        context.commit('unsetCriteriaCountsLoading', criteriaId);
+        if (!axios.isCancel(error)) {
+          context.commit('notification', {
+            show: true,
+            color: 'red',
+            text: 'Error counting criteria'
+          });
+          context.commit('setCriteriaCount', { criteriaId, count: false });
+          context.commit('unsetCriteriaCountsLoading', criteriaId);
+        }
       });
   },
   fetchCounterForWholeSegment(context, { data }) {
@@ -234,3 +242,5 @@ export default {
     });
   }
 };
+
+const counterCancelTokens = {};

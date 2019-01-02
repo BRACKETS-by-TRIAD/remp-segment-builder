@@ -247,8 +247,14 @@ export default {
       if (!data.absolute) return;
 
       Object.entries(data.absolute).forEach(([key, value], i) => {
-        this["selectedOperator" + (i + 1)] = key;
-        this["date" + (i + 1)] = value.slice(0, -1) + ".000" + "Z";
+        if (i === 0) {
+          this.selectedOperatorFrontend = key;
+        }
+
+        setTimeout(() => {
+          this["selectedOperator" + (i + 1)] = key;
+          this["date" + (i + 1)] = value;
+        }, 0);
       });
     },
     openDialog() {
