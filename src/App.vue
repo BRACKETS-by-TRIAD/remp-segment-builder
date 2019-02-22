@@ -52,6 +52,10 @@
 </template>
 
 <script>
+import Vue from "vue";
+import Vuetify from "vuetify";
+import Vue2Filters from "vue2-filters";
+import axios from "axios";
 import { mapState } from "vuex";
 
 import TablePicker from "./components/TablePicker";
@@ -64,9 +68,16 @@ import Notification from "./components/Notification";
 import AjaxLoader from "./components/AjaxLoader";
 import SaveButton from "./components/SaveButton";
 import * as config from "./config.js";
+import store from "./store/index";
+
+Vue.config.productionTip = false;
+Vue.use(Vuetify);
+Vue.use(Vue2Filters);
+axios.defaults.headers.common["Authorization"] = config.AUTH_TOKEN;
 
 export default {
   name: "app",
+  store,
   components: {
     TablePicker,
     CriteriaRow,
@@ -94,6 +105,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import url("~vuetify/dist/vuetify.min.css");
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons");
 .unclickable {
   pointer-events: none;
 }
