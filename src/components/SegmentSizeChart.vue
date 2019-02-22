@@ -35,6 +35,7 @@
 <script>
 import { mapState } from "vuex";
 import isEqual from "lodash/isEqual";
+import get from "lodash/get";
 
 export default {
   name: "SegmentSizeChart",
@@ -50,12 +51,24 @@ export default {
       return (this.numberOfPassingItems / this.totalCount) * 100;
     },
     builtWholeSegmentForApiCount() {
-      return this.$store.getters.builtSegmentForApiCountAndSuggestions();
+      const builtWholeSegmentForApiCount = this.$store.getters.builtSegmentForApiCountAndSuggestions();
+
+      if (
+        get(builtWholeSegmentForApiCount, "criteria.nodes[0].nodes.length") ===
+        0
+      ) {
+        this.$store.commit("setSegmentCount", {
+          count: this.$store.state.totalCount
+        });
+        return false;
+      }
+
+      return builtWholeSegmentForApiCount;
     }
   },
   watch: {
     builtWholeSegmentForApiCount(data, oldData) {
-      if (!isEqual(data, oldData)) {
+      if (data && !isEqual(data, oldData)) {
         this.$store.dispatch("fetchCounterForWholeSegment", { data });
       }
     }

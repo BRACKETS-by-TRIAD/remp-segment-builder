@@ -48,6 +48,7 @@
 
 <script>
 import isEqual from "lodash/isEqual";
+import get from "lodash/get";
 
 import CriteriaDelete from "./CriteriaDelete";
 import CriteriaNot from "./CriteriaNot";
@@ -89,9 +90,17 @@ export default {
       );
     },
     builtCriteriaForApiCount() {
-      return this.$store.getters.builtSegmentForApiCountAndSuggestions(
+      const builtCriteriaForApiCount = this.$store.getters.builtSegmentForApiCountAndSuggestions(
         this.criteria.id
       );
+
+      if (
+        get(builtCriteriaForApiCount, "criteria.nodes[0].nodes.length") === 0
+      ) {
+        return false;
+      }
+
+      return builtCriteriaForApiCount;
     },
     shouldShowCriteriaChart() {
       return (
@@ -113,7 +122,7 @@ export default {
   },
   watch: {
     builtCriteriaForApiCount(data, oldData) {
-      if (!isEqual(data, oldData)) {
+      if (data && !isEqual(data, oldData)) {
         this.fetchCount(data);
       }
     }
