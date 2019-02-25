@@ -1,11 +1,17 @@
 {
-  "name": "remp-segment",
+  "name": "@remp/remp-segment-builder",
   "version": "0.1.0",
-  "private": true,
+  "author": "Remp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/remp2020/segment-builder.git"
+  },
+  "main": "./dist/RempSegmenter.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build-lib": "vue-cli-service build --target lib --name RempSegmenter ./src/App.vue"
+    "build-lib": "vue-cli-service build --target lib --name RempSegmenter ./src/App.vue",
+    "prepublish": "npm run build-lib"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -32,5 +38,8 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
+  ],
+  "files": [
+    "/dist"
   ]
 }
