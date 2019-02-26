@@ -14,4 +14,9 @@ window.Segments = {
 };
 ```
 
-3. `yarn serve` during development, or `yarn build` for production
+3. `yarn serve` for development
+
+## Build guide
+
+- Run `yarn build` if you want to build whole application for the deployment. Then you can host contents of `/dist` folder as static files.
+- Run `yarn build-lib` if you want to make build of remp-segment-builder as npm package (It's used for example in remp-scenario-builder).
