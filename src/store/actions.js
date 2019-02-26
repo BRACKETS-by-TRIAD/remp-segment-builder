@@ -205,7 +205,7 @@ export default {
     axios
       .post(url, data)
       .then(response => {
-        const { id } = response.data;
+        const { id, code } = response.data;
         context.commit('setSegmentID', id);
         context.commit('notification', {
           show: true,
@@ -215,7 +215,7 @@ export default {
         context.commit('setSavingSegmentLoading', false);
         // dispatch event of successfully saving segment, which can be listened f.e. in scenario
         const event = document.createEvent('CustomEvent'); // old legacy way of defining custom events, because of IE support
-        event.initCustomEvent('savedSegment', true, true, { id });
+        event.initCustomEvent('savedSegment', true, true, { id, code });
         // TODO: maybe check if is in iframe and then use postMessage
         window.dispatchEvent(event);
       })
