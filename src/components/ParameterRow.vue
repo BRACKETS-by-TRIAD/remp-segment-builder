@@ -2,34 +2,32 @@
   <div class="parameter-row">
     <v-layout>
       <v-flex>
-        <BooleanParameter v-if="shouldShowBooleanInput" :parameter="parameter" />
-        <StringParameter v-if="shouldShowStringInput" :parameter="parameter" />
-        <NumberParameter v-if="shouldShowNumberInput" :parameter="parameter" />
-        <DecimalParameter v-if="shouldShowDecimalInput" :parameter="parameter" />
-        <NumberArrayParameter v-if="shouldShowNumberArrayInput" :parameter="parameter" />
-        <DatetimeParameter v-if="shouldShowDatetimeInput" :parameter="parameter" />
+        <BooleanParameter v-if="shouldShowBooleanInput" :parameter="parameter"/>
+        <StringParameter v-if="shouldShowStringInput" :parameter="parameter"/>
+        <NumberParameter v-if="shouldShowNumberInput" :parameter="parameter"/>
+        <DecimalParameter v-if="shouldShowDecimalInput" :parameter="parameter"/>
+        <NumberArrayParameter v-if="shouldShowNumberArrayInput" :parameter="parameter"/>
+        <DatetimeParameter v-if="shouldShowDatetimeInput" :parameter="parameter"/>
       </v-flex>
       <v-flex class="parameter-delete-wrapper" v-if="!parameter.required">
-        <ParameterDelete :parameterId="parameter.id" v-if="!parameter.required" />
+        <ParameterDelete :parameterId="parameter.id" v-if="!parameter.required"/>
       </v-flex>
     </v-layout>
-
   </div>
-
 </template>
 
 <script>
-import BooleanParameter from './ParameterTypes/BooleanParameter';
-import StringParameter from './ParameterTypes/StringParameter';
-import NumberParameter from './ParameterTypes/NumberParameter';
-import DecimalParameter from './ParameterTypes/DecimalParameter';
-import NumberArrayParameter from './ParameterTypes/NumberArrayParameter';
-import DatetimeParameter from './ParameterTypes/DatetimeParameter';
-import ParameterDelete from './ParameterDelete';
+import BooleanParameter from "./ParameterTypes/BooleanParameter";
+import StringParameter from "./ParameterTypes/StringParameter";
+import NumberParameter from "./ParameterTypes/NumberParameter";
+import DecimalParameter from "./ParameterTypes/DecimalParameter";
+import NumberArrayParameter from "./ParameterTypes/NumberArrayParameter";
+import DatetimeParameter from "./ParameterTypes/DatetimeParameter";
+import ParameterDelete from "./ParameterDelete";
 
 export default {
-  name: 'ParameterRow',
-  props: ['parameter', 'criteria'],
+  name: "ParameterRow",
+  props: ["parameter", "criteria"],
   components: {
     BooleanParameter,
     StringParameter,
@@ -41,25 +39,25 @@ export default {
   },
   computed: {
     shouldShowBooleanInput() {
-      return this.parameter.type === 'boolean';
+      return this.parameter.type === "boolean";
     },
     shouldShowStringInput() {
       return (
-        this.parameter.type === 'string' ||
-        this.parameter.type === 'string_array'
+        this.parameter.type === "string" ||
+        this.parameter.type === "string_array"
       );
     },
     shouldShowNumberInput() {
-      return this.parameter.type === 'number';
+      return this.parameter.type === "number";
     },
     shouldShowDecimalInput() {
-      return this.parameter.type === 'decimal';
+      return this.parameter.type === "decimal";
     },
     shouldShowNumberArrayInput() {
-      return this.parameter.type === 'number_array';
+      return this.parameter.type === "number_array";
     },
     shouldShowDatetimeInput() {
-      return this.parameter.type === 'datetime';
+      return this.parameter.type === "datetime";
     }
   }
 };
@@ -69,6 +67,9 @@ export default {
 .parameter-delete-wrapper {
   max-width: 50px;
   margin-left: 30px;
+  align-items: center;
+  justify-content: flex-end;
+  display: flex;
 }
 .parameter-row {
   padding-bottom: 20px;

@@ -1,18 +1,21 @@
 <template>
-  <v-btn flat icon small color="red darken-1" @click="removeParameter">
-    <v-icon>remove_circle</v-icon>
-  </v-btn>
+  <v-tooltip bottom>
+    <v-btn slot="activator" flat icon small @click="removeParameter">
+      <v-icon>delete_forever</v-icon>
+    </v-btn>
+    <span>Remove parameter</span>
+  </v-tooltip>
 </template>
 
 <script>
 export default {
-  name: 'ParameterDelete',
+  name: "ParameterDelete",
   props: {
     parameterId: String
   },
   methods: {
     removeParameter() {
-      this.$store.commit('removeParameter', this.parameterId);
+      this.$store.commit("removeParameter", this.parameterId);
     }
   }
 };
