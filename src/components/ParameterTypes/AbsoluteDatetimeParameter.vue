@@ -92,13 +92,12 @@
 import flatPickr from "vue-flatpickr-component";
 import weekSelectPlugin from "flatpickr/dist/plugins/weekSelect/weekSelect";
 import Datepicker from "vuejs-datepicker";
+import moment from "moment-timezone";
 // import monthSelectPlugin from 'flatpickr/dist/plugins/monthSelect/monthSelect';
 
 import "flatpickr/dist/flatpickr.css";
 import "flatpickr/dist/themes/material_green.css";
 // import 'flatpickr/dist/plugins/monthSelect/monthSelect.css';
-
-import moment from "moment";
 
 export default {
   name: "RelativeDatetimeParameter",
@@ -183,16 +182,11 @@ export default {
   },
   computed: {
     date1InCorrectFormatForServer() {
-      // return this.date1.split('.').shift() + 'Z';
-      return moment(this.date1)
-        .utcOffset(0, true)
-        .toISOString();
+      console.log(this.date1);
+      return moment(this.date1).toISOString();
     },
     date2InCorrectFormatForServer() {
-      // return this.date2.split('.').shift() + 'Z';
-      return moment(this.date2)
-        .utcOffset(0, true)
-        .toISOString();
+      return moment(this.date2).toISOString();
     },
     date1Formated() {
       return moment(this.date1).format("DD.MM. YYYY");

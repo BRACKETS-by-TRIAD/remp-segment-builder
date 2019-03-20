@@ -51,6 +51,7 @@ import Vuetify from "vuetify";
 import Vue2Filters from "vue2-filters";
 import axios from "axios";
 import { mapState } from "vuex";
+import moment from "moment-timezone";
 
 import TablePicker from "./components/TablePicker";
 import FieldsPicker from "./components/FieldsPicker";
@@ -90,6 +91,12 @@ export default {
     };
   },
   created() {
+    // configure timezone for moment.js
+    // if timezone is not set in config, moment will fallback automatically to browser's
+    if (config.TIME_ZONE) {
+      moment.tz.setDefault(config.TIME_ZONE);
+    }
+
     this.$store.commit("setSegmentID", config.SEGMENT_ID);
     this.$store.dispatch("fetchTablesBlueprint");
     this.$store.dispatch("fetchSegmentCategories");
